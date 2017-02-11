@@ -1,0 +1,25 @@
+{
+	"version": "1.0.0-*",
+	"testRunner": "mstest",
+	"buildOptions": {
+		"emitEntryPoint": true
+	},
+
+	"dependencies": {
+		"Angular2CoreBase.Common": { "target": "project" },
+		"Angular2CoreBase.Data": { "target": "project" },
+		"Angular2CoreBase.Ui": { "target": "project" },
+		"dotnet-test-mstest": "1.1.2-preview",
+		"Microsoft.NETCore.App": {
+			"version": "1.1.0",
+			"type": "platform"
+		},
+		"MSTest.TestFramework": "1.0.8-rc2"
+	},
+
+	"frameworks": {
+		"netcoreapp1.0": {
+			"imports": "dnxcore50"
+		}
+	}
+}
