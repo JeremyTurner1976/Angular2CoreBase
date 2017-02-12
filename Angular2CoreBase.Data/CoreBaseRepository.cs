@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 
 namespace Angular2CoreBase.Data
 {
+	//http://deviq.com/repository-pattern/
 	public class CoreBaseRepository<T> : IRepository<T> where T : ModelBase
 	{
 		private readonly CoreBaseContext coreBaseContext;
@@ -63,8 +64,8 @@ namespace Angular2CoreBase.Data
 				.Set<T>()
 				.Add(model);
 
-			coreBaseContext
-				.SaveChanges();
+
+			Save(model);
 		}
 
 		public void Update(T model)
@@ -73,8 +74,8 @@ namespace Angular2CoreBase.Data
 				.Entry(model)
 				.State = EntityState.Modified;
 
-			coreBaseContext
-				.SaveChanges();
+
+			Save(model);
 		}
 
 		public void Delete(T model)
@@ -83,6 +84,11 @@ namespace Angular2CoreBase.Data
 				.Set<T>()
 				.Remove(model);
 
+			Save(model);
+		}
+
+		public void Save(T model)
+		{
 			coreBaseContext
 				.SaveChanges();
 		}

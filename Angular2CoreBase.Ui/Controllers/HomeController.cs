@@ -25,7 +25,8 @@ namespace Angular2CoreBase.Ui.Controllers
 
 		public IActionResult Index()
 		{
-			var test = userRepository.Count();
+			int usersCount = userRepository.Count();
+			int errorsCount = errorRepository.Count();
 
 			return View();
 		}

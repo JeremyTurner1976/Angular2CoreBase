@@ -12,24 +12,9 @@ namespace Angular2CoreBase.Data.Database
 {
 	public class CoreBaseContext : DbContext
 	{
-		private string ConnectionString { get;  }
-
 		public CoreBaseContext(DbContextOptions<CoreBaseContext> options)
 			: base(options)
 		{
-			ConnectionString =
-				((SqlServerOptionsExtension) 
-					options
-					.Extensions
-					.FirstOrDefault(
-						x => x.GetType()
-						.Name.Equals("SqlServerOptionsExtension"))
-				).ConnectionString;
-		}
-
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		{
-			optionsBuilder.UseSqlServer(ConnectionString);
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
