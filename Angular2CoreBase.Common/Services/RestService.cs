@@ -1,5 +1,6 @@
 ﻿namespace Angular2CoreBase.Common.Services
 {
+	//From reference: http://www.nimaara.com/2016/11/01/beware-of-the-net-httpclient/
 	//https://github.com/NimaAra/Easy.Common/tree/master/Easy.Common
 
 	using System;
@@ -14,9 +15,8 @@
 	/// An abstraction over <see cref="HttpClient"/> to address the following issues:
 	/// <para><see href="http://aspnetmonsters.com/2016/08/2016-08-27-httpclientwrong/"/></para>
 	/// <para><see href="http://byterot.blogspot.co.uk/2016/07/singleton-httpclient-dns.html"/></para>
-	/// <para><see href="http://www.nimaara.com/2016/11/01/beware-of-the-net-httpclient/"/></para>
 	/// </summary>
-	public sealed class RestService : IRestService
+	public sealed class RestService : IWebService
 	{
 		private readonly HttpClient _client;
 		private readonly HashSet<Uri> _endpoints;

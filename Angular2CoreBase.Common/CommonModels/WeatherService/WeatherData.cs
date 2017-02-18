@@ -11,9 +11,9 @@ namespace Angular2CoreBase.Common.CommonModels.WeatherService
 
 		public DateTime Sunset { get; set; }
 
-		public string City { get; set; }
+		public string City { get; set; } = "Unknown";
 
-		public string Country { get; set; }
+		public string Country { get; set; } = "USA";
 
 		public ICollection<Forecast> WeatherForecasts { get; set; } 
 	}

@@ -2,10 +2,12 @@
 {
 	using System;
 
-	public interface IWeatherServiceSettings
+	public interface IWeatherServiceSettings : IWebServiceSettings
 	{
-		Uri GetBaseUri();
-		string GetCurrentWeatherRelativeUri();
-		string GetFutureWeatherRelativeUri();
+		double? Latitude { get; set; }
+		double? Longitude { get; set; }
+
+		string CurrentWeatherRelativeUri { get; }
+		string FutureWeatherRelativeUri { get; }
 	}
 }

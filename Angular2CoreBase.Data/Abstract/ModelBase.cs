@@ -6,7 +6,6 @@ namespace Angular2CoreBase.Data.Abstract
 	{
 		[Key]
 		public int Id { get; protected set; }
-
 	}
 }
 

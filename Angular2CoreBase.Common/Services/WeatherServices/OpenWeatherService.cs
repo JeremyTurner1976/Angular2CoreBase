@@ -67,11 +67,11 @@ namespace Angular2CoreBase.Common.Services.WeatherServices
 		private async Task<DetailedWeather> GetCurrentWeather(double latitude, double longitude)
 		{
 			Uri clientUri = new Uri(
-				WeatherServiceSettings.GetBaseUri(),
-				WeatherServiceSettings.GetCurrentWeatherRelativeUri());
+				WeatherServiceSettings.BaseUri,
+				WeatherServiceSettings.CurrentWeatherRelativeUri);
 
 
-			using (IRestService webService = new RestService())
+			using (IWebService webService = new RestService())
 			{
 				HttpRequestMessage httpRequest =
 					new HttpRequestMessage(HttpMethod.Get, clientUri);
@@ -84,10 +84,10 @@ namespace Angular2CoreBase.Common.Services.WeatherServices
 		private async Task<ICollection<Forecast>> GetFutureWeather(double latitude, double longitude)
 		{
 			Uri clientUri = new Uri(
-				WeatherServiceSettings.GetBaseUri(),
-				WeatherServiceSettings.GetFutureWeatherRelativeUri());
+				WeatherServiceSettings.BaseUri,
+				WeatherServiceSettings.FutureWeatherRelativeUri);
 
-			using (IRestService webService = new RestService())
+			using (IWebService webService = new RestService())
 			{
 				HttpRequestMessage httpRequest =
 					new HttpRequestMessage(HttpMethod.Get, clientUri);

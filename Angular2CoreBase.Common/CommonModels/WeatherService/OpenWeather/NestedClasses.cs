@@ -92,14 +92,14 @@ namespace Angular2CoreBase.Common.CommonModels.WeatherService.OpenWeather
 	{
 		public string country { get; set; }
 
-		public long Sunrise { get; set; }
+		public long sunrise { get; set; }
 
-		public long Sunset { get; set; }
+		public long sunset { get; set; }
 
 		public DateTime sunriseTime
-			=> Sunrise.GetDateTimeFromTicks();
+			=> sunrise.GetDateTimeFromTicks();
 
 		public DateTime sunsetTime
-			=> Sunset.GetDateTimeFromTicks();
+			=> sunset.GetDateTimeFromTicks();
 	}
 }
