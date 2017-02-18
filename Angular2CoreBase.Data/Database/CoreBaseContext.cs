@@ -17,6 +17,11 @@ namespace Angular2CoreBase.Data.Database
 		{
 		}
 
+
+		public DbSet<Error> Errors { get; set; }
+		public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+
+
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity(typeof(Error))
@@ -33,12 +38,6 @@ namespace Angular2CoreBase.Data.Database
 
 			base.OnModelCreating(modelBuilder);
 		}
-
-
-
-		public DbSet<Error> Errors { get; set; }
-
-		public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
 	}
 }

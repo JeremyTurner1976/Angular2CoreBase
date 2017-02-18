@@ -1,38 +1,45 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-
 namespace Angular2CoreBase.Ui.Controllers
 {
-    [Route("api/[controller]")]
-    public class SampleDataController : Controller
-    {
-        private static string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+	using Common.CommonModels.WeatherService;
+	using Common.Services.WeatherServices;
+	using Data.Factories;
+	using Microsoft.AspNetCore.Http;
+	using System.Net.Http;
+	using System.Threading.Tasks;
+	using Microsoft.AspNetCore.Mvc;
 
-        [HttpGet("[action]")]
-        public IEnumerable<WeatherForecast> WeatherForecasts()
-        {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                DateFormatted = DateTime.Now.AddDays(index).ToString("d"),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            });
-        }
+	[Route("api/[controller]")]
+	public class SampleDataController : Controller
+	{
+		private static string[] Summaries = new[]
+		{
+			"Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+		};
 
-        public class WeatherForecast
-        {
-            public string DateFormatted { get; set; }
-            public int TemperatureC { get; set; }
-            public string Summary { get; set; }
-
-            public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-        }
-    }
+		[HttpGet("[action]")]
+		public async Task<IActionResult> WeatherForecasts()
+		{
+			try
+			{
+				OpenWeatherService weatherService = new OpenWeatherService();
+				WeatherData weatherForecast = await weatherService.GetWeatherData(1, 2);
+				return Ok(weatherForecast);
+			}
+			catch (HttpRequestException httpRequestException)
+			{
+				return BadRequest(ErrorFactory.GetErrorAsString(httpRequestException));
+			}
+			catch (AggregateException aggregateException)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError,
+					ErrorFactory.GetAggregateErrorAsString(aggregateException));
+			}
+			catch (Exception exception)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError,
+					ErrorFactory.GetErrorAsString(exception));
+			}
+		}
+	}
 }
