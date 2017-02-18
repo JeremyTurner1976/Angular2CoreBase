@@ -3,10 +3,11 @@
 	//http://json2csharp.com/
 	using System;
 	using System.Collections.Generic;
+	using Abstract;
 	using Interfaces;
 	using Newtonsoft.Json;
 
-	public class DetailedWeather
+	public class DetailedWeather : WebServiceModelBase
 	{
 		public List<Weather> weather { get; set; }
 

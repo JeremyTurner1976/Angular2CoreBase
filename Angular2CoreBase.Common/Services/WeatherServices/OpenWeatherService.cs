@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Angular2CoreBase.Common.CommonModels.WeatherService;
 using Angular2CoreBase.Common.CommonModels.WeatherService.OpenWeather;
 using Angular2CoreBase.Common.Interfaces;
-using Newtonsoft.Json;
 
 namespace Angular2CoreBase.Common.Services.WeatherServices
 {
@@ -15,15 +14,12 @@ namespace Angular2CoreBase.Common.Services.WeatherServices
 	//https://openweathermap.org/api
 	public class OpenWeatherService : IWeatherService
 	{
-		//TODO get url from DB, or configs?
-		//Dependency Injection is correct, Providers based on configs is an anti pattern
+		public IWeatherServiceSettings WeatherServiceSettings { get; set; }
 
-		public string City { get; set; } = "Bigfork,Mt";
-		public string AppId { get; set; } = "f6c810b72d69b9224b8ddde39e19f6f9";
-		public string UnitsOfMeasurement { get; set; } = "imperial"; //metric
-		public string CurrentWeatherUri { get; set; } = "/data/2.5/weather";
-		public string FutureWeatherUri { get; set; } = "/data/2.5/forecast";
-		public Uri BaseUri { get; set; } = new Uri("http://api.openweathermap.org");
+		public OpenWeatherService(IWeatherServiceSettings weatherServiceSettings)
+		{
+			WeatherServiceSettings = weatherServiceSettings;
+		}
 
 		/// <summary>
 		/// This task gathers threaded weather data from 2 webservice calls asynchronously
@@ -34,13 +30,13 @@ namespace Angular2CoreBase.Common.Services.WeatherServices
 		/// <returns>A <see cref="WeatherData"> Object from the Open Weather Service Api</see>/></returns>
 		public async Task<WeatherData> GetWeatherData(double latitude, double longitude)
 		{
-			Task<DetailedWeather> taskOne = GetCurrentWeather(latitude, longitude);
-			Task<ICollection<Forecast>> taskTwo = GetFutureWeather(latitude, longitude);
+			Task<DetailedWeather> asyncCurrentWeather = GetCurrentWeather(latitude, longitude);
+			Task<ICollection<Forecast>> asyncFutureWeather = GetFutureWeather(latitude, longitude);
 
-			await Task.WhenAll(taskOne, taskTwo);
-			DetailedWeather currentWeather = taskOne.Result;
+			await Task.WhenAll(asyncCurrentWeather, asyncFutureWeather);
+			DetailedWeather currentWeather = asyncCurrentWeather.Result;
 			Weather weather = currentWeather?.weather?.FirstOrDefault();
-			ICollection<Forecast> forecasts = taskTwo.Result;
+			ICollection<Forecast> forecasts = asyncFutureWeather.Result;
 
 			if (currentWeather != null && weather != null && forecasts != null)
 			{
@@ -70,74 +66,96 @@ namespace Angular2CoreBase.Common.Services.WeatherServices
 		private async Task<DetailedWeather> GetCurrentWeather(double latitude, double longitude)
 		{
 			Uri clientUri = new Uri(
-				BaseUri,
-				CurrentWeatherUri +
-				        "?q=" + City +
-				        "&appid=" + AppId +
-				        "&units=" + UnitsOfMeasurement);
+				WeatherServiceSettings.GetBaseUri(),
+				WeatherServiceSettings.GetCurrentWeatherRelativeUri());
 
 
 			using (IRestService webService = new RestService())
 			{
-				HttpResponseMessage response = await webService.SendAsync(
-					new HttpRequestMessage(
-						HttpMethod.Get,
-						clientUri));
-
+				HttpRequestMessage httpRequest =
+					new HttpRequestMessage(HttpMethod.Get, clientUri);
+				HttpResponseMessage response = await webService.SendAsync(httpRequest);
 				response.EnsureSuccessStatusCode();
-
-				string stringResult = await response.Content.ReadAsStringAsync();
-				return JsonConvert.DeserializeObject<DetailedWeather>(stringResult);
+				return await response.ParseJsonResponse<DetailedWeather>();
 			}
 		}
 
 		private async Task<ICollection<Forecast>> GetFutureWeather(double latitude, double longitude)
 		{
 			Uri clientUri = new Uri(
-				BaseUri,
-				FutureWeatherUri +
-						"?q=" + City +
-						"&appid=" + AppId +
-						"&units=" + UnitsOfMeasurement);
+				WeatherServiceSettings.GetBaseUri(),
+				WeatherServiceSettings.GetFutureWeatherRelativeUri());
 
 			using (IRestService webService = new RestService())
 			{
-				HttpResponseMessage response = await webService.SendAsync(
-					new HttpRequestMessage(
-						HttpMethod.Get,
-						clientUri));
-
+				HttpRequestMessage httpRequest =
+					new HttpRequestMessage(HttpMethod.Get, clientUri);
+				HttpResponseMessage response = await webService.SendAsync(httpRequest);
 				response.EnsureSuccessStatusCode();
+				ThreeHourFiveDayForecast threeHourFiveDayForecast = 
+					await response.ParseJsonResponse<ThreeHourFiveDayForecast>();
 
-				string stringResult = await response.Content.ReadAsStringAsync();
-				ThreeHourFiveDayForecast forecast =
-									JsonConvert.DeserializeObject<ThreeHourFiveDayForecast>(stringResult);
-
-				return (from item in forecast.forecasts
-						let weather = item.weather.FirstOrDefault()
-						select new Forecast()
-						{
-							StartDateTime = item.startDateTime,
-							EndDateTime = item.startDateTime.AddHours(3).AddSeconds(-1),
-							Description = weather.description,
-							Temperature = item.main.temperature,
-							MinimumTemperature = item.main.minimumTemperature,
-							MaximumTemperature = item.main.maximumTemperature,
-							Humidity = item.main.humidity,
-							AtmosphericPressure = item.main.pressure,
-							Windspeed = item.wind.speed,
-							WindDirection = (int)item.wind.degrees,
-							SkyCon = GetSkyCon(weather.icon),
-							CloudCover = item.clouds.cloudCover,
-							RainVolume = item.rainTotal.threeHourTotal,
-							SnowVolume = item.snowTotal.threeHourTotal
-						}).ToList();
+				return (from item in threeHourFiveDayForecast.forecasts
+					let weather = item.weather.FirstOrDefault()
+					select new Forecast()
+					{
+						StartDateTime = item.startDateTime,
+						EndDateTime = item.startDateTime.AddHours(3).AddSeconds(-1),
+						Description = weather.description,
+						Temperature = item.main.temperature,
+						MinimumTemperature = item.main.minimumTemperature,
+						MaximumTemperature = item.main.maximumTemperature,
+						Humidity = item.main.humidity,
+						AtmosphericPressure = item.main.pressure,
+						Windspeed = item.wind.speed,
+						WindDirection = (int) item.wind.degrees,
+						SkyCon = GetSkyCon(weather.icon),
+						CloudCover = item.clouds.cloudCover,
+						RainVolume = item.rainTotal.threeHourTotal,
+						SnowVolume = item.snowTotal.threeHourTotal
+					}).ToList();
 			}
 		}
 
-		private string GetSkyCon(string icon)
+		//https://openweathermap.org/weather-conditions
+		protected virtual string GetSkyCon(string icon)
 		{
-			return "Still needs doing";
+			switch (icon)
+			{
+				case "01d":
+					return SkyCons.clearDay.ToClientSideString();
+				case "01n":
+					return SkyCons.clearNight.ToClientSideString();
+				case "02d":
+				case "04d":
+					return SkyCons.partlyCloudyDay.ToClientSideString();
+				case "02n":
+				case "04n":
+					return SkyCons.partlyCloudyNight.ToClientSideString();
+				case "03d":
+				case "03n":
+					return SkyCons.cloudy.ToClientSideString();
+				case "09d":
+				case "09n":
+					return SkyCons.rain.ToClientSideString();
+				case "10d":
+				case "10n":
+					return SkyCons.sleet.ToClientSideString();
+				case "13n":
+				case "13d":
+					return SkyCons.snow.ToClientSideString();
+				case "11d":
+				case "11n":
+					return SkyCons.wind.ToClientSideString();
+				case "50n":
+				case "50d":
+					return SkyCons.fog.ToClientSideString();
+				default:
+					throw new Exception(
+						"Not all Code Paths return a value: " +
+						icon);
+
+			}
 		}
 	}
 }

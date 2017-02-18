@@ -9,7 +9,6 @@
 	using System.Threading;
 	using System.Threading.Tasks;
 	using Interfaces;
-	using WeatherServices;
 
 	/// <summary>
 	/// An abstraction over <see cref="HttpClient"/> to address the following issues:
@@ -55,7 +54,8 @@
 		/// <summary>
 		/// Gets the maximum number of bytes to buffer when reading the response content.
 		/// </summary>
-		public uint MaxResponseContentBufferSize => (uint) _client.MaxResponseContentBufferSize;
+		public uint MaxResponseContentBufferSize 
+			=> (uint) _client.MaxResponseContentBufferSize;
 
 		/// <summary>
 		/// Gets all of the endpoints which this instance has sent a request to.
@@ -83,10 +83,10 @@
 		/// <summary>
 		/// Sends an HTTP request as an asynchronous operation.
 		/// </summary>
-		public Task<HttpResponseMessage> SendAsync(HttpRequestMessage message, CancellationToken cToken)
+		public Task<HttpResponseMessage> SendAsync(HttpRequestMessage message, CancellationToken cancellationToken)
 		{
 			AddConnectionLeaseTimeout(message.RequestUri);
-			return _client.SendAsync(message, cToken);
+			return _client.SendAsync(message, cancellationToken);
 		}
 
 		/// <summary>
@@ -101,11 +101,13 @@
 		/// <summary>
 		/// Sends an HTTP request as an asynchronous operation.
 		/// </summary>
-		public Task<HttpResponseMessage> SendAsync(HttpRequestMessage message, HttpCompletionOption option,
-			CancellationToken cToken)
+		public Task<HttpResponseMessage> SendAsync(
+			HttpRequestMessage message,
+			HttpCompletionOption option,
+			CancellationToken cancellationToken)
 		{
 			AddConnectionLeaseTimeout(message.RequestUri);
-			return _client.SendAsync(message, option, cToken);
+			return _client.SendAsync(message, option, cancellationToken);
 		}
 
 		/// <summary>

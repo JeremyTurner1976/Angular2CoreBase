@@ -24,7 +24,9 @@ namespace Angular2CoreBase.Common.Extensions
 
 		public static string DigitsOnly(this string input)
 		{
-			return string.IsNullOrWhiteSpace(input) ? input : new string(input.Where(char.IsDigit).ToArray());
+			return string.IsNullOrWhiteSpace(input) 
+				? input 
+				: new string(input.Where(char.IsDigit).ToArray());
 		}
 
 		/// <summary>
@@ -34,7 +36,9 @@ namespace Angular2CoreBase.Common.Extensions
 		/// <returns>Null value if empty or null input, or an integer of that number</returns>
 		public static int ToInteger(this string input)
 		{
-			return string.IsNullOrWhiteSpace(input) ? 0 : int.Parse(input);
+			return string.IsNullOrWhiteSpace(input) 
+				? 0 
+				: int.Parse(input);
 		}
 
 		/// <summary>
@@ -44,7 +48,9 @@ namespace Angular2CoreBase.Common.Extensions
 		/// <returns>Null value if empty or null input, or an integer of that number</returns>
 		public static double ToDouble(this string input)
 		{
-			return string.IsNullOrWhiteSpace(input) ? 0 : double.Parse(input);
+			return string.IsNullOrWhiteSpace(input) 
+				? 0 
+				: double.Parse(input);
 		}
 	}
 }

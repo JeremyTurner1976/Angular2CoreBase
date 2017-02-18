@@ -7,23 +7,26 @@ namespace Angular2CoreBase.Ui.Controllers
 	using Microsoft.AspNetCore.Http;
 	using System.Net.Http;
 	using System.Threading.Tasks;
+	using Common.Interfaces;
 	using Microsoft.AspNetCore.Mvc;
 
 	[Route("api/[controller]")]
 	public class SampleDataController : Controller
 	{
-		private static string[] Summaries = new[]
+		public IWeatherService WeatherService { get; }
+
+		public SampleDataController(IWeatherService weatherService)
 		{
-			"Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-		};
+			WeatherService = weatherService;
+		}
 
 		[HttpGet("[action]")]
+		[ProducesResponseType(typeof(WeatherData), 200)]
 		public async Task<IActionResult> WeatherForecasts()
 		{
 			try
 			{
-				OpenWeatherService weatherService = new OpenWeatherService();
-				WeatherData weatherForecast = await weatherService.GetWeatherData(1, 2);
+				WeatherData weatherForecast = await WeatherService.GetWeatherData(1, 2);
 				return Ok(weatherForecast);
 			}
 			catch (HttpRequestException httpRequestException)

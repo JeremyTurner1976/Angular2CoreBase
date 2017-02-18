@@ -39,7 +39,7 @@
 		/// <summary>
 		/// Sends an HTTP request as an asynchronous operation.
 		/// </summary>
-		Task<HttpResponseMessage> SendAsync(HttpRequestMessage message, CancellationToken cToken);
+		Task<HttpResponseMessage> SendAsync(HttpRequestMessage message, CancellationToken cancellationToken);
 
 		/// <summary>
 		/// Sends an HTTP request as an asynchronous operation.
@@ -49,7 +49,7 @@
 		/// <summary>
 		/// Sends an HTTP request as an asynchronous operation.
 		/// </summary>
-		Task<HttpResponseMessage> SendAsync(HttpRequestMessage message, HttpCompletionOption option, CancellationToken cToken);
+		Task<HttpResponseMessage> SendAsync(HttpRequestMessage message, HttpCompletionOption option, CancellationToken cancellationToken);
 
 		/// <summary>
 		/// Clears all of the endpoints which this instance has sent a request to.
