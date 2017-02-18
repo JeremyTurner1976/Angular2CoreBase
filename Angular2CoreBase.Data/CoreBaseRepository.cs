@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Angular2CoreBase.Data.Abstract;
 using Angular2CoreBase.Data.Database;
 using Angular2CoreBase.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 namespace Angular2CoreBase.Data
 {

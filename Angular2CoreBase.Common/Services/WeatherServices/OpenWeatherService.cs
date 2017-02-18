@@ -10,6 +10,7 @@ using Angular2CoreBase.Common.Interfaces;
 namespace Angular2CoreBase.Common.Services.WeatherServices
 {
 	using Extensions;
+	using Interfaces.WeatherService;
 
 	//https://openweathermap.org/api
 	public class OpenWeatherService : IWeatherService

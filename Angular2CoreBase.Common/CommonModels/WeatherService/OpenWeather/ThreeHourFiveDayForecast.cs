@@ -1,13 +1,13 @@
 ﻿namespace Angular2CoreBase.Common.CommonModels.WeatherService.OpenWeather
 {
 	using System.Collections.Generic;
-	using Abstract;
+
 	using Interfaces;
 	using Newtonsoft.Json;
 
 	//http://json2csharp.com/
 
-	public class ThreeHourFiveDayForecast : WebServiceModelBase
+	public class ThreeHourFiveDayForecast  : IModel
 	{
 		public double message { get; set; }
 

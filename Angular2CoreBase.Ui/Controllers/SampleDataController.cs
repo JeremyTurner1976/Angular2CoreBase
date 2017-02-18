@@ -2,12 +2,11 @@ using System;
 namespace Angular2CoreBase.Ui.Controllers
 {
 	using Common.CommonModels.WeatherService;
-	using Common.Services.WeatherServices;
 	using Data.Factories;
 	using Microsoft.AspNetCore.Http;
 	using System.Net.Http;
 	using System.Threading.Tasks;
-	using Common.Interfaces;
+	using Common.Interfaces.WeatherService;
 	using Microsoft.AspNetCore.Mvc;
 
 	[Route("api/[controller]")]

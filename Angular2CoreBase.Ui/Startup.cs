@@ -12,7 +12,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Angular2CoreBase.Ui
 {
-	using Common.Interfaces;
+	using Common.CommonModels.WeatherService.OpenWeather;
+	using Common.Interfaces.WeatherService;
 	using Common.Services.WeatherServices;
 
 	public class Startup
@@ -69,7 +70,7 @@ namespace Angular2CoreBase.Ui
 			//services.AddTransient<OperationService, OperationService>();
 
 			//Open Weather Api
-			services.AddSingleton<IWeatherServiceSettings, OpenWeatherServiceSettings> ();
+			services.AddSingleton<IWeatherServiceSettings, OpenWeatherServiceSettings>();
 			services.AddTransient<IWeatherService, OpenWeatherService>();
 
 			services.AddSingleton<IRepository<ApplicationUser>, CoreBaseRepository<ApplicationUser>>();

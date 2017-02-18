@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Angular2CoreBase.Common.Interfaces
+﻿namespace Angular2CoreBase.Common.Interfaces.WeatherService
 {
+	using System;
+
 	public interface IWeatherServiceSettings
 	{
 		Uri GetBaseUri();

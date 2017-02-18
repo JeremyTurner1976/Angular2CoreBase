@@ -1,8 +1,8 @@
-﻿namespace Angular2CoreBase.Common.Services.WeatherServices
+﻿namespace Angular2CoreBase.Common.CommonModels.WeatherService.OpenWeather
 {
 	using System;
 	using Extensions;
-	using Interfaces;
+	using Interfaces.WeatherService;
 
 	public class OpenWeatherServiceSettings : IWeatherServiceSettings
 	{

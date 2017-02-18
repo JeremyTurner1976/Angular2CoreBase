@@ -2,7 +2,6 @@
 
 namespace Angular2CoreBase.Common.CommonModels.WeatherService
 {
-	using Interfaces;
 	public class Forecast
 	{
 		public DateTime StartDateTime { get; set; }
@@ -28,9 +27,6 @@ namespace Angular2CoreBase.Common.CommonModels.WeatherService
 		public string SkyCon { get; set; }
 
 		public double CloudCover { get; set; }
-
-		private bool Precipitation =>
-			RainVolume > 0 || SnowVolume > 0;
 
 		public double RainVolume { get; set; }
 

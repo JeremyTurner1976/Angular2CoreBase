@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Angular2CoreBase.Data;
 using Angular2CoreBase.Data.Interfaces;
 using Angular2CoreBase.Data.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace Angular2CoreBase.Ui.Controllers
 {

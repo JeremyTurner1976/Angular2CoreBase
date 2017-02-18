@@ -3,9 +3,6 @@ using System.Collections.Generic;
 
 namespace Angular2CoreBase.Common.CommonModels.WeatherService
 {
-	using Abstract;
-	using Interfaces;
-
 	public class WeatherData
 	{
 		public string Description { get; set; }

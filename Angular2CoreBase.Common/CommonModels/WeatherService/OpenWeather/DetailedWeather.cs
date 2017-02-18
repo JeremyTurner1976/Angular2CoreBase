@@ -1,13 +1,11 @@
 ﻿namespace Angular2CoreBase.Common.CommonModels.WeatherService.OpenWeather
 {
 	//http://json2csharp.com/
-	using System;
 	using System.Collections.Generic;
-	using Abstract;
 	using Interfaces;
 	using Newtonsoft.Json;
 
-	public class DetailedWeather : WebServiceModelBase
+	public class DetailedWeather : IModel
 	{
 		public List<Weather> weather { get; set; }
 
