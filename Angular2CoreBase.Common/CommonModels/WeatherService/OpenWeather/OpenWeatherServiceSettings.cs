@@ -7,6 +7,9 @@
 
 	public class OpenWeatherServiceSettings : IWeatherServiceSettings
 	{
+		//https://openweathermap.org/current
+		//https://openweathermap.org/forecast5
+
 		//TODO Remove this when I have Latitude/Longitude
 		public string City { get; } = "Bigfork,Mt";
 

@@ -13,7 +13,7 @@ namespace Angular2CoreBase.Data.Database
 		{
 			if (!context.ApplicationUsers.Any())
 			{
-				for (var i = 0; i < dataPopulationCount; i++)
+				for (int i = 0; i < dataPopulationCount; i++)
 				{
 					context.ApplicationUsers.Add(new ApplicationUser()
 					{
@@ -31,7 +31,7 @@ namespace Angular2CoreBase.Data.Database
 
 			if (!context.Errors.Any())
 			{
-				for (var i = 0; i < dataPopulationCount; i++)
+				for (int i = 0; i < dataPopulationCount; i++)
 				{
 					try
 					{

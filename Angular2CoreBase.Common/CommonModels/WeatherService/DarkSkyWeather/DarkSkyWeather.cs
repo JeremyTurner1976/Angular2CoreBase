@@ -24,13 +24,17 @@ namespace Angular2CoreBase.Common.CommonModels.WeatherService.DarkSkyWeather
 
 		public class Currently
 		{
-			public int time { get; set; }
+			public long time { get; set; }
+
+			public DateTime dateTime
+				=> time.GetDateTimeFromJavascriptTicks();
+
 			public string summary { get; set; }
 			public string icon { get; set; }
-			public int nearestStormDistance { get; set; }
-			public int nearestStormBearing { get; set; }
-			public int precipIntensity { get; set; }
-			public int precipProbability { get; set; }
+			public double nearestStormDistance { get; set; }
+			public double nearestStormBearing { get; set; }
+			public double precipIntensity { get; set; }
+			public double precipProbability { get; set; }
 			public double temperature { get; set; }
 			public double apparentTemperature { get; set; }
 			public double dewPoint { get; set; }
@@ -45,9 +49,12 @@ namespace Angular2CoreBase.Common.CommonModels.WeatherService.DarkSkyWeather
 
 		public class Datum
 		{
-			public int time { get; set; }
-			public int precipIntensity { get; set; }
-			public int precipProbability { get; set; }
+			public long time { get; set; }
+
+			public DateTime dateTime
+				=> time.GetDateTimeFromJavascriptTicks();
+			public double precipIntensity { get; set; }
+			public double precipProbability { get; set; }
 		}
 
 		public class Minutely
@@ -59,11 +66,15 @@ namespace Angular2CoreBase.Common.CommonModels.WeatherService.DarkSkyWeather
 
 		public class Datum2
 		{
-			public int time { get; set; }
+			public long time { get; set; }
+
+			public DateTime dateTime
+				=> time.GetDateTimeFromJavascriptTicks();
+
 			public string summary { get; set; }
 			public string icon { get; set; }
-			public int precipIntensity { get; set; }
-			public int precipProbability { get; set; }
+			public double precipIntensity { get; set; }
+			public double precipProbability { get; set; }
 			public double temperature { get; set; }
 			public double apparentTemperature { get; set; }
 			public double dewPoint { get; set; }
@@ -85,29 +96,32 @@ namespace Angular2CoreBase.Common.CommonModels.WeatherService.DarkSkyWeather
 
 		public class Datum3
 		{
-			public int time { get; set; }
+			public long time { get; set; }
+			public DateTime dateTime
+				=> time.GetDateTimeFromJavascriptTicks();
+
 			public string summary { get; set; }
 			public string icon { get; set; }
 			public long sunriseTime { get; set; }
 			public long sunsetTime { get; set; }
 			public DateTime sunrise
-				=> sunriseTime.GetDateTimeFromTicks();
+				=> sunriseTime.GetDateTimeFromJavascriptTicks();
 
 			public DateTime sunset
-				=> sunsetTime.GetDateTimeFromTicks();
+				=> sunsetTime.GetDateTimeFromJavascriptTicks();
 
 			public double moonPhase { get; set; }
 			public double precipIntensity { get; set; }
 			public double precipIntensityMax { get; set; }
 			public double precipProbability { get; set; }
 			public double temperatureMin { get; set; }
-			public int temperatureMinTime { get; set; }
+			public long temperatureMinTime { get; set; }
 			public double temperatureMax { get; set; }
-			public int temperatureMaxTime { get; set; }
+			public long temperatureMaxTime { get; set; }
 			public double apparentTemperatureMin { get; set; }
-			public int apparentTemperatureMinTime { get; set; }
+			public long apparentTemperatureMinTime { get; set; }
 			public double apparentTemperatureMax { get; set; }
-			public int apparentTemperatureMaxTime { get; set; }
+			public long apparentTemperatureMaxTime { get; set; }
 			public double dewPoint { get; set; }
 			public double humidity { get; set; }
 			public double windSpeed { get; set; }
@@ -116,7 +130,7 @@ namespace Angular2CoreBase.Common.CommonModels.WeatherService.DarkSkyWeather
 			public double cloudCover { get; set; }
 			public double pressure { get; set; }
 			public double ozone { get; set; }
-			public int? precipIntensityMaxTime { get; set; }
+			public long? precipIntensityMaxTime { get; set; }
 			public string precipType { get; set; }
 			public double? precipAccumulation { get; set; }
 		}

@@ -10,6 +10,9 @@
 	using System.Threading;
 	using System.Threading.Tasks;
 	using Interfaces;
+	using Microsoft.Extensions.Logging;
+	using System.Diagnostics;
+	using Microsoft.AspNetCore.Http;
 
 	/// <summary>
 	/// An abstraction over <see cref="HttpClient"/> to address the following issues:

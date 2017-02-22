@@ -21,7 +21,7 @@ public enum ErrorLevels
 	{
 		public static Error GetErrorFromException(Exception e, ErrorLevels errorLevel, string strAdditionalInformation)
 		{
-			var error = new Error
+			Error error = new Error
 			{
 				Message = e.GetBaseException().Message,
 				Source = e.GetBaseException().Source,
@@ -38,75 +38,104 @@ public enum ErrorLevels
 		{
 			Debug.WriteLine("ErrorFactory.GetErrorAsHtml()");
 
-			var sb = new StringBuilder();
+			StringBuilder stringBuilder= new StringBuilder();
 			bool first = true;
 
 			while (e != null)
 			{
-				sb.Append(first ? "<br/>" : "<br/><br/><br/>");
+				 stringBuilder.Append(first ? "<br/>" : "<br/><br/><br/>");
 				first = false;
-				sb.Append("|Message| " + e.GetBaseException().Message + "<br/>");
-				sb.Append("|Source| " + e.GetBaseException().Source + "<br/>");
-				sb.AppendLine("[Stack Trace|<br/>");
-				foreach (var item in GetStackStraceStrings(e.StackTrace))
+				 stringBuilder.Append("|Message| " + e.GetBaseException().Message + "<br/>");
+				 stringBuilder.Append("|Source| " + e.GetBaseException().Source + "<br/>");
+				 stringBuilder.AppendLine("[Stack Trace|<br/>");
+				foreach (string item in GetStackStraceStrings(e.StackTrace))
 				{
-					sb.AppendLine("&nbsp;&nbsp;&nbsp;" + item + "<br/>");
+					 stringBuilder.AppendLine("&nbsp;&nbsp;&nbsp;" + item + "<br/>");
 				}
-				sb.AppendLine("<br/>");
-				sb.Append(e.InnerException == null ? "<br/>|No Inner Exception|<br/>" : "<br/>|Inner Exception|: <br/>");
+				 stringBuilder.AppendLine("<br/>");
+				 stringBuilder.Append(e.InnerException == null ? "<br/>|No Inner Exception|<br/>" : "<br/>|Inner Exception|: <br/>");
 				e = e.InnerException;
 			}
 
-			return sb.ToString();
+			return stringBuilder.ToString();
 		}
 
 		public static string GetErrorAsString(Exception e)
 		{
 			Debug.WriteLine("ErrorFactory.GetErrorAsString()");
 
-			var sb = new StringBuilder();
+			StringBuilder stringBuilder= new StringBuilder();
 			bool first = true;
 
 			while (e != null)
 			{
 				if (!first)
 				{
-					sb.AppendLine();
-					sb.AppendLine();
+					 stringBuilder.AppendLine();
+					 stringBuilder.AppendLine();
 				}
 				first = false;
-				sb.AppendLine("|Message| " + e.GetBaseException().Message);
-				sb.AppendLine("|Time| " + DateTime.Now);
-				sb.AppendLine("|Source| " + e.GetBaseException().Source);
-				sb.AppendLine("[Stack Trace|");
+				 stringBuilder.AppendLine("|Message| " + e.GetBaseException().Message);
+				 stringBuilder.AppendLine("|Time| " + DateTime.Now);
+				 stringBuilder.AppendLine("|Source| " + e.GetBaseException().Source);
+				 stringBuilder.AppendLine("[Stack Trace|");
 				foreach (string item in GetStackStraceStrings(e.StackTrace))
 				{
-					sb.AppendLine("  " + item);
+					 stringBuilder.AppendLine("  " + item);
 				}
-				sb.AppendLine("");
-				sb.AppendLine(e.InnerException == null ? "|No Inner Exception|" : "\n|Inner Exception|: ");
+				 stringBuilder.AppendLine("");
+				 stringBuilder.AppendLine(e.InnerException == null ? "|No Inner Exception|" : "\n|Inner Exception|: ");
 				e = e.InnerException;
 			}
 
-			return sb.ToString();
+			return stringBuilder.ToString();
+		}
+
+		public static string GetAggregateErrorAsHtml(AggregateException ae)
+		{
+			Debug.WriteLine("ErrorFactory.GetAggregateErrorAsHtml()");
+
+			StringBuilder stringBuilder = new StringBuilder();
+			 stringBuilder.AppendLine("|AGGREGATE ERROR|");
+			 stringBuilder.AppendLine(GetErrorAsString(ae.GetBaseException()));
+			 stringBuilder.AppendLine("");
+			bool first = true;
+
+			foreach (Exception e in ae.InnerExceptions)
+			{
+				 stringBuilder.Append(first ? "<br/>" : "<br/><br/><br/>");
+				first = false;
+				 stringBuilder.Append("|Message| " + e.GetBaseException().Message + "<br/>");
+				 stringBuilder.Append("|Source| " + e.GetBaseException().Source + "<br/>");
+				 stringBuilder.AppendLine("[Stack Trace|<br/>");
+				foreach (string item in GetStackStraceStrings(e.StackTrace))
+				{
+					 stringBuilder.AppendLine("&nbsp;&nbsp;&nbsp;" + item + "<br/>");
+				}
+				 stringBuilder.AppendLine("<br/>");
+				 stringBuilder.Append(e.InnerException == null ? "<br/>|No Inner Exception|<br/>" : "<br/>|Inner Exception|: <br/>");
+			}
+
+
+			return stringBuilder.ToString();
 		}
 
 		public static string GetAggregateErrorAsString(AggregateException ae)
 		{
 			Debug.WriteLine("ErrorFactory.GetAggregateErrorAsString()");
 
-			var sb = new StringBuilder();
-			sb.AppendLine("|AGGREGATE ERROR|");
-			sb.AppendLine(GetErrorAsString(ae.GetBaseException()));
-			sb.AppendLine("");
+			StringBuilder stringBuilder = new StringBuilder();
+			 stringBuilder.AppendLine("|AGGREGATE ERROR|");
+			 stringBuilder.AppendLine(GetErrorAsString(ae.GetBaseException()));
+			 stringBuilder.AppendLine("");
 
-			foreach (var e in ae.InnerExceptions)
+			foreach (Exception e in ae.InnerExceptions)
 			{
-				sb.AppendLine(GetErrorAsString(e));
-				sb.AppendLine("");
+				 stringBuilder.AppendLine(GetErrorAsString(e));
+				 stringBuilder.AppendLine("");
 			}
 
-			return sb.ToString();
+			return stringBuilder.ToString();
 		}
 
 		//helper method for throwing an aggregate exception
@@ -143,8 +172,8 @@ public enum ErrorLevels
 				.FullName;
 			;
 
-			var task = Task<string[]>.Factory.StartNew(() => GetAllFiles(path));
-			var taskTwo = Task<string[]>.Factory.StartNew(() => { throw new IndexOutOfRangeException(); });
+			Task<string[]> task = Task<string[]>.Factory.StartNew(() => GetAllFiles(path));
+			Task<string[]> taskTwo = Task<string[]>.Factory.StartNew(() => { throw new IndexOutOfRangeException(); });
 
 			Task.WaitAll(task, taskTwo); //waits on all
 			return Task.WhenAll(task, taskTwo);

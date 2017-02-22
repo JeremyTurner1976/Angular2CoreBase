@@ -11,6 +11,7 @@ namespace Angular2CoreBase.Common.Services.WeatherServices
 {
 	using Extensions;
 	using Interfaces.WeatherService;
+	using static CustomAttributes.EnumAttributes;
 
 	//https://openweathermap.org/api
 	public class OpenWeatherService : IWeatherService
@@ -22,13 +23,6 @@ namespace Angular2CoreBase.Common.Services.WeatherServices
 			WeatherServiceSettings = weatherServiceSettings;
 		}
 
-		/// <summary>
-		/// This task gathers threaded weather data from 2 webservice calls asynchronously
-		/// Please be sure to handle Aggregate Exceptions in the caller
-		/// </summary>
-		/// <param name="latitude">The latitude to gather data for</param>
-		/// <param name="longitude">The longitude to gather data for</param>
-		/// <returns>A <see cref="WeatherData"> Object from the Open Weather Service Api</see>/></returns>
 		public async Task<WeatherData> GetWeatherData(double latitude, double longitude)
 		{
 			Task<DetailedWeather> asyncCurrentWeather = GetCurrentWeather(latitude, longitude);
@@ -111,51 +105,52 @@ namespace Angular2CoreBase.Common.Services.WeatherServices
 						Windspeed = item.wind.speed,
 						WindDirection = (int) item.wind.degrees,
 						SkyCon = GetSkyCon(weather.icon),
+						Icon = weather.icon,
 						CloudCover = item.clouds.cloudCover,
-						RainVolume = item.rainTotal.threeHourTotal,
-						SnowVolume = item.snowTotal.threeHourTotal
+						PrecipitationVolume = item.rainTotal.threeHourTotal + item.snowTotal.threeHourTotal
 					}).ToList();
 			}
 		}
 
 		//https://openweathermap.org/weather-conditions
+		//https://darkskyapp.github.io/skycons/
+
 		protected virtual string GetSkyCon(string icon)
 		{
 			switch (icon)
 			{
-				case "01d":
-					return SkyCons.clearDay.ToClientSideString();
-				case "01n":
-					return SkyCons.clearNight.ToClientSideString();
-				case "02d":
-				case "04d":
-					return SkyCons.partlyCloudyDay.ToClientSideString();
-				case "02n":
-				case "04n":
-					return SkyCons.partlyCloudyNight.ToClientSideString();
-				case "03d":
-				case "03n":
-					return SkyCons.cloudy.ToClientSideString();
-				case "09d":
-				case "09n":
-					return SkyCons.rain.ToClientSideString();
-				case "10d":
-				case "10n":
-					return SkyCons.sleet.ToClientSideString();
-				case "13n":
-				case "13d":
-					return SkyCons.snow.ToClientSideString();
-				case "11d":
-				case "11n":
-					return SkyCons.wind.ToClientSideString();
-				case "50n":
-				case "50d":
-					return SkyCons.fog.ToClientSideString();
+				case IconFileNames.ClearSkyDay:
+					return SkyCons.ClearDay.ToAttributeString<ClientSideString>();
+				case IconFileNames.ClearSkyNight:
+					return SkyCons.ClearNight.ToAttributeString<ClientSideString>();
+				case IconFileNames.PartlyCloudyDay:
+				case IconFileNames.BrokenCloudsDay:
+					return SkyCons.PartlyCloudyDay.ToAttributeString<ClientSideString>();
+				case IconFileNames.PartlyCloudyNight:
+				case IconFileNames.BrokenCloudsNight:
+					return SkyCons.PartlyCloudyNight.ToAttributeString<ClientSideString>();
+				case IconFileNames.ScatteredCloudsDay:
+				case IconFileNames.ScatteredCloudsNight:
+					return SkyCons.Cloudy.ToAttributeString<ClientSideString>();
+				case IconFileNames.RainDay:
+				case IconFileNames.RainNight:
+					return SkyCons.Rain.ToAttributeString<ClientSideString>();
+				case IconFileNames.ShoweringRainDay:
+				case IconFileNames.ShoweringRainNight:
+					return SkyCons.Sleet.ToAttributeString<ClientSideString>();
+				case IconFileNames.SnowDay:
+				case IconFileNames.SnowNight:
+					return SkyCons.Snow.ToAttributeString<ClientSideString>();
+				case IconFileNames.ThunderStormDay:
+				case IconFileNames.ThunderStormNight:
+					return SkyCons.Wind.ToAttributeString<ClientSideString>();
+				case IconFileNames.MistDay:
+				case IconFileNames.MistNight:
+					return SkyCons.Fog.ToAttributeString<ClientSideString>();
 				default:
 					throw new Exception(
 						"Not all Code Paths return a value: " +
-						icon);
-
+						icon ?? "Null Icon");
 			}
 		}
 	}

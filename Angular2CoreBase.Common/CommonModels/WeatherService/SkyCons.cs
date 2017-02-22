@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Angular2CoreBase.Common.Extensions;
+using static Angular2CoreBase.Common.CustomAttributes.EnumAttributes;
 
 namespace Angular2CoreBase.Common.CommonModels.WeatherService
 {
@@ -10,51 +11,40 @@ namespace Angular2CoreBase.Common.CommonModels.WeatherService
 
 	public enum SkyCons
 	{
-		[SkyConString("clear-day")]
-		clearDay,
-		[SkyConString("clear-night")]
-		clearNight,
-		[SkyConString("partly-cloudy-day")]
-		partlyCloudyDay,
-		[SkyConString("partly-cloudy-night")]
-		partlyCloudyNight,
-		cloudy,
-		rain,
-		sleet,
-		snow,
-		wind,
-		fog
+		[ClientSideString(SkyConClientSideStrings.ClearDay)]
+		ClearDay,
+		[ClientSideString(SkyConClientSideStrings.ClearNight)]
+		ClearNight,
+		[ClientSideString(SkyConClientSideStrings.PartlyCloudyDay)]
+		PartlyCloudyDay,
+		[ClientSideString(SkyConClientSideStrings.PartlyCloudyNight)]
+		PartlyCloudyNight,
+		[ClientSideString(SkyConClientSideStrings.Cloudy)]
+		Cloudy,
+		[ClientSideString(SkyConClientSideStrings.Rain)]
+		Rain,
+		[ClientSideString(SkyConClientSideStrings.Sleet)]
+		Sleet,
+		[ClientSideString(SkyConClientSideStrings.Snow)]
+		Snow,
+		[ClientSideString(SkyConClientSideStrings.Wind)]
+		Wind,
+		[ClientSideString(SkyConClientSideStrings.Fog)]
+		Fog
 	}
 
-	internal class SkyConString : Attribute
+	public static class SkyConClientSideStrings
 	{
-		public string ClientSideIdentifier;
+		public const string ClearDay = "clear-day";
+		public const string ClearNight = "clear-night";
+		public const string PartlyCloudyDay = "partly-cloudy-day";
+		public const string PartlyCloudyNight = "partly-cloudy-night";
 
-		public SkyConString(string value)
-		{
-			ClientSideIdentifier = value;
-		}
-	}
-
-	internal static class SkyConExtensions
-	{
-		public static string ToClientSideString(this SkyCons skycon)
-		{
-			Type type = skycon.GetType();
-			MemberInfo[] memInfo = type.GetMember(skycon.ToString());
-
-			if (memInfo != null && memInfo.Length > 0)
-			{
-				IEnumerable<Attribute> attrs = memInfo[0].GetCustomAttributes(typeof(SkyConString), false);
-
-				Attribute[] attributes = attrs as Attribute[] ?? attrs.ToArray();
-				if (attrs != null && attributes.Any())
-				{
-					return ((SkyConString)attributes[0]).ClientSideIdentifier;
-				}
-			}
-
-			return skycon.ToNameString();
-		}
+		public const string Cloudy = "cloudy";
+		public const string Rain = "rain";
+		public const string Sleet = "sleet";
+		public const string Snow = "snow";
+		public const string Wind = "wind";
+		public const string Fog = "fog";
 	}
 }

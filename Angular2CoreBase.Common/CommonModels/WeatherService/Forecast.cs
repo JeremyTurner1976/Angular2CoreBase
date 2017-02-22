@@ -26,12 +26,11 @@ namespace Angular2CoreBase.Common.CommonModels.WeatherService
 
 		public string SkyCon { get; set; }
 
+		public string Icon { get; set; }
+
 		public double CloudCover { get; set; }
 
-		public double RainVolume { get; set; }
-
-		public double SnowVolume { get; set; }
-
+		public double PrecipitationVolume { get; set; }
 	}
 }
 
