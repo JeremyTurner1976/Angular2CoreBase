@@ -69,26 +69,6 @@ namespace Angular2CoreBase.Ui
 			//services.AddSingleton<IWeatherServiceSettings, OpenWeatherServiceSettings>();
 			//services.AddTransient<IWeatherService, OpenWeatherService>();
 
-
-			services.AddSingleton<IRepository<ApplicationUser>, CoreBaseRepository<ApplicationUser>>();
-			services.AddSingleton<IRepository<Error>, CoreBaseRepository<Error>>();
-			services.AddScoped<ITrackedModelDecorator<Error>, TrackedModelDecorator<Error>>();
-
-			//Add custom services
-			services.AddTransient<IEmailService, EmailService>();
-			services.AddSingleton<IFileService, FileService>();
-			services.AddSingleton<IDatabaseLoggingService, DatabaseLoggingService>();
-
-
-			// Add framework services.
-			IMvcBuilder mvcBuilder = services.AddMvc();
-			mvcBuilder.AddJsonOptions
-				(opts => opts.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
-
-			services.AddLogging();
-
-			services.AddMemoryCache(opt => opt.ExpirationScanFrequency = TimeSpan.FromMinutes(5));
-
 			//DataBase Setups
 			//if (Environment.IsDevelopment())
 			//{
@@ -100,6 +80,25 @@ namespace Angular2CoreBase.Ui
 			services.AddDbContext<CoreBaseContext>(options =>
 					options.UseSqlServer(Configuration.GetConnectionString("CoreBaseConnectionString")));
 			//}
+
+			//Add data classes
+			services.AddSingleton<IRepository<ApplicationUser>, CoreBaseRepository<ApplicationUser>>();
+			services.AddSingleton<IRepository<Error>, CoreBaseRepository<Error>>();
+			services.AddScoped<ITrackedModelDecorator<Error>, TrackedModelDecorator<Error>>();
+
+			//Add custom services
+			services.AddTransient<IEmailService, EmailService>();
+			services.AddSingleton<IFileService, FileService>();
+			services.AddSingleton<IDatabaseLoggingService, DatabaseLoggingService>();
+
+			// Add framework services.
+			IMvcBuilder mvcBuilder = services.AddMvc();
+			mvcBuilder.AddJsonOptions
+				(opts => opts.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
+
+			services.AddLogging();
+
+			services.AddMemoryCache(opt => opt.ExpirationScanFrequency = TimeSpan.FromMinutes(5));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -127,8 +126,8 @@ namespace Angular2CoreBase.Ui
 
 			loggerFactory.AddConsole(Configuration.GetSection("Logging"));
 			loggerFactory.AddDebug(LogLevel.Information);
-			loggerFactory.AddEmail(mailService, LogLevel.Error);
-			loggerFactory.AddFile(fileService, LogLevel.Error);
+			loggerFactory.AddEmailLogger(mailService, LogLevel.Error);
+			loggerFactory.AddFileLogger(fileService, LogLevel.Information);
 			loggerFactory.AddDatabaseLogger(errorRepository, errorDecorator, LogLevel.Error);
 
 			if (Environment.IsDevelopment())

@@ -68,7 +68,7 @@
 		}
 
 		public DirectoryFolders GetFolder(LogLevel logLevel)
-			=> logLevel <= LogLevel.Error
+			=> logLevel < LogLevel.Error
 				? DirectoryFolders.Logs
 				: DirectoryFolders.Errors;
 	}

@@ -101,7 +101,7 @@ namespace Angular2CoreBase.Common.Abstract
 		}
 
 		public string GetSubject(LogLevel logLevel) 
-			=> logLevel <= LogLevel.Error
+			=> logLevel < LogLevel.Error
 				? messageSubject
 				: errorSubject;
 	}

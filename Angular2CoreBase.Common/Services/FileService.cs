@@ -15,6 +15,7 @@ namespace Angular2CoreBase.Common.Services
 		private const int daysToHoldDirectoryFiles = 7;
 		private const int maxDirectoryFolderFiles = 10;
 		private readonly string executingDirectory;
+		private object _lock = new object();
 
 		public FileService()
 		{
@@ -46,7 +47,10 @@ namespace Angular2CoreBase.Common.Services
 		public bool SaveTextToDirectoryFile(DirectoryFolders directory, string strMessage)
 		{
 			string strLocationAndFile = GetDirectoryFileLocation(directory);
-			File.AppendAllText(strLocationAndFile, strMessage + Environment.NewLine);
+			lock(_lock)
+			{
+				File.AppendAllText(strLocationAndFile, strMessage + Environment.NewLine);
+			}
 
 			return true;
 		}
@@ -67,8 +71,11 @@ namespace Angular2CoreBase.Common.Services
 									 ".txt";
 			}
 
-			if (strFileAndPathName.Contains(".txt") && File.Exists(strFileAndPathName))
-				return File.ReadAllLines(strFileAndPathName);
+			lock (_lock)
+			{
+				if (strFileAndPathName.Contains(".txt") && File.Exists(strFileAndPathName))
+					return File.ReadAllLines(strFileAndPathName);
+			}
 			throw new FileNotFoundException();
 		}
 

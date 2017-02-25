@@ -9,7 +9,7 @@ namespace Angular2CoreBase.Common.Extensions
 
 	public static class LoggerFactoryExtensions
 	{
-		public static ILoggerFactory AddEmail(
+		public static ILoggerFactory AddEmailLogger(
 			this ILoggerFactory factory,
 			IEmailService mailService,
 			Func<string, LogLevel, bool> filter = null)
@@ -18,18 +18,18 @@ namespace Angular2CoreBase.Common.Extensions
 			return factory;
 		}
 
-		public static ILoggerFactory AddEmail(
+		public static ILoggerFactory AddEmailLogger(
 			this ILoggerFactory factory,
 			IEmailService mailService, 
 			LogLevel minLevel)
 		{
-			return AddEmail(
+			return AddEmailLogger(
 				factory,
 				mailService,
 				(_, logLevel) => logLevel >= minLevel);
 		}
 
-		public static ILoggerFactory AddFile(
+		public static ILoggerFactory AddFileLogger(
 			this ILoggerFactory factory,
 			IFileService fileservice,
 			Func<string, LogLevel, bool> filter = null)
@@ -38,12 +38,12 @@ namespace Angular2CoreBase.Common.Extensions
 			return factory;
 		}
 
-		public static ILoggerFactory AddFile(
+		public static ILoggerFactory AddFileLogger(
 			this ILoggerFactory factory,
 			IFileService fileservice,
 			LogLevel minLevel)
 		{
-			return AddFile(
+			return AddFileLogger(
 				factory,
 				fileservice,
 				(_, logLevel) => logLevel >= minLevel);

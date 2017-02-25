@@ -11,10 +11,8 @@
 
 	public class EmailService : IEmailService
 	{
-		//TODO EMAIL CLASS SETS FROM CONFIG
-		//TODO DATABASE ERROR AND LOGSERVICE UP AND WORKING - IN DATA
-		//https://www.gnostice.com/XtremeDocumentStudio_dot_NET.asp
-
+		//TODO EMAIL CLASS SETS FROM CONFIG (EmailClass gets populated and then shared out - many consumers (including context seeder)
+		//Application Name in Config Also
 		public async void SendMail(
 			string to,
 			string carbonCopy,

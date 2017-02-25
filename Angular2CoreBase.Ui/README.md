@@ -7,3 +7,6 @@ https://blogs.msdn.microsoft.com/webdev/2017/02/14/building-single-page-applicat
 ##### Open Tools -> Nuget Package Manager -> Package Manager Console and run the following lines (May need to increment the migration count)
 * Add-Migration -Project Angular2CoreBase.Data -Context CoreBaseContext -Name CoreBase000
 * Update-Database  -Project Angular2CoreBase.Data
+
+## Possible Reports Solution
+//https://www.gnostice.com/XtremeDocumentStudio_dot_NET.asp
