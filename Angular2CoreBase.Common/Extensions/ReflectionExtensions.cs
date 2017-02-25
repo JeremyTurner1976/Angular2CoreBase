@@ -1,8 +1,6 @@
-﻿using System;
-using System.Linq;
-
-namespace Angular2CoreBase.Common.Extensions
+﻿namespace Angular2CoreBase.Common.Extensions
 {
+	using System;
 	using System.Diagnostics;
 	using System.Globalization;
 	using System.Linq.Expressions;
@@ -12,9 +10,9 @@ namespace Angular2CoreBase.Common.Extensions
 	public static class ReflectionExtensions
 	{
 		public static T GetAttribute<T>(this MemberInfo member, bool isRequired)
-		where T : Attribute
+			where T : Attribute
 		{
-			Attribute attribute = member.GetCustomAttributes(typeof(T), false).SingleOrDefault();
+			Attribute attribute = member.GetCustomAttributes(typeof (T), false).SingleOrDefault();
 
 			if (attribute == null && isRequired)
 			{
@@ -22,11 +20,11 @@ namespace Angular2CoreBase.Common.Extensions
 					string.Format(
 						CultureInfo.InvariantCulture,
 						"The {0} attribute must be defined on member {1}",
-						typeof(T).Name,
+						typeof (T).Name,
 						member.Name));
 			}
 
-			return (T)attribute;
+			return (T) attribute;
 		}
 
 		//string displayName = ReflectionExtensions.GetPropertyDisplayName<SomeClass>(i => i.SomeProperty);
@@ -37,7 +35,7 @@ namespace Angular2CoreBase.Common.Extensions
 			{
 				throw new ArgumentException(
 					"No property reference expression was found.",
-				   nameof(propertyExpression));
+					nameof(propertyExpression));
 			}
 
 			PocoAttributes.DisplayName attr = memberInfo.GetAttribute<PocoAttributes.DisplayName>(false);

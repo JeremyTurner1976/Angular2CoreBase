@@ -4,21 +4,21 @@ import { platformUniversalDynamic } from "angular2-universal";
 import { AppModule } from "./app/app.module";
 import "bootstrap";
 
-var hot : string = "hot";
-const platform : any = platformUniversalDynamic();
+var hot = "hot";
+const platform: any = platformUniversalDynamic();
 
 // enable either Hot Module Reloading or production mode
 if (module[hot]) {
-    module[hot].accept();
-    module[hot].dispose(() => { platform.destroy(); });
+	module[hot].accept();
+	module[hot].dispose(() => { platform.destroy(); });
 } else {
-    enableProdMode();
+	enableProdMode();
 }
 
 // boot the application, either now or when the DOM content is loaded
-const bootApplication : any = () => { platform.bootstrapModule(AppModule); };
+const bootApplication: any = () => { platform.bootstrapModule(AppModule); };
 if (document.readyState === "complete") {
-    bootApplication();
+	bootApplication();
 } else {
-    document.addEventListener("DOMContentLoaded", bootApplication);
+	document.addEventListener("DOMContentLoaded", bootApplication);
 }

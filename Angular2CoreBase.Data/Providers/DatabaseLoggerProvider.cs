@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Angular2CoreBase.Data.Providers
+﻿namespace Angular2CoreBase.Data.Providers
 {
-	using Common.Interfaces;
-	using Common.Services.LoggingServices;
+	using System;
 	using Interfaces;
 	using Microsoft.Extensions.Logging;
 	using Models;
@@ -14,24 +8,25 @@ namespace Angular2CoreBase.Data.Providers
 
 	public class DatabaseLoggerProvider : ILoggerProvider
 	{
-		private readonly Func<string, LogLevel, bool> _filter;
-		private readonly IRepository<Error> _errorRepository;
 		private readonly ITrackedModelDecorator<Error> _errorDecorator;
+		private readonly IRepository<Error> _errorRepository;
+		private readonly Func<string, LogLevel, bool> _filter;
 
-		public DatabaseLoggerProvider(Func<string, LogLevel, bool> filter, IRepository<Error> errorRepository, ITrackedModelDecorator<Error> errorDecorator)
+		public DatabaseLoggerProvider(Func<string, LogLevel, bool> filter, IRepository<Error> errorRepository,
+			ITrackedModelDecorator<Error> errorDecorator)
 		{
 			_errorRepository = errorRepository;
 			_filter = filter;
 			_errorDecorator = errorDecorator;
 		}
 
+		public void Dispose()
+		{
+		}
+
 		public ILogger CreateLogger(string categoryName)
 		{
 			return new DatabaseLoggingService(categoryName, _filter, _errorRepository, _errorDecorator);
-		}
-
-		public void Dispose()
-		{
 		}
 	}
 }

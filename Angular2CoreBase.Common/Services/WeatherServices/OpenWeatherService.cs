@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Angular2CoreBase.Common.CommonModels.WeatherService;
-using Angular2CoreBase.Common.CommonModels.WeatherService.OpenWeather;
-using Angular2CoreBase.Common.Interfaces;
-
-namespace Angular2CoreBase.Common.Services.WeatherServices
+﻿namespace Angular2CoreBase.Common.Services.WeatherServices
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Net.Http;
+	using System.Threading.Tasks;
 	using CommonEnums.WeatherService;
+	using CommonModels.WeatherService;
+	using CommonModels.WeatherService.OpenWeather;
 	using Extensions;
+	using Interfaces;
 	using Interfaces.WeatherService;
 	using Microsoft.Extensions.Logging;
 	using static CustomAttributes.EnumAttributes;
@@ -18,7 +17,6 @@ namespace Angular2CoreBase.Common.Services.WeatherServices
 	//https://openweathermap.org/api
 	public class OpenWeatherService : IWeatherService
 	{
-		public IWeatherServiceSettings WeatherServiceSettings { get; set; }
 		private readonly ILogger<OpenWeatherService> _logger;
 
 		public OpenWeatherService(
@@ -28,6 +26,8 @@ namespace Angular2CoreBase.Common.Services.WeatherServices
 			WeatherServiceSettings = weatherServiceSettings;
 			_logger = logger;
 		}
+
+		public IWeatherServiceSettings WeatherServiceSettings { get; set; }
 
 		public async Task<WeatherData> GetWeatherData(double latitude, double longitude)
 		{
@@ -41,7 +41,7 @@ namespace Angular2CoreBase.Common.Services.WeatherServices
 
 			if (currentWeather != null && weather != null && forecasts != null)
 			{
-				return new WeatherData()
+				return new WeatherData
 				{
 					Description = weather.description,
 					Sunrise = currentWeather.systemInformation.sunriseTime,
@@ -93,12 +93,12 @@ namespace Angular2CoreBase.Common.Services.WeatherServices
 					new HttpRequestMessage(HttpMethod.Get, clientUri);
 				HttpResponseMessage response = await webService.SendAsync(httpRequest);
 				response.EnsureSuccessStatusCode();
-				ThreeHourFiveDayForecast threeHourFiveDayForecast = 
+				ThreeHourFiveDayForecast threeHourFiveDayForecast =
 					await response.ParseJsonResponse<ThreeHourFiveDayForecast>();
 
 				return (from item in threeHourFiveDayForecast.forecasts
 					let weather = item.weather.FirstOrDefault()
-					select new Forecast()
+					select new Forecast
 					{
 						StartDateTime = item.startDateTime,
 						EndDateTime = item.startDateTime.AddHours(3).AddSeconds(-1),
@@ -113,7 +113,7 @@ namespace Angular2CoreBase.Common.Services.WeatherServices
 						SkyCon = GetSkyCon(weather.icon),
 						Icon = weather.icon,
 						CloudCover = item.clouds.cloudCover,
-						PrecipitationVolume = 
+						PrecipitationVolume =
 							item.rainTotal?.threeHourTotal ?? 0
 							+ item.snowTotal?.threeHourTotal ?? 0
 					}).ToList();

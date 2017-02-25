@@ -1,12 +1,11 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
-using System.Diagnostics;
-using System.Net.Http;
-using System.Threading.Tasks;
-
-namespace Angular2CoreBase.Common.Middleware
-{ 
+﻿namespace Angular2CoreBase.Common.Middleware
+{
+	using System;
+	using System.Diagnostics;
+	using System.Net.Http;
 	using System.Threading;
+	using System.Threading.Tasks;
+	using Microsoft.Extensions.Logging;
 	using Newtonsoft.Json.Linq;
 
 	//https://docs.microsoft.com/en-us/aspnet/web-api/overview/advanced/httpclient-message-handlers
@@ -23,7 +22,6 @@ namespace Angular2CoreBase.Common.Middleware
 		protected override async Task<HttpResponseMessage> SendAsync(
 			HttpRequestMessage request, CancellationToken cancellationToken)
 		{
-
 			DateTime startTime = DateTime.UtcNow;
 
 			Stopwatch watch = Stopwatch.StartNew();
@@ -31,12 +29,12 @@ namespace Angular2CoreBase.Common.Middleware
 			watch.Stop();
 
 			string logTemplate =
-				"Client IP: {clientIP}" + 
+				"Client IP: {clientIP}" +
 				"Request path: {requestPath}" +
 				"Start time: {startTime}" +
 				"Duration: {duration} ms" +
 				"Request: {request}" +
-				"Response: {response}"; 
+				"Response: {response}";
 
 			_logger.LogInformation(
 				logTemplate,
@@ -49,7 +47,5 @@ namespace Angular2CoreBase.Common.Middleware
 
 			return response;
 		}
-
-	
 	}
 }

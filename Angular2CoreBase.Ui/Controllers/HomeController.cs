@@ -1,17 +1,13 @@
-using Angular2CoreBase.Data.Interfaces;
-using Angular2CoreBase.Data.Models;
-using Microsoft.AspNetCore.Mvc;
-
 namespace Angular2CoreBase.Ui.Controllers
 {
-	using Common.Services;
-	using Common.Services.LoggingServices;
-	using Data.Factories;
+	using Data.Interfaces;
+	using Data.Models;
+	using Microsoft.AspNetCore.Mvc;
 
 	public class HomeController : Controller
 	{
-		private readonly IRepository<ApplicationUser> userRepository;
 		private readonly IRepository<Error> errorRepository;
+		private readonly IRepository<ApplicationUser> userRepository;
 
 		public HomeController(
 			IRepository<ApplicationUser> userRepository,

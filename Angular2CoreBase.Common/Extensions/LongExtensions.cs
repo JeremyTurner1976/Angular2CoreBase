@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace Angular2CoreBase.Common.Extensions
+﻿namespace Angular2CoreBase.Common.Extensions
 {
+	using System;
+
 	public static class LongExtensions
 	{
 		public static DateTime GetDateTimeFromUnixTimestamp(this long seconds)

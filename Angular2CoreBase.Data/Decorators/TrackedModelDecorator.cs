@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Angular2CoreBase.Data.Decorators
+﻿namespace Angular2CoreBase.Data.Decorators
 {
+	using System;
 	using Abstract;
 	using Interfaces;
-	using Models;
 
-	public class TrackedModelDecorator<T>: ITrackedModelDecorator<T> where T : TrackedModelBase
+	public class TrackedModelDecorator<T> : ITrackedModelDecorator<T> where T : TrackedModelBase
 	{
 		public T GetDecoratedModel(T trackedModel, int applicationUserId)
 		{
@@ -20,7 +15,7 @@ namespace Angular2CoreBase.Data.Decorators
 				trackedModel.CreatedByUserId = applicationUserId;
 				trackedModel.CreatedDateTime = DateTime.UtcNow;
 			}
-			else 
+			else
 			{
 				trackedModel.UpdatedByUserId = applicationUserId;
 				trackedModel.UpdatedDateTime = DateTime.UtcNow;

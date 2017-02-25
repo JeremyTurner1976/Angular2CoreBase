@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Angular2CoreBase.Common.Extensions
+﻿namespace Angular2CoreBase.Common.Extensions
 {
+	using System;
+	using System.Collections.Generic;
 	using System.Text;
 
 	public static class ErrorExtensions
 	{
-		private const string customHtmlCss = "style='min-width:800px; padding:40px; border: red 1px solid; border-radius: 15px; margin: 25px; padding-top:15px;'";
+		private const string customHtmlCss =
+			"style='min-width:800px; padding:40px; border: red 1px solid; border-radius: 15px; margin: 25px; padding-top:15px;'";
 
 		public static string ToHtml(this Exception e)
 		{
@@ -109,8 +107,9 @@ namespace Angular2CoreBase.Common.Extensions
 
 		private static IEnumerable<string> GetStackStraceStrings(string strStackTrace)
 		{
-			return strStackTrace == null ? new[] { "" } :
-				strStackTrace.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+			return strStackTrace == null
+				? new[] {""}
+				: strStackTrace.Split(new[] {"\r\n", "\n"}, StringSplitOptions.None);
 		}
 	}
 }

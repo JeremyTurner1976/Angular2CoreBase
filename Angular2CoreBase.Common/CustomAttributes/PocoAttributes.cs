@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Angular2CoreBase.Common.CustomAttributes
+﻿namespace Angular2CoreBase.Common.CustomAttributes
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
 	using System.Reflection;
 	using Interfaces;
 
@@ -11,12 +10,12 @@ namespace Angular2CoreBase.Common.CustomAttributes
 	{
 		public class DisplayName : Attribute, IAttribute
 		{
-			public string Identifier { get; set; }
-
 			public DisplayName(string value)
 			{
 				Identifier = value;
 			}
+
+			public string Identifier { get; set; }
 		}
 
 		public class DateTimeKindSetting : Attribute
@@ -34,7 +33,7 @@ namespace Angular2CoreBase.Common.CustomAttributes
 					return;
 
 				IEnumerable<PropertyInfo> properties = entity.GetType().GetProperties()
-					.Where(x => x.PropertyType == typeof(DateTime) || x.PropertyType == typeof(DateTime?));
+					.Where(x => x.PropertyType == typeof (DateTime) || x.PropertyType == typeof (DateTime?));
 
 				foreach (PropertyInfo property in properties)
 				{
@@ -42,9 +41,9 @@ namespace Angular2CoreBase.Common.CustomAttributes
 					if (attr == null)
 						continue;
 
-					DateTime? dt = property.PropertyType == typeof(DateTime?)
-						? (DateTime?)property.GetValue(entity)
-						: (DateTime)property.GetValue(entity);
+					DateTime? dt = property.PropertyType == typeof (DateTime?)
+						? (DateTime?) property.GetValue(entity)
+						: (DateTime) property.GetValue(entity);
 
 					if (dt == null)
 						continue;
@@ -62,14 +61,14 @@ namespace Angular2CoreBase.Common.CustomAttributes
 					return;
 
 				IEnumerable<PropertyInfo> properties = entity.GetType().GetProperties()
-					.Where(x => x.PropertyType == typeof(string));
+					.Where(x => x.PropertyType == typeof (string));
 
 				foreach (PropertyInfo property in properties)
 				{
-					string strItem = (string)property.GetValue(entity);
+					string strItem = (string) property.GetValue(entity);
 
 					string[] lines = strItem.Split(
-						new[] { Environment.NewLine }, 
+						new[] {Environment.NewLine},
 						StringSplitOptions.None).ToArray();
 
 					string cleanedHtmlString = string.Join("<br/>", lines);

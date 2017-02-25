@@ -2,7 +2,6 @@
 {
 	using System;
 	using System.Collections.Generic;
-	using System.Linq;
 	using System.Net.Http;
 	using System.Threading.Tasks;
 	using CommonEnums.WeatherService;
@@ -12,20 +11,18 @@
 	using Interfaces;
 	using Interfaces.WeatherService;
 	using Microsoft.Extensions.Logging;
+	using Enumerable = System.Linq.Enumerable;
 
 	//https://darksky.net/dev/docs/forecast
 	public class DarkSkyWeatherService : IWeatherService
 	{
-		public IWeatherServiceSettings WeatherServiceSettings { get; set; }
-		public int DayTimeStart { get; set; } 
-		public int DayTimeEnd { get; set; } 
-
-		public const int Freezing = 31;
-
-		public enum PrecipitationVolumeTypes {
+		public enum PrecipitationVolumeTypes
+		{
 			Rain,
 			Snow
 		}
+
+		public const int Freezing = 31;
 
 		private readonly ILogger<DarkSkyWeatherService> _logger;
 
@@ -34,8 +31,13 @@
 			ILogger<DarkSkyWeatherService> logger)
 		{
 			WeatherServiceSettings = weatherServiceSettings;
-			_logger = logger;	
-;		}
+			_logger = logger;
+			;
+		}
+
+		public IWeatherServiceSettings WeatherServiceSettings { get; set; }
+		public int DayTimeStart { get; set; }
+		public int DayTimeEnd { get; set; }
 
 		public async Task<WeatherData> GetWeatherData(double latitude, double longitude)
 		{
@@ -45,7 +47,7 @@
 				DayTimeStart = darkSkyWeather.daily.data.FirstOrDefault().sunrise.Hour;
 				DayTimeEnd = darkSkyWeather.daily.data.FirstOrDefault().sunset.Hour;
 
-				return new WeatherData()
+				return new WeatherData
 				{
 					Description = darkSkyWeather.currently.summary,
 					Sunrise = darkSkyWeather.daily.data.FirstOrDefault().sunrise,
@@ -76,24 +78,22 @@
 
 		private ICollection<Forecast> GetDarkSkyForecasts(DarkSkyWeather darkSkyWeather)
 		{
-
-
-			List<Forecast> fiveDayOneHourForecasts =  (from item in darkSkyWeather.hourly.data
-					select new Forecast()
-					{
-						StartDateTime = item.dateTime,
-						EndDateTime = item.dateTime.AddHours(1).AddSeconds(-1),
-						Description = item.summary,
-						Temperature = item.temperature,
-						Humidity = item.humidity,
-						AtmosphericPressure = item.pressure,
-						Windspeed = item.windSpeed,
-						WindDirection = item.windBearing,
-						SkyCon = item.icon,
-						Icon = GetIcon(item.icon, (int)item.cloudCover, item.dateTime.Hour),
-						CloudCover = item.cloudCover,
-						PrecipitationVolume = item.precipIntensity
-					}).ToList();
+			List<Forecast> fiveDayOneHourForecasts = Enumerable.ToList((from item in darkSkyWeather.hourly.data
+				select new Forecast
+				{
+					StartDateTime = item.dateTime,
+					EndDateTime = item.dateTime.AddHours(1).AddSeconds(-1),
+					Description = item.summary,
+					Temperature = item.temperature,
+					Humidity = item.humidity,
+					AtmosphericPressure = item.pressure,
+					Windspeed = item.windSpeed,
+					WindDirection = item.windBearing,
+					SkyCon = item.icon,
+					Icon = GetIcon(item.icon, (int) item.cloudCover, item.dateTime.Hour),
+					CloudCover = item.cloudCover,
+					PrecipitationVolume = item.precipIntensity
+				}));
 			int test = fiveDayOneHourForecasts.Count();
 
 			return GetThreeHourSummedForecasts(fiveDayOneHourForecasts);
@@ -137,7 +137,7 @@
 
 				//handle data for three hour chunks
 
-				if (count % groupSize == 0) //first item handles all resets
+				if (count%groupSize == 0) //first item handles all resets
 				{
 					groupCount = 0;
 
@@ -150,11 +150,10 @@
 					precipitationVolumeTotal = 0;
 					minimumTemperature = 9999;
 					maximumTemperature = -9999;
-
 				}
-				else if(groupCount == 1) //second item, picks some middle values for a three hour chunk
+				else if (groupCount == 1) //second item, picks some middle values for a three hour chunk
 				{
-					forecast = new Forecast()
+					forecast = new Forecast
 					{
 						StartDateTime = item.StartDateTime.AddHours(-1),
 						EndDateTime = item.StartDateTime.AddHours(2).AddSeconds(-1),
@@ -163,15 +162,17 @@
 						Icon = item.Icon
 					};
 				}
-				else { //third item, attaches averages and inserts the item
-					forecast.Temperature = (temperatureTotal / groupSize).ToPrecisionValue(precisionValue);
-					forecast.Humidity = (humidityTotal / groupSize).ToPrecisionValue(precisionValue);
-					forecast.AtmosphericPressure = (atmosphericPressureTotal / groupSize).ToPrecisionValue(precisionValue); 
-					forecast.Windspeed = (windspeedTotal / groupSize).ToPrecisionValue(precisionValue); 
-					forecast.WindDirection = (int)(windDirectionTotal / groupSize).ToPrecisionValue(precisionValue); 
-					forecast.CloudCover = (cloudCoverTotal / groupSize).ToPrecisionValue(precisionValue); 
-					forecast.PrecipitationVolume = (precipitationVolumeTotal / groupSize).ToPrecisionValue(precisionValue);
-				
+				else
+				{
+					//third item, attaches averages and inserts the item
+					forecast.Temperature = (temperatureTotal/groupSize).ToPrecisionValue(precisionValue);
+					forecast.Humidity = (humidityTotal/groupSize).ToPrecisionValue(precisionValue);
+					forecast.AtmosphericPressure = (atmosphericPressureTotal/groupSize).ToPrecisionValue(precisionValue);
+					forecast.Windspeed = (windspeedTotal/groupSize).ToPrecisionValue(precisionValue);
+					forecast.WindDirection = (int) (windDirectionTotal/groupSize).ToPrecisionValue(precisionValue);
+					forecast.CloudCover = (cloudCoverTotal/groupSize).ToPrecisionValue(precisionValue);
+					forecast.PrecipitationVolume = (precipitationVolumeTotal/groupSize).ToPrecisionValue(precisionValue);
+
 					forecast.MinimumTemperature = minimumTemperature;
 					forecast.MinimumTemperature = maximumTemperature;
 
@@ -182,7 +183,6 @@
 			}
 
 			return forecasts;
-
 		}
 
 		//https://openweathermap.org/weather-conditions
@@ -207,17 +207,15 @@
 							? IconFileNames.PartlyCloudyDay
 							: IconFileNames.PartlyCloudyNight;
 					}
-					else if (cloudCover > 50 && cloudCover < 75)
+					if (cloudCover > 50 && cloudCover < 75)
 					{
 						return IsDayTime(hourOfDay)
 							? IconFileNames.ScatteredCloudsDay
 							: IconFileNames.ScatteredCloudsNight;
-					} else 
-					{
-						return IsDayTime(hourOfDay)
-							? IconFileNames.BrokenCloudsDay
-							: IconFileNames.BrokenCloudsNight;
 					}
+					return IsDayTime(hourOfDay)
+						? IconFileNames.BrokenCloudsDay
+						: IconFileNames.BrokenCloudsNight;
 
 				case SkyConClientSideStrings.Rain:
 					return IsDayTime(hourOfDay)

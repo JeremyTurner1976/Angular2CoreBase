@@ -1,15 +1,11 @@
 ﻿namespace Angular2CoreBase.Common.Services
 {
 	using System;
-	using System.Diagnostics;
 	using System.IO;
-	using System.Net;
 	using CommonEnums.FileService;
 	using CommonModels.ConfigSettings;
 	using Interfaces;
 	using MailKit.Net.Smtp;
-	using MailKit.Security;
-	using Microsoft.Extensions.Logging;
 	using Microsoft.Extensions.Options;
 	using MimeKit;
 
@@ -20,7 +16,7 @@
 		private readonly IFileService _fileService;
 
 		public EmailService(
-			IOptions<ApplicationSettings> applicationSettings, 
+			IOptions<ApplicationSettings> applicationSettings,
 			IOptions<EmailSettings> emailSettings,
 			IFileService fileService)
 		{
@@ -60,10 +56,10 @@
 
 			if (_emailSettings.UsePickupDirectory)
 			{
-				using (StreamWriter data = 
+				using (StreamWriter data =
 					File.CreateText(
 						Path.Combine(
-							_fileService.GetDirectoryFolderLocation(DirectoryFolders.Email), 
+							_fileService.GetDirectoryFolderLocation(DirectoryFolders.Email),
 							Guid.NewGuid() + "_Email.eml")))
 				{
 					mimeMessage.WriteTo(data.BaseStream);

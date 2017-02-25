@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Angular2CoreBase.Common.CommonModels.WeatherService
+﻿namespace Angular2CoreBase.Common.CommonModels.WeatherService
 {
+	using System;
+	using System.Collections.Generic;
+
 	public class WeatherData
 	{
 		public string Description { get; set; }
@@ -15,6 +15,6 @@ namespace Angular2CoreBase.Common.CommonModels.WeatherService
 
 		public string Country { get; set; } = "USA";
 
-		public ICollection<Forecast> WeatherForecasts { get; set; } 
+		public ICollection<Forecast> WeatherForecasts { get; set; }
 	}
 }

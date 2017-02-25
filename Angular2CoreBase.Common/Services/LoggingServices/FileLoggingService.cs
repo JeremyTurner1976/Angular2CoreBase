@@ -1,10 +1,8 @@
 ﻿namespace Angular2CoreBase.Common.Services.LoggingServices
 {
 	using System;
-	using System.Text;
 	using Abstract;
 	using CommonEnums.FileService;
-
 	using Interfaces;
 	using Microsoft.Extensions.Logging;
 
@@ -32,8 +30,7 @@
 
 			string subject = GetSubject(logLevel);
 			DirectoryFolders folder = GetFolder(logLevel);
-			_fileService.SaveTextToDirectoryFile(folder, Environment.NewLine + subject + Environment.NewLine +  message);
-
+			_fileService.SaveTextToDirectoryFile(folder, Environment.NewLine + subject + Environment.NewLine + message);
 		}
 
 		public override void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
@@ -64,7 +61,7 @@
 
 		public override void LogMessage(string subject, string message)
 		{
-			_fileService.SaveTextToDirectoryFile(DirectoryFolders.Logs, GetFormattedFileOutput(messageSubject, message)); 
+			_fileService.SaveTextToDirectoryFile(DirectoryFolders.Logs, GetFormattedFileOutput(messageSubject, message));
 		}
 
 		public DirectoryFolders GetFolder(LogLevel logLevel)

@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
-
-namespace Angular2CoreBase.Common.Services
+﻿namespace Angular2CoreBase.Common.Services
 {
+	using System;
 	using System.IO;
+	using System.Linq;
 	using CommonEnums.FileService;
 	using Extensions;
 	using Interfaces;
@@ -15,39 +14,20 @@ namespace Angular2CoreBase.Common.Services
 		private const int daysToHoldDirectoryFiles = 7;
 		private const int maxDirectoryFolderFiles = 10;
 		private readonly string executingDirectory;
-		private object _lock = new object();
+		private readonly object _lock = new object();
 
 		public FileService()
 		{
-			executingDirectory = System.AppContext.BaseDirectory;
+			executingDirectory = AppContext.BaseDirectory;
 
 			if (!Directory.Exists(GetDirectoryFolderLocation(DirectoryFolders.Email)))
 				Init();
 		}
 
-		private bool Init()
-		{
-			Array enumValues = Enum.GetValues(typeof(DirectoryFolders));
-			foreach (object value in enumValues)
-			{
-				if (!Directory.Exists(GetDirectoryFolderLocation((DirectoryFolders)value)))
-					Directory.CreateDirectory(GetDirectoryFolderLocation((DirectoryFolders)value));
-
-				//Production: Service will handle this
-				if ((DirectoryFolders)value != DirectoryFolders.Data)
-				{
-					//DeleteFilesByDays((DirectoryFolders) value, daysToHoldDirectoryFiles);
-					DeleteOldFilesInFolder((DirectoryFolders)value, maxDirectoryFolderFiles);
-				}
-			}
-
-			return true;
-		}
-
 		public bool SaveTextToDirectoryFile(DirectoryFolders directory, string strMessage)
 		{
 			string strLocationAndFile = GetDirectoryFileLocation(directory);
-			lock(_lock)
+			lock (_lock)
 			{
 				File.AppendAllText(strLocationAndFile, strMessage + Environment.NewLine);
 			}
@@ -55,7 +35,7 @@ namespace Angular2CoreBase.Common.Services
 			return true;
 		}
 
-		public string[] LoadTextFromDirectoryFile(DirectoryFolders directory, String strFileName = "",
+		public string[] LoadTextFromDirectoryFile(DirectoryFolders directory, string strFileName = "",
 			DateTime dtIdentifier = new DateTime())
 		{
 			string strFolderLocation = GetDirectoryFolderLocation(directory);
@@ -68,7 +48,7 @@ namespace Angular2CoreBase.Common.Services
 			{
 				string strEnum = directory.ToNameString();
 				strFileAndPathName = strFolderLocation + "\\" + strEnum + "_" + dtIdentifier.ToString("M-dd-yyyy") +
-									 ".txt";
+				                     ".txt";
 			}
 
 			lock (_lock)
@@ -100,7 +80,7 @@ namespace Angular2CoreBase.Common.Services
 			foreach (
 				FileInfo file in
 					new DirectoryInfo(strFolderLocation).GetFiles()
-						.Where(x => x.LastWriteTime <= DateTime.Now.AddDays(nDays * -1)))
+						.Where(x => x.LastWriteTime <= DateTime.Now.AddDays(nDays*-1)))
 				file.Delete();
 
 			return true;
@@ -112,11 +92,30 @@ namespace Angular2CoreBase.Common.Services
 			return executingDirectory + "\\App_Data\\" + strEnum;
 		}
 
+		private bool Init()
+		{
+			Array enumValues = Enum.GetValues(typeof (DirectoryFolders));
+			foreach (object value in enumValues)
+			{
+				if (!Directory.Exists(GetDirectoryFolderLocation((DirectoryFolders) value)))
+					Directory.CreateDirectory(GetDirectoryFolderLocation((DirectoryFolders) value));
+
+				//Production: Service will handle this
+				if ((DirectoryFolders) value != DirectoryFolders.Data)
+				{
+					//DeleteFilesByDays((DirectoryFolders) value, daysToHoldDirectoryFiles);
+					DeleteOldFilesInFolder((DirectoryFolders) value, maxDirectoryFolderFiles);
+				}
+			}
+
+			return true;
+		}
+
 		private string GetDirectoryFileLocation(DirectoryFolders directory)
 		{
 			string strEnum = directory.ToNameString();
 			return GetDirectoryFolderLocation(directory) + "\\" + strEnum + "_" + DateTime.Now.ToString("yyyy-M-dd") +
-				   ".txt";
+			       ".txt";
 		}
 	}
 }

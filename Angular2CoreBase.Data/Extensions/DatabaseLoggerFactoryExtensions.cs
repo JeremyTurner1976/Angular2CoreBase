@@ -1,10 +1,10 @@
 ﻿namespace Angular2CoreBase.Data.Extensions
 {
 	using System;
-	using Data.Interfaces;
-	using Data.Models;
-	using Data.Providers;
+	using Interfaces;
 	using Microsoft.Extensions.Logging;
+	using Models;
+	using Providers;
 
 	public static class DatabaseLoggerFactoryExtensions
 	{
@@ -20,9 +20,9 @@
 
 		public static ILoggerFactory AddDatabaseLogger
 			(this ILoggerFactory factory,
-			IRepository<Error> errorRepository,
-			ITrackedModelDecorator<Error> errorDecorator,
-			LogLevel minLevel)
+				IRepository<Error> errorRepository,
+				ITrackedModelDecorator<Error> errorDecorator,
+				LogLevel minLevel)
 		{
 			return AddDatabaseLogger(
 				factory,

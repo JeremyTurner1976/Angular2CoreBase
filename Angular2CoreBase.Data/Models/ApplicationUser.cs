@@ -1,7 +1,7 @@
-﻿using Angular2CoreBase.Data.Abstract;
-
-namespace Angular2CoreBase.Data.Models
+﻿namespace Angular2CoreBase.Data.Models
 {
+	using Abstract;
+
 	public class ApplicationUser : PersonBase
 	{
 		public string Email { get; set; }

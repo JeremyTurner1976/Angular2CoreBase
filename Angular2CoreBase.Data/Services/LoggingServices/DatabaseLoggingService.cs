@@ -4,7 +4,6 @@
 	using Common.Abstract;
 	using Common.CommonEnums.FileService;
 	using Common.Extensions;
-	using Common.Interfaces;
 	using Factories;
 	using Interfaces;
 	using Microsoft.Extensions.Logging;
@@ -12,10 +11,10 @@
 
 	public class DatabaseLoggingService : BaseLogger, IDatabaseLoggingService
 	{
-		private readonly IRepository<Error> _errorRepository;
 		private readonly ITrackedModelDecorator<Error> _errorDecorator;
+		private readonly IRepository<Error> _errorRepository;
 
-		public DatabaseLoggingService(string categoryName, Func<string, LogLevel, bool> filter, 
+		public DatabaseLoggingService(string categoryName, Func<string, LogLevel, bool> filter,
 			IRepository<Error> errorRepository,
 			ITrackedModelDecorator<Error> errorDecorator)
 		{
@@ -23,6 +22,21 @@
 			Filter = filter;
 			_errorRepository = errorRepository;
 			_errorDecorator = errorDecorator;
+		}
+
+		public override void LogError(
+			Exception exception,
+			string message,
+			LogLevel logLevel = LogLevel.None)
+		{
+			LogErrorAndSave(exception, message, logLevel);
+		}
+
+		public override void LogMessage(string subject, string message)
+		{
+			Error error = ErrorFactory.GetErrorFromDetails(subject, message, LogLevel.Information.ToNameString());
+			_errorRepository.Add(error);
+			_errorRepository.SaveChanges();
 		}
 
 
@@ -59,22 +73,7 @@
 		{
 			Error error = ErrorFactory.GetErrorFromException(exception, logLevel, message);
 			//TODO handle application users and id, for now just logging to the System Admin 
-			error = _errorDecorator.GetDecoratedModel(error, 1); 
-			_errorRepository.Add(error);
-			_errorRepository.SaveChanges();
-		}
-
-		public override void LogError(
-			Exception exception,
-			string message,
-			LogLevel logLevel = LogLevel.None)
-		{
-			LogErrorAndSave(exception, message, logLevel);
-		}
-
-		public override void LogMessage(string subject, string message)
-		{
-			Error error = ErrorFactory.GetErrorFromDetails(subject, message, LogLevel.Information.ToNameString());
+			error = _errorDecorator.GetDecoratedModel(error, 1);
 			_errorRepository.Add(error);
 			_errorRepository.SaveChanges();
 		}

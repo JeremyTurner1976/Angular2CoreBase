@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Angular2CoreBase.Common.CommonModels.WeatherService.DarkSkyWeather
+﻿namespace Angular2CoreBase.Common.CommonModels.WeatherService.DarkSkyWeather
 {
+	using System;
+	using System.Collections.Generic;
 	using Extensions;
 	using Interfaces;
 
@@ -19,6 +18,8 @@ namespace Angular2CoreBase.Common.CommonModels.WeatherService.DarkSkyWeather
 		public Minutely minutely { get; set; }
 		public Hourly hourly { get; set; }
 		public Daily daily { get; set; }
+
+		public string units { get; set; }
 
 		public class Currently
 		{
@@ -51,6 +52,7 @@ namespace Angular2CoreBase.Common.CommonModels.WeatherService.DarkSkyWeather
 
 			public DateTime dateTime
 				=> time.GetDateTimeFromUnixTimestamp();
+
 			public double precipIntensity { get; set; }
 			public double precipProbability { get; set; }
 		}
@@ -95,6 +97,7 @@ namespace Angular2CoreBase.Common.CommonModels.WeatherService.DarkSkyWeather
 		public class Datum3
 		{
 			public long time { get; set; }
+
 			public DateTime dateTime
 				=> time.GetDateTimeFromUnixTimestamp();
 
@@ -102,6 +105,7 @@ namespace Angular2CoreBase.Common.CommonModels.WeatherService.DarkSkyWeather
 			public string icon { get; set; }
 			public long sunriseTime { get; set; }
 			public long sunsetTime { get; set; }
+
 			public DateTime sunrise
 				=> sunriseTime.GetDateTimeFromUnixTimestamp();
 
@@ -139,7 +143,5 @@ namespace Angular2CoreBase.Common.CommonModels.WeatherService.DarkSkyWeather
 			public string icon { get; set; }
 			public List<Datum3> data { get; set; }
 		}
-
-		public string units { get; set; }
 	}
 }

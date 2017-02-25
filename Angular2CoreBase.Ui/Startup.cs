@@ -1,15 +1,3 @@
-using Angular2CoreBase.Data;
-using Angular2CoreBase.Data.Database;
-using Angular2CoreBase.Data.Interfaces;
-using Angular2CoreBase.Data.Models;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.SpaServices.Webpack;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-
 namespace Angular2CoreBase.Ui
 {
 	using System;
@@ -21,13 +9,24 @@ namespace Angular2CoreBase.Ui
 	using Common.Middleware;
 	using Common.Services;
 	using Common.Services.WeatherServices;
+	using Data;
+	using Data.Database;
 	using Data.Decorators;
-	using Data.Services.LoggingServices;
-	using Newtonsoft.Json.Serialization;
 	using Data.Extensions;
+	using Data.Interfaces;
+	using Data.Models;
+	using Data.Services.LoggingServices;
+	using Microsoft.AspNetCore.Builder;
 	using Microsoft.AspNetCore.Diagnostics;
-	using Microsoft.Extensions.Options;
+	using Microsoft.AspNetCore.Hosting;
 	using Microsoft.AspNetCore.Http;
+	using Microsoft.AspNetCore.SpaServices.Webpack;
+	using Microsoft.EntityFrameworkCore;
+	using Microsoft.Extensions.Configuration;
+	using Microsoft.Extensions.DependencyInjection;
+	using Microsoft.Extensions.Logging;
+	using Microsoft.Extensions.Options;
+	using Newtonsoft.Json.Serialization;
 
 	public class Startup
 	{
@@ -35,8 +34,8 @@ namespace Angular2CoreBase.Ui
 		{
 			IConfigurationBuilder builder = new ConfigurationBuilder()
 				.SetBasePath(env.ContentRootPath)
-				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-				.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+				.AddJsonFile("appsettings.json", true, true)
+				.AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
 				.AddEnvironmentVariables();
 			Configuration = builder.Build();
 			Environment = env;
@@ -89,7 +88,7 @@ namespace Angular2CoreBase.Ui
 			//else
 			//{
 			services.AddDbContext<CoreBaseContext>(options =>
-					options.UseSqlServer(Configuration.GetConnectionString("CoreBaseConnectionString")));
+				options.UseSqlServer(Configuration.GetConnectionString("CoreBaseConnectionString")));
 			//}
 
 			//Add data classes
@@ -112,9 +111,9 @@ namespace Angular2CoreBase.Ui
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(
-			IApplicationBuilder app, 
-			IHostingEnvironment env, 
-			ILoggerFactory loggerFactory, 
+			IApplicationBuilder app,
+			IHostingEnvironment env,
+			ILoggerFactory loggerFactory,
 			IEmailService mailService,
 			IOptions<EmailSettings> emailSettings,
 			IFileService fileService,
@@ -146,7 +145,8 @@ namespace Angular2CoreBase.Ui
 				loggerFactory.AddDebug(LogLevel.Information);
 				loggerFactory.AddConsole(Configuration.GetSection("Logging"));
 
-				using (IServiceScope serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+				using (IServiceScope serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope()
+					)
 				{
 					serviceScope.ServiceProvider.GetService<CoreBaseContext>().Database.Migrate();
 					serviceScope.ServiceProvider.GetService<CoreBaseContext>().SeedData();
@@ -164,7 +164,7 @@ namespace Angular2CoreBase.Ui
 						context.Response.StatusCode = 500; // or another Status accordingly to Exception Type
 						context.Response.ContentType = "text/html";
 
-						IExceptionHandlerFeature error = 
+						IExceptionHandlerFeature error =
 							context.Features.Get<IExceptionHandlerFeature>();
 						if (error != null)
 						{
@@ -187,13 +187,9 @@ namespace Angular2CoreBase.Ui
 
 			app.UseMvc(routes =>
 			{
-				routes.MapRoute(
-					name: "default",
-					template: "{controller=Home}/{action=Index}/{id?}");
+				routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
 
-				routes.MapSpaFallbackRoute(
-					name: "spa-fallback",
-					defaults: new {controller = "Home", action = "Index"});
+				routes.MapSpaFallbackRoute("spa-fallback", new {controller = "Home", action = "Index"});
 			});
 		}
 	}

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Angular2CoreBase.Data.Interfaces
+﻿namespace Angular2CoreBase.Data.Interfaces
 {
+	using System;
 	using Microsoft.Extensions.Logging;
 
 	public interface IDatabaseLoggingService

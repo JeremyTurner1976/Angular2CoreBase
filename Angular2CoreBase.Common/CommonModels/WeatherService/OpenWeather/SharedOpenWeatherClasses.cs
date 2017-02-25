@@ -1,9 +1,9 @@
-﻿using System;
-namespace Angular2CoreBase.Common.CommonModels.WeatherService.OpenWeather
+﻿namespace Angular2CoreBase.Common.CommonModels.WeatherService.OpenWeather
 {
-	using Newtonsoft.Json;
+	using System;
 	using System.Collections.Generic;
 	using Extensions;
+	using Newtonsoft.Json;
 
 	public class Main
 	{

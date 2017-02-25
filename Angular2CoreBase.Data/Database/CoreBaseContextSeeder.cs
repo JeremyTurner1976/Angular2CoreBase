@@ -1,11 +1,10 @@
-﻿using System;
-using System.Linq;
-using Angular2CoreBase.Data.Models;
-
-namespace Angular2CoreBase.Data.Database
+﻿namespace Angular2CoreBase.Data.Database
 {
+	using System;
 	using Factories;
+	using Faker;
 	using Microsoft.Extensions.Logging;
+	using Models;
 
 	public static class CoreBaseContextSeeder
 	{
@@ -16,7 +15,7 @@ namespace Angular2CoreBase.Data.Database
 			if (!context.ApplicationUsers.Any())
 			{
 				//Add a base application level user
-				context.ApplicationUsers.Add(new ApplicationUser()
+				context.ApplicationUsers.Add(new ApplicationUser
 				{
 					FirstName = "System",
 					LastName = "Generated Super User",
@@ -26,16 +25,16 @@ namespace Angular2CoreBase.Data.Database
 					Active = true
 				});
 
-				for (int i =1; i < dataPopulationCount; i++)
+				for (int i = 1; i < dataPopulationCount; i++)
 				{
-					context.ApplicationUsers.Add(new ApplicationUser()
+					context.ApplicationUsers.Add(new ApplicationUser
 					{
-						FirstName = Faker.Name.First(),
-						LastName = Faker.Name.Last(),
-						Email = Faker.Lorem.GetFirstWord() + "@" +
-							Faker.Lorem.GetFirstWord() + ".com",
-						Password = Faker.Lorem.GetFirstWord(),
-						DisplayName = Faker.Name.FullName(),
+						FirstName = Name.First(),
+						LastName = Name.Last(),
+						Email = Lorem.GetFirstWord() + "@" +
+						        Lorem.GetFirstWord() + ".com",
+						Password = Lorem.GetFirstWord(),
+						DisplayName = Name.FullName(),
 						Active = true
 					});
 				}
@@ -53,9 +52,9 @@ namespace Angular2CoreBase.Data.Database
 					catch (Exception exception)
 					{
 						Error error = ErrorFactory.GetErrorFromException(
-								exception,
-								LogLevel.Information,
-								"Expected seeded error.");
+							exception,
+							LogLevel.Information,
+							"Expected seeded error.");
 						error.CreatedDateTime = DateTime.UtcNow;
 						error.CreatedByUserId = 1;
 
@@ -66,5 +65,4 @@ namespace Angular2CoreBase.Data.Database
 			}
 		}
 	}
-
 }

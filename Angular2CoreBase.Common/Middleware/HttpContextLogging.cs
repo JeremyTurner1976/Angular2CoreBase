@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
-
-namespace Angular2CoreBase.Common.Middleware
+﻿namespace Angular2CoreBase.Common.Middleware
 {
+	using System;
+	using System.Diagnostics;
+	using System.Threading.Tasks;
+	using Microsoft.AspNetCore.Http;
+	using Microsoft.Extensions.Logging;
+
 	public class HttpContextLogging
 	{
-		private readonly RequestDelegate _next;
 		private readonly ILogger<HttpContextLogging> _logger;
+		private readonly RequestDelegate _next;
 
 		public HttpContextLogging(RequestDelegate next, ILogger<HttpContextLogging> logger)
 		{

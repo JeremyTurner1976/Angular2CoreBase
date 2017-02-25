@@ -1,10 +1,10 @@
 ﻿namespace Angular2CoreBase.Common.Extensions
 {
-	using Angular2CoreBase.Common.Interfaces;
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Reflection;
+	using Interfaces;
 
 	public static class EnumExtensions
 	{
@@ -21,16 +21,17 @@
 
 			if (memInfo != null && memInfo.Length > 0)
 			{
-				IEnumerable<Attribute> attrs = memInfo[0].GetCustomAttributes(typeof(T), false);
+				IEnumerable<Attribute> attrs = memInfo[0].GetCustomAttributes(typeof (T), false);
 
 				Attribute[] attributes = attrs as Attribute[] ?? attrs.ToArray();
 				if (attrs != null && attributes.Any())
 				{
-					return ((T)attributes[0]).Identifier;
+					return ((T) attributes[0]).Identifier;
 				}
 			}
 
-			return enumSource.ToNameString(); ;
+			return enumSource.ToNameString();
+			;
 		}
 	}
 }

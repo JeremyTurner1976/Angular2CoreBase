@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-namespace Angular2CoreBase.Common.Extensions
+﻿namespace Angular2CoreBase.Common.Extensions
 {
+	using System;
 	using CommonModels.ConfigSettings;
 	using Interfaces;
 	using Microsoft.Extensions.Logging;

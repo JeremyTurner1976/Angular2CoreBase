@@ -6,6 +6,6 @@
 		Logs,
 		Email,
 		Data,
-		Test,
+		Test
 	}
 }

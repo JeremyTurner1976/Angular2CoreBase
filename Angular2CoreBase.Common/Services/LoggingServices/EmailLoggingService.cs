@@ -3,15 +3,14 @@
 	using System;
 	using Abstract;
 	using CommonModels.ConfigSettings;
-	using Extensions;
 	using Interfaces;
 	using Microsoft.Extensions.Logging;
 	using Microsoft.Extensions.Options;
 
 	public class EmailLoggingService : BaseLogger
 	{
-		private readonly IEmailService _mailService;
 		private readonly EmailSettings _emailSettings;
+		private readonly IEmailService _mailService;
 
 		public EmailLoggingService(string categoryName, Func<string, LogLevel, bool> filter, IEmailService mailService,
 			IOptions<EmailSettings> emailSettings)
@@ -36,7 +35,6 @@
 			string subject = GetSubject(logLevel);
 			_mailService.SendMail(_emailSettings.DeveloperEmailAddress, _emailSettings.CarbobCopyEmailAddress,
 				_emailSettings.BackupCarbonCopyEmailAddress, subject, message);
-
 		}
 
 		public override void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,

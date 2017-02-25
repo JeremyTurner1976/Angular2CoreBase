@@ -6,7 +6,7 @@ import { Http } from "@angular/http";
 	template: require("./fetchdata.component.html")
 })
 export class FetchDataComponent {
-	public data: weatherData;
+	data: weatherData;
 
 	constructor(http: Http) {
 		this.data = {
@@ -16,15 +16,14 @@ export class FetchDataComponent {
 			city: "",
 			country: "",
 			weatherForecasts: []
-		}
-
+		};
 		http.get("/api/WeatherData/WeatherForecasts").subscribe(result => {
 			console.log(result);
 			try {
 				this.data = result.json();
 				console.log(this.data);
 				console.log(this.data.weatherForecasts);
-			}catch(error) {
+			} catch (error) {
 				console.log(error);
 			}
 		});

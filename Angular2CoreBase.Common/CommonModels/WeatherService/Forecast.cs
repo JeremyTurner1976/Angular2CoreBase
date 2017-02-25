@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace Angular2CoreBase.Common.CommonModels.WeatherService
+﻿namespace Angular2CoreBase.Common.CommonModels.WeatherService
 {
+	using System;
+
 	public class Forecast
 	{
 		public DateTime StartDateTime { get; set; }
@@ -33,5 +33,3 @@ namespace Angular2CoreBase.Common.CommonModels.WeatherService
 		public double PrecipitationVolume { get; set; }
 	}
 }
-
-

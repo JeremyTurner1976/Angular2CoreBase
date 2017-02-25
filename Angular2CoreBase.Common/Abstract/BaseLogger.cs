@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Angular2CoreBase.Common.Abstract
+﻿namespace Angular2CoreBase.Common.Abstract
 {
-	using CommonEnums.FileService;
+	using System;
 	using Extensions;
 	using Interfaces;
 	using Microsoft.Extensions.Logging;
@@ -17,10 +12,12 @@ namespace Angular2CoreBase.Common.Abstract
 
 		protected string CategoryName { get; set; }
 		protected Func<string, LogLevel, bool> Filter { get; set; }
+		public abstract void LogMessage(string subject, string message);
+		public abstract void LogError(Exception exception, string message, LogLevel logLevel = LogLevel.None);
 
 		public bool IsEnabled(LogLevel logLevel)
 		{
-			return (Filter == null || Filter(CategoryName, logLevel));
+			return Filter == null || Filter(CategoryName, logLevel);
 		}
 
 		public IDisposable BeginScope<TState>(TState state)
@@ -29,10 +26,11 @@ namespace Angular2CoreBase.Common.Abstract
 			return null;
 		}
 
-		public abstract void Log(LogLevel logLevel, int eventId, object state, Exception exception,Func<object, Exception, string> formatter);
-		public abstract void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter);
-		public abstract void LogMessage(string subject, string message);
-		public abstract void LogError(Exception exception, string message, LogLevel logLevel = LogLevel.None);
+		public abstract void Log(LogLevel logLevel, int eventId, object state, Exception exception,
+			Func<object, Exception, string> formatter);
+
+		public abstract void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
+			Func<TState, Exception, string> formatter);
 
 		protected string VerifyAndGenerateMessage(
 			LogLevel logLevel,
@@ -68,8 +66,8 @@ namespace Angular2CoreBase.Common.Abstract
 		}
 
 		protected string VerifyAndGenerateMessage<TState>(
-			LogLevel logLevel, 
-			TState state, 
+			LogLevel logLevel,
+			TState state,
 			Exception exception,
 			Func<TState, Exception, string> formatter)
 		{
@@ -100,7 +98,7 @@ namespace Angular2CoreBase.Common.Abstract
 			return message;
 		}
 
-		public string GetSubject(LogLevel logLevel) 
+		public string GetSubject(LogLevel logLevel)
 			=> logLevel < LogLevel.Error
 				? messageSubject
 				: errorSubject;

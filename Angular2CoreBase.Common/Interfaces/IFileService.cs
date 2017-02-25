@@ -1,7 +1,6 @@
-﻿using System;
-
-namespace Angular2CoreBase.Common.Interfaces
+﻿namespace Angular2CoreBase.Common.Interfaces
 {
+	using System;
 	using CommonEnums.FileService;
 
 	public interface IFileService
@@ -9,8 +8,8 @@ namespace Angular2CoreBase.Common.Interfaces
 		bool SaveTextToDirectoryFile(DirectoryFolders directory, string strMessage);
 
 		string[] LoadTextFromDirectoryFile(
-			DirectoryFolders directory, 
-			String strFileName = "",
+			DirectoryFolders directory,
+			string strFileName = "",
 			DateTime dtIdentifier = new DateTime());
 
 		bool DeleteOldFilesInFolder(DirectoryFolders directory, int nFilesToSave);

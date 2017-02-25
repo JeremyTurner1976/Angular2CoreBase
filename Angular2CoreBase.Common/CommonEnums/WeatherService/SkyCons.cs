@@ -6,26 +6,16 @@
 
 	public enum SkyCons
 	{
-		[EnumAttributes.ClientSideString(SkyConClientSideStrings.ClearDay)]
-		ClearDay,
-		[EnumAttributes.ClientSideString(SkyConClientSideStrings.ClearNight)]
-		ClearNight,
-		[EnumAttributes.ClientSideString(SkyConClientSideStrings.PartlyCloudyDay)]
-		PartlyCloudyDay,
-		[EnumAttributes.ClientSideString(SkyConClientSideStrings.PartlyCloudyNight)]
-		PartlyCloudyNight,
-		[EnumAttributes.ClientSideString(SkyConClientSideStrings.Cloudy)]
-		Cloudy,
-		[EnumAttributes.ClientSideString(SkyConClientSideStrings.Rain)]
-		Rain,
-		[EnumAttributes.ClientSideString(SkyConClientSideStrings.Sleet)]
-		Sleet,
-		[EnumAttributes.ClientSideString(SkyConClientSideStrings.Snow)]
-		Snow,
-		[EnumAttributes.ClientSideString(SkyConClientSideStrings.Wind)]
-		Wind,
-		[EnumAttributes.ClientSideString(SkyConClientSideStrings.Fog)]
-		Fog
+		[EnumAttributes.ClientSideString(SkyConClientSideStrings.ClearDay)] ClearDay,
+		[EnumAttributes.ClientSideString(SkyConClientSideStrings.ClearNight)] ClearNight,
+		[EnumAttributes.ClientSideString(SkyConClientSideStrings.PartlyCloudyDay)] PartlyCloudyDay,
+		[EnumAttributes.ClientSideString(SkyConClientSideStrings.PartlyCloudyNight)] PartlyCloudyNight,
+		[EnumAttributes.ClientSideString(SkyConClientSideStrings.Cloudy)] Cloudy,
+		[EnumAttributes.ClientSideString(SkyConClientSideStrings.Rain)] Rain,
+		[EnumAttributes.ClientSideString(SkyConClientSideStrings.Sleet)] Sleet,
+		[EnumAttributes.ClientSideString(SkyConClientSideStrings.Snow)] Snow,
+		[EnumAttributes.ClientSideString(SkyConClientSideStrings.Wind)] Wind,
+		[EnumAttributes.ClientSideString(SkyConClientSideStrings.Fog)] Fog
 	}
 
 	public static class SkyConClientSideStrings

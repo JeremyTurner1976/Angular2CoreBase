@@ -6,42 +6,24 @@
 
 	public enum Icons
 	{
-		[EnumAttributes.FileName(IconFileNames.ClearSkyDay)]
-		ClearSkyDay,
-		[EnumAttributes.FileName(IconFileNames.ClearSkyNight)]
-		ClearSkyNight,
-		[EnumAttributes.FileName(IconFileNames.PartlyCloudyDay)]
-		PartlyCloudDay,
-		[EnumAttributes.FileName(IconFileNames.PartlyCloudyNight)]
-		PartlyCloudyNight,
-		[EnumAttributes.FileName(IconFileNames.ScatteredCloudsDay)]
-		ScatteredCloudsDay,
-		[EnumAttributes.FileName(IconFileNames.ScatteredCloudsNight)]
-		ScatteredCloudsNight,
-		[EnumAttributes.FileName(IconFileNames.BrokenCloudsDay)]
-		BrokenCloudsDay,
-		[EnumAttributes.FileName(IconFileNames.BrokenCloudsNight)]
-		BrokenCloudsNight,
-		[EnumAttributes.FileName(IconFileNames.ShoweringRainDay)]
-		ShoweringRainDay,
-		[EnumAttributes.FileName(IconFileNames.ShoweringRainNight)]
-		ShoweringRainNight,
-		[EnumAttributes.FileName(IconFileNames.RainDay)]
-		RainDay,
-		[EnumAttributes.FileName(IconFileNames.RainNight)]
-		RainNight,
-		[EnumAttributes.FileName(IconFileNames.ThunderStormDay)]
-		ThunderStormDay,
-		[EnumAttributes.FileName(IconFileNames.ThunderStormNight)]
-		ThunderStormNight,
-		[EnumAttributes.FileName(IconFileNames.SnowDay)]
-		SnowDay,
-		[EnumAttributes.FileName(IconFileNames.SnowNight)]
-		SnowNight,
-		[EnumAttributes.FileName(IconFileNames.MistDay)]
-		MistDay,
-		[EnumAttributes.FileName(IconFileNames.MistNight)]
-		MistNight
+		[EnumAttributes.FileName(IconFileNames.ClearSkyDay)] ClearSkyDay,
+		[EnumAttributes.FileName(IconFileNames.ClearSkyNight)] ClearSkyNight,
+		[EnumAttributes.FileName(IconFileNames.PartlyCloudyDay)] PartlyCloudDay,
+		[EnumAttributes.FileName(IconFileNames.PartlyCloudyNight)] PartlyCloudyNight,
+		[EnumAttributes.FileName(IconFileNames.ScatteredCloudsDay)] ScatteredCloudsDay,
+		[EnumAttributes.FileName(IconFileNames.ScatteredCloudsNight)] ScatteredCloudsNight,
+		[EnumAttributes.FileName(IconFileNames.BrokenCloudsDay)] BrokenCloudsDay,
+		[EnumAttributes.FileName(IconFileNames.BrokenCloudsNight)] BrokenCloudsNight,
+		[EnumAttributes.FileName(IconFileNames.ShoweringRainDay)] ShoweringRainDay,
+		[EnumAttributes.FileName(IconFileNames.ShoweringRainNight)] ShoweringRainNight,
+		[EnumAttributes.FileName(IconFileNames.RainDay)] RainDay,
+		[EnumAttributes.FileName(IconFileNames.RainNight)] RainNight,
+		[EnumAttributes.FileName(IconFileNames.ThunderStormDay)] ThunderStormDay,
+		[EnumAttributes.FileName(IconFileNames.ThunderStormNight)] ThunderStormNight,
+		[EnumAttributes.FileName(IconFileNames.SnowDay)] SnowDay,
+		[EnumAttributes.FileName(IconFileNames.SnowNight)] SnowNight,
+		[EnumAttributes.FileName(IconFileNames.MistDay)] MistDay,
+		[EnumAttributes.FileName(IconFileNames.MistNight)] MistNight
 	}
 
 	//All are png extensions
