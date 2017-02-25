@@ -23,10 +23,12 @@ namespace Angular2CoreBase.Ui.Controllers
 
 		public IActionResult Index()
 		{
-			int usersCount = userRepository.Count();
-			int errorsCount = errorRepository.Count();
+			//Fore testing database is working
+			//int usersCount = userRepository.Count();
+			//int errorsCount = errorRepository.Count();
 
-			var thrownException = ErrorFactory.GetThrownException();
+			//For testing error loggers
+			//var thrownException = ErrorFactory.GetThrownException();
 
 			return View();
 		}

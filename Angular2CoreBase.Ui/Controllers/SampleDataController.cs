@@ -5,6 +5,7 @@ namespace Angular2CoreBase.Ui.Controllers
 	using Microsoft.AspNetCore.Http;
 	using System.Net.Http;
 	using System.Threading.Tasks;
+	using Common.Extensions;
 	using Common.Interfaces.WeatherService;
 	using Data.Factories;
 	using Microsoft.AspNetCore.Mvc;
@@ -30,17 +31,17 @@ namespace Angular2CoreBase.Ui.Controllers
 			}
 			catch (HttpRequestException httpRequestException)
 			{
-				return BadRequest(ErrorFactory.GetErrorAsString(httpRequestException));
+				return BadRequest(httpRequestException.GetErrorAsString());
 			}
 			catch (AggregateException aggregateException)
 			{
 				return StatusCode(StatusCodes.Status500InternalServerError,
-					ErrorFactory.GetAggregateErrorAsString(aggregateException));
+					aggregateException.GetAggregateErrorAsString());
 			}
 			catch (Exception exception)
 			{
 				return StatusCode(StatusCodes.Status500InternalServerError,
-					ErrorFactory.GetErrorAsString(exception));
+					exception.GetErrorAsString());
 			}
 		}
 	}

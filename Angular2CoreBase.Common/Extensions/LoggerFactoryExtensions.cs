@@ -9,7 +9,7 @@ namespace Angular2CoreBase.Common.Extensions
 	using Microsoft.Extensions.Logging;
 	using Providers;
 
-	public static class ILoggerFactoryExtensions
+	public static class LoggerFactoryExtensions
 	{
 		public static ILoggerFactory AddEmail(this ILoggerFactory factory,
 									  IEmailService mailService,
