@@ -1,21 +1,20 @@
-using System;
-namespace Angular2CoreBase.Ui.Controllers
+﻿namespace Angular2CoreBase.Ui.Controllers.ApiControllers
 {
-	using Common.CommonModels.WeatherService;
-	using Microsoft.AspNetCore.Http;
+	using System;
 	using System.Net.Http;
 	using System.Threading.Tasks;
-	using Common.Extensions;
+	using Common.CommonModels.WeatherService;
 	using Common.Interfaces.WeatherService;
-	using Data.Factories;
+	using Microsoft.AspNetCore.Http;
 	using Microsoft.AspNetCore.Mvc;
+	using Common.Extensions;
 
 	[Route("api/[controller]")]
-	public class SampleDataController : Controller
+	public class WeatherDataController : Controller
 	{
 		public IWeatherService WeatherService { get; }
 
-		public SampleDataController(IWeatherService weatherService)
+		public WeatherDataController(IWeatherService weatherService)
 		{
 			WeatherService = weatherService;
 		}

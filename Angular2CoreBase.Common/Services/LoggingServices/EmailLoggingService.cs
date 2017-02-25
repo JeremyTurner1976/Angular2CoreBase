@@ -2,19 +2,24 @@
 {
 	using System;
 	using Abstract;
+	using CommonModels.ConfigSettings;
 	using Extensions;
 	using Interfaces;
 	using Microsoft.Extensions.Logging;
+	using Microsoft.Extensions.Options;
 
 	public class EmailLoggingService : BaseLogger
 	{
 		private readonly IEmailService _mailService;
+		private readonly EmailSettings _emailSettings;
 
-		public EmailLoggingService(string categoryName, Func<string, LogLevel, bool> filter, IEmailService mailService)
+		public EmailLoggingService(string categoryName, Func<string, LogLevel, bool> filter, IEmailService mailService,
+			IOptions<EmailSettings> emailSettings)
 		{
 			CategoryName = categoryName;
 			Filter = filter;
 			_mailService = mailService;
+			_emailSettings = emailSettings.Value;
 		}
 
 
@@ -29,7 +34,8 @@
 			}
 
 			string subject = GetSubject(logLevel);
-			_mailService.SendMail("363015fdfa2f4211b9d42ee5cf@gmail.com", null, null, subject, message);
+			_mailService.SendMail(_emailSettings.DeveloperEmailAddress, _emailSettings.CarbobCopyEmailAddress,
+				_emailSettings.BackupCarbonCopyEmailAddress, subject, message);
 
 		}
 
@@ -44,7 +50,8 @@
 			}
 
 			string subject = GetSubject(logLevel);
-			_mailService.SendMail("363015fdfa2f4211b9d42ee5cf@gmail.com", null, null, subject, message);
+			_mailService.SendMail(_emailSettings.DeveloperEmailAddress, _emailSettings.CarbobCopyEmailAddress,
+				_emailSettings.BackupCarbonCopyEmailAddress, subject, message);
 		}
 
 		public override void LogError(
@@ -52,12 +59,14 @@
 			string message,
 			LogLevel logLevel = LogLevel.None)
 		{
-			_mailService.SendMail("363015fdfa2f4211b9d42ee5cf@gmail.com", null, null, errorSubject, message);
+			_mailService.SendMail(_emailSettings.DeveloperEmailAddress, _emailSettings.CarbobCopyEmailAddress,
+				_emailSettings.BackupCarbonCopyEmailAddress, errorSubject, message);
 		}
 
 		public override void LogMessage(string subject, string message)
 		{
-			_mailService.SendMail("363015fdfa2f4211b9d42ee5cf@gmail.com", null, null, subject, message);
+			_mailService.SendMail(_emailSettings.DeveloperEmailAddress, _emailSettings.CarbobCopyEmailAddress,
+				_emailSettings.BackupCarbonCopyEmailAddress, subject, message);
 		}
 	}
 }

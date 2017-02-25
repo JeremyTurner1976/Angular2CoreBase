@@ -45,7 +45,7 @@ namespace Angular2CoreBase.Common.Middleware
 				startTime,
 				watch.ElapsedMilliseconds,
 				request,
-				JObject.Parse(await response.Content.ReadAsStringAsync()));
+				JObject.Parse(await response.Content.ReadAsStringAsync()).ToString());
 
 			return response;
 		}

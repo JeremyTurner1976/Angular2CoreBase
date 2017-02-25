@@ -13,17 +13,20 @@ using Microsoft.Extensions.Logging;
 namespace Angular2CoreBase.Ui
 {
 	using System;
+	using Common.CommonModels.ConfigSettings;
 	using Common.CommonModels.WeatherService.DarkSkyWeather;
 	using Common.Extensions;
 	using Common.Interfaces;
 	using Common.Interfaces.WeatherService;
 	using Common.Middleware;
 	using Common.Services;
+	using Common.Services.ConfigServices;
 	using Common.Services.WeatherServices;
 	using Data.Decorators;
 	using Data.Services.LoggingServices;
 	using Newtonsoft.Json.Serialization;
 	using Data.Extensions;
+	using Microsoft.Extensions.Options;
 
 	public class Startup
 	{
@@ -61,6 +64,13 @@ namespace Angular2CoreBase.Ui
 			//services.AddSingleton<IOperationSingletonInstance>(new Operation(Guid.Empty));
 			//services.AddTransient<OperationService, OperationService>();
 
+			services.AddLogging();
+
+			//Configuration Pocos
+			services.AddOptions();
+			services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationSettings"));
+			services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+
 			//Dark Sky Api
 			services.AddSingleton<IWeatherServiceSettings, DarkSkyWeatherServiceSettings>();
 			services.AddTransient<IWeatherService, DarkSkyWeatherService>();
@@ -96,8 +106,6 @@ namespace Angular2CoreBase.Ui
 			mvcBuilder.AddJsonOptions
 				(opts => opts.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
 
-			services.AddLogging();
-
 			services.AddMemoryCache(opt => opt.ExpirationScanFrequency = TimeSpan.FromMinutes(5));
 		}
 
@@ -106,7 +114,8 @@ namespace Angular2CoreBase.Ui
 			IApplicationBuilder app, 
 			IHostingEnvironment env, 
 			ILoggerFactory loggerFactory, 
-			IEmailService mailService, 
+			IEmailService mailService,
+			IOptions<EmailSettings> emailSettings,
 			IFileService fileService,
 			IRepository<Error> errorRepository,
 			ITrackedModelDecorator<Error> errorDecorator)
@@ -122,18 +131,19 @@ namespace Angular2CoreBase.Ui
 				Critical = 6,
 				None = int.MaxValue
 			}
-			*/
 
-			loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-			loggerFactory.AddDebug(LogLevel.Information);
-			loggerFactory.AddEmailLogger(mailService, LogLevel.Error);
-			loggerFactory.AddFileLogger(fileService, LogLevel.Information);
+			*/
 			loggerFactory.AddDatabaseLogger(errorRepository, errorDecorator, LogLevel.Error);
 
 			if (Environment.IsDevelopment())
 			{
+				//Detailed trace logs (Including Requests and Responses)
+				//loggerFactory.AddFileLogger(fileService, LogLevel.Information);
+
 				app.UseDeveloperExceptionPage();
 				app.UseDatabaseErrorPage();
+				loggerFactory.AddDebug(LogLevel.Information);
+				loggerFactory.AddConsole(Configuration.GetSection("Logging"));
 
 				using (IServiceScope serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
 				{
@@ -148,6 +158,10 @@ namespace Angular2CoreBase.Ui
 			}
 			else
 			{
+				//Detailed trace logs
+				//loggerFactory.AddFileLogger(fileService, LogLevel.Information);
+
+				loggerFactory.AddEmailLogger(mailService, emailSettings, LogLevel.Error);
 				app.UseExceptionHandler("/Home/Error");
 			}
 
