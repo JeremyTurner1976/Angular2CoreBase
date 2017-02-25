@@ -31,6 +31,8 @@ namespace Angular2CoreBase.Ui.Controllers
 			//ErrorFactory.GetThrownException();
 
 
+			//Handle JS Dates from WeatherServices
+
 			//Implement a file getter page for developers (add webservice file Directory), and database errors
 			//Implement weather service
 			//Implement Client Side Errors

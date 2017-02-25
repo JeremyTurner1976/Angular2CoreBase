@@ -9,6 +9,8 @@ namespace Angular2CoreBase.Common.Extensions
 
 	public static class ErrorExtensions
 	{
+		private const string customHtmlCss = "style='padding:40px; border: red 1px solid; border-radius: 15px; margin: 25px; padding-top:15px;'";
+
 		public static string ToHtml(this Exception e)
 		{
 			StringBuilder stringBuilder = new StringBuilder();
@@ -16,7 +18,7 @@ namespace Angular2CoreBase.Common.Extensions
 
 			while (e != null)
 			{
-				stringBuilder.Append(first ? "<br/>" : "<br/><br/><br/>");
+				stringBuilder.Append(first ? "<h3>Server Side Error</h3>" : "<br/>");
 				first = false;
 				stringBuilder.Append("|Message| " + e.Message + "<br/>");
 				stringBuilder.Append("|Source| " + e.Source + "<br/>");
@@ -30,7 +32,7 @@ namespace Angular2CoreBase.Common.Extensions
 				e = e.InnerException;
 			}
 
-			return stringBuilder.ToString();
+			return "<div " + customHtmlCss + ">" + stringBuilder + "</div>";
 		}
 
 		public static string ToEnhancedString(this Exception e)
@@ -72,7 +74,7 @@ namespace Angular2CoreBase.Common.Extensions
 
 			foreach (Exception e in ae.InnerExceptions)
 			{
-				stringBuilder.Append(first ? "<br/>" : "<br/><br/><br/>");
+				stringBuilder.Append(first ? "<h3>Server Side Error</h3>" : "<br/>");
 				first = false;
 				stringBuilder.Append("|Message| " + e.Message + "<br/>");
 				stringBuilder.Append("|Source| " + e.Source + "<br/>");
@@ -86,7 +88,7 @@ namespace Angular2CoreBase.Common.Extensions
 			}
 
 
-			return stringBuilder.ToString();
+			return "<div " + customHtmlCss + ">" + stringBuilder + "</div>";
 		}
 
 		public static string ToEnhancedString(this AggregateException ae)
