@@ -2,7 +2,9 @@
 {
 	using System;
 	using System.Diagnostics;
+	using System.IO;
 	using System.Net;
+	using CommonEnums.FileService;
 	using CommonModels.ConfigSettings;
 	using Interfaces;
 	using MailKit.Net.Smtp;
@@ -13,12 +15,6 @@
 
 	public class EmailService : IEmailService
 	{
-		//TODO EMAIL CLASS SETS FROM CONFIG (EmailClass gets populated and then shared out - many consumers (including context seeder)
-		//Application Name in Config Also
-
-		//Or just an Application settings class?
-
-		//Get Settings in Place
 		//Set up config based Email, using Emails directory
 
 		//Implement a file getter page for developers (add webservice file Directory), and database errors
@@ -26,11 +22,16 @@
 
 		private readonly ApplicationSettings _applicationSettings;
 		private readonly EmailSettings _emailSettings;
+		private readonly IFileService _fileService;
 
-		public EmailService(IOptions<ApplicationSettings> applicationSettings, IOptions<EmailSettings> emailSettings)
+		public EmailService(
+			IOptions<ApplicationSettings> applicationSettings, 
+			IOptions<EmailSettings> emailSettings,
+			IFileService fileService)
 		{
 			_applicationSettings = applicationSettings.Value;
 			_emailSettings = emailSettings.Value;
+			_fileService = fileService;
 		}
 
 		public async void SendMail(
@@ -62,17 +63,31 @@
 				message.Body = bodyBuilder.ToMessageBody();
 			*/
 
-			using (SmtpClient client = new SmtpClient())
+			if (_emailSettings.UsePickupDirectory)
 			{
-				await client.ConnectAsync(_emailSettings.Smtp, _emailSettings.Port);
+				using (StreamWriter data = 
+					File.CreateText(
+						Path.Combine(
+							_fileService.GetDirectoryFolderLocation(DirectoryFolders.Email), 
+							Guid.NewGuid() + "_Email.eml")))
+				{
+					mimeMessage.WriteTo(data.BaseStream);
+				}
+			}
+			else
+			{
+				using (SmtpClient client = new SmtpClient())
+				{
+					await client.ConnectAsync(_emailSettings.Smtp, _emailSettings.Port);
 
-				// Note: since we don't have an OAuth2 token, disable 	
-				// the XOAUTH2 authentication mechanism.     
-				client.AuthenticationMechanisms.Remove("XOAUTH2");
+					// Note: since we don't have an OAuth2 token, disable 	
+					// the XOAUTH2 authentication mechanism.     
+					client.AuthenticationMechanisms.Remove("XOAUTH2");
 
-				await client.AuthenticateAsync(_emailSettings.EmailAddress, _emailSettings.EmailPassword);
-				await client.SendAsync(mimeMessage);
-				await client.DisconnectAsync(true);
+					await client.AuthenticateAsync(_emailSettings.EmailAddress, _emailSettings.EmailPassword);
+					await client.SendAsync(mimeMessage);
+					await client.DisconnectAsync(true);
+				}
 			}
 		}
 	}

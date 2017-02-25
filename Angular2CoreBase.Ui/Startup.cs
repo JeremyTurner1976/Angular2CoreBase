@@ -132,6 +132,7 @@ namespace Angular2CoreBase.Ui
 			}
 
 			*/
+			loggerFactory.AddEmailLogger(mailService, emailSettings, LogLevel.Information);
 			loggerFactory.AddDatabaseLogger(errorRepository, errorDecorator, LogLevel.Error);
 
 			if (Environment.IsDevelopment())
