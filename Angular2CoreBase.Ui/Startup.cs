@@ -20,7 +20,6 @@ namespace Angular2CoreBase.Ui
 	using Common.Interfaces.WeatherService;
 	using Common.Middleware;
 	using Common.Services;
-	using Common.Services.ConfigServices;
 	using Common.Services.WeatherServices;
 	using Data.Decorators;
 	using Data.Services.LoggingServices;
