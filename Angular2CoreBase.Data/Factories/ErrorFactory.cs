@@ -10,14 +10,14 @@
 
 	public static class ErrorFactory
 	{
-		public static Error GetErrorFromException(Exception e, LogLevel errorLevel, string strAdditionalInformation)
+		public static Error GetErrorFromException(Exception e, LogLevel errorLevel, string additionalInformation)
 		{
 			Error error = new Error
 			{
 				Message = e.GetBaseException().Message,
 				Source = e.GetBaseException().Source,
 				ErrorLevel = Enum.GetName(typeof (LogLevel), errorLevel),
-				AdditionalInformation = strAdditionalInformation,
+				AdditionalInformation = additionalInformation,
 				StackTrace = e.StackTrace + Environment.NewLine + (e.InnerException == null
 					? "             |No inner exception| "
 					: "             |Inner Exception| " + e.InnerException.ToEnhancedString())

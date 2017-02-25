@@ -71,7 +71,7 @@
 			string message,
 			LogLevel logLevel = LogLevel.None)
 		{
-			Error error = ErrorFactory.GetErrorFromException(exception, logLevel, message);
+			Error error = ErrorFactory.GetErrorFromException(exception, logLevel, logLevel.ToNameString() + ": " + exception.GetBaseException().Message);
 			//TODO handle application users and id, for now just logging to the System Admin 
 			error = _errorDecorator.GetDecoratedModel(error, 1);
 			_errorRepository.Add(error);
