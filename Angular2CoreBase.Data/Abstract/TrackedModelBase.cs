@@ -6,7 +6,7 @@ namespace Angular2CoreBase.Data.Abstract
 {
 	public abstract class TrackedModelBase : ModelBase
 	{
-		public DateTime Created { get; set; }
+		public DateTime CreatedDateTime { get; set; }
 
 		public int? CreatedByUserId { get; set; }
 

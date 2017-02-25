@@ -1,51 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Angular2CoreBase.Common.Extensions;
-using static Angular2CoreBase.Common.CustomAttributes.EnumAttributes;
-
-namespace Angular2CoreBase.Common.CommonModels.WeatherService
+﻿namespace Angular2CoreBase.Common.CommonEnums.WeatherService
 {
+	using CustomAttributes;
+
 	//https://github.com/darkskyapp/skycons
 
 	public enum Icons
 	{
-		[FileName(IconFileNames.ClearSkyDay)]
+		[EnumAttributes.FileName(IconFileNames.ClearSkyDay)]
 		ClearSkyDay,
-		[FileName(IconFileNames.ClearSkyNight)]
+		[EnumAttributes.FileName(IconFileNames.ClearSkyNight)]
 		ClearSkyNight,
-		[FileName(IconFileNames.PartlyCloudyDay)]
+		[EnumAttributes.FileName(IconFileNames.PartlyCloudyDay)]
 		PartlyCloudDay,
-		[FileName(IconFileNames.PartlyCloudyNight)]
+		[EnumAttributes.FileName(IconFileNames.PartlyCloudyNight)]
 		PartlyCloudyNight,
-		[FileName(IconFileNames.ScatteredCloudsDay)]
+		[EnumAttributes.FileName(IconFileNames.ScatteredCloudsDay)]
 		ScatteredCloudsDay,
-		[FileName(IconFileNames.ScatteredCloudsNight)]
+		[EnumAttributes.FileName(IconFileNames.ScatteredCloudsNight)]
 		ScatteredCloudsNight,
-		[FileName(IconFileNames.BrokenCloudsDay)]
+		[EnumAttributes.FileName(IconFileNames.BrokenCloudsDay)]
 		BrokenCloudsDay,
-		[FileName(IconFileNames.BrokenCloudsNight)]
+		[EnumAttributes.FileName(IconFileNames.BrokenCloudsNight)]
 		BrokenCloudsNight,
-		[FileName(IconFileNames.ShoweringRainDay)]
+		[EnumAttributes.FileName(IconFileNames.ShoweringRainDay)]
 		ShoweringRainDay,
-		[FileName(IconFileNames.ShoweringRainNight)]
+		[EnumAttributes.FileName(IconFileNames.ShoweringRainNight)]
 		ShoweringRainNight,
-		[FileName(IconFileNames.RainDay)]
+		[EnumAttributes.FileName(IconFileNames.RainDay)]
 		RainDay,
-		[FileName(IconFileNames.RainNight)]
+		[EnumAttributes.FileName(IconFileNames.RainNight)]
 		RainNight,
-		[FileName(IconFileNames.ThunderStormDay)]
+		[EnumAttributes.FileName(IconFileNames.ThunderStormDay)]
 		ThunderStormDay,
-		[FileName(IconFileNames.ThunderStormNight)]
+		[EnumAttributes.FileName(IconFileNames.ThunderStormNight)]
 		ThunderStormNight,
-		[FileName(IconFileNames.SnowDay)]
+		[EnumAttributes.FileName(IconFileNames.SnowDay)]
 		SnowDay,
-		[FileName(IconFileNames.SnowNight)]
+		[EnumAttributes.FileName(IconFileNames.SnowNight)]
 		SnowNight,
-		[FileName(IconFileNames.MistDay)]
+		[EnumAttributes.FileName(IconFileNames.MistDay)]
 		MistDay,
-		[FileName(IconFileNames.MistNight)]
+		[EnumAttributes.FileName(IconFileNames.MistNight)]
 		MistNight
 	}
 

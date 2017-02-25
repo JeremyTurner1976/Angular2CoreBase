@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
-using Angular2CoreBase.Data.Factories;
 using Angular2CoreBase.Data.Models;
 
 namespace Angular2CoreBase.Data.Database
 {
+	using Factories;
+
 	public static class CoreBaseContextSeeder
 	{
 		private const int dataPopulationCount = 25;
@@ -42,7 +43,7 @@ namespace Angular2CoreBase.Data.Database
 						context.Errors.Add(
 							ErrorFactory.GetErrorFromException(
 								exception,
-								ErrorLevels.Message,
+								ErrorFactory.ErrorLevels.Message,
 								"Expected seeded error."));
 					}
 				}

@@ -1,4 +1,7 @@
-﻿using Angular2CoreBase.Data.Abstract;
+﻿// NOTE: This error model is in 2 places, 
+// please duplicate in Common/CommonModels as the DB entities are created from that location
+
+using Angular2CoreBase.Data.Abstract;
 
 namespace Angular2CoreBase.Data.Models
 {

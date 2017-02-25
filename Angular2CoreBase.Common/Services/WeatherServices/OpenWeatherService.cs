@@ -9,18 +9,24 @@ using Angular2CoreBase.Common.Interfaces;
 
 namespace Angular2CoreBase.Common.Services.WeatherServices
 {
+	using CommonEnums.WeatherService;
 	using Extensions;
 	using Interfaces.WeatherService;
+	using Microsoft.Extensions.Logging;
 	using static CustomAttributes.EnumAttributes;
 
 	//https://openweathermap.org/api
 	public class OpenWeatherService : IWeatherService
 	{
 		public IWeatherServiceSettings WeatherServiceSettings { get; set; }
+		private readonly ILogger<OpenWeatherService> _logger;
 
-		public OpenWeatherService(IWeatherServiceSettings weatherServiceSettings)
+		public OpenWeatherService(
+			IWeatherServiceSettings weatherServiceSettings,
+			ILogger<OpenWeatherService> logger)
 		{
 			WeatherServiceSettings = weatherServiceSettings;
+			_logger = logger;
 		}
 
 		public async Task<WeatherData> GetWeatherData(double latitude, double longitude)
@@ -65,7 +71,7 @@ namespace Angular2CoreBase.Common.Services.WeatherServices
 				WeatherServiceSettings.CurrentWeatherRelativeUri);
 
 
-			using (IWebService webService = new RestService())
+			using (IWebService webService = new RestService(_logger))
 			{
 				HttpRequestMessage httpRequest =
 					new HttpRequestMessage(HttpMethod.Get, clientUri);
@@ -81,7 +87,7 @@ namespace Angular2CoreBase.Common.Services.WeatherServices
 				WeatherServiceSettings.BaseUri,
 				WeatherServiceSettings.FutureWeatherRelativeUri);
 
-			using (IWebService webService = new RestService())
+			using (IWebService webService = new RestService(_logger))
 			{
 				HttpRequestMessage httpRequest =
 					new HttpRequestMessage(HttpMethod.Get, clientUri);
@@ -107,7 +113,9 @@ namespace Angular2CoreBase.Common.Services.WeatherServices
 						SkyCon = GetSkyCon(weather.icon),
 						Icon = weather.icon,
 						CloudCover = item.clouds.cloudCover,
-						PrecipitationVolume = item.rainTotal.threeHourTotal + item.snowTotal.threeHourTotal
+						PrecipitationVolume = 
+							item.rainTotal?.threeHourTotal ?? 0
+							+ item.snowTotal?.threeHourTotal ?? 0
 					}).ToList();
 			}
 		}

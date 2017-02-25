@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Angular2CoreBase.Ui.Controllers
 {
+	using Common.Services;
+	using Common.Services.LoggingServices;
+
 	public class HomeController : Controller
 	{
 		private readonly IRepository<ApplicationUser> userRepository;
@@ -21,6 +24,9 @@ namespace Angular2CoreBase.Ui.Controllers
 		{
 			int usersCount = userRepository.Count();
 			int errorsCount = errorRepository.Count();
+
+			var fileService = new FileLoggingService(new FileService());
+			fileService.LogMessage("TEST");
 
 			return View();
 		}

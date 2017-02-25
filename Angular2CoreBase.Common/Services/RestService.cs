@@ -11,8 +11,7 @@
 	using System.Threading.Tasks;
 	using Interfaces;
 	using Microsoft.Extensions.Logging;
-	using System.Diagnostics;
-	using Microsoft.AspNetCore.Http;
+	using Middleware;
 
 	/// <summary>
 	/// An abstraction over <see cref="HttpClient"/> to address the following issues:
@@ -26,15 +25,19 @@
 
 		/// <summary>
 		/// Creates an instance of the <see cref="RestService"/>.
+		/// Requires a logger instance of the class calling this service
 		/// </summary>
 		public RestService(
+			ILogger logger,
 			IDictionary<string, string> defaultRequestHeaders = null,
 			HttpMessageHandler handler = null,
 			bool disposeHandler = true,
 			TimeSpan? timeout = null,
 			ulong? maxResponseContentBufferSize = null)
 		{
-			_client = handler == null ? new HttpClient() : new HttpClient(handler, disposeHandler);
+			_client = handler == null ? 
+				new HttpClient(new HttpClientLogging(new HttpClientHandler(), logger), true) 
+				: new HttpClient(handler, disposeHandler);
 
 			AddDefaultHeaders(defaultRequestHeaders);
 			AddRequestTimeout(timeout);

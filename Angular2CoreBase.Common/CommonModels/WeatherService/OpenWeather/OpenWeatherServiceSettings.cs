@@ -2,7 +2,6 @@
 {
 	using System;
 	using Extensions;
-	using Interfaces;
 	using Interfaces.WeatherService;
 
 	public class OpenWeatherServiceSettings : IWeatherServiceSettings

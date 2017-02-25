@@ -1,26 +1,27 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Angular2CoreBase.Common.Middleware
-{
+{ 
+	using System.Threading;
+	using Newtonsoft.Json.Linq;
+
 	//https://docs.microsoft.com/en-us/aspnet/web-api/overview/advanced/httpclient-message-handlers
 	public class HttpClientLogging : DelegatingHandler
 	{
-		private readonly ILogger<HttpClientLogging> _logger;
+		private readonly ILogger _logger;
 
-		public HttpClientLogging(ILogger<HttpClientLogging> logger)
+		public HttpClientLogging(HttpMessageHandler innerHandler, ILogger logger)
+			: base(innerHandler)
 		{
 			_logger = logger;
 		}
 
 		protected override async Task<HttpResponseMessage> SendAsync(
-			HttpRequestMessage request, System.Threading.CancellationToken cancellationToken)
+			HttpRequestMessage request, CancellationToken cancellationToken)
 		{
 
 			DateTime startTime = DateTime.UtcNow;
@@ -29,13 +30,13 @@ namespace Angular2CoreBase.Common.Middleware
 			var response = await base.SendAsync(request, cancellationToken);
 			watch.Stop();
 
-			string logTemplate = @"
-				Client IP: {clientIP}
-				Request path: {requestPath}
-				Start time: {startTime}
-				Duration: {duration} ms
-				Request: {request}
-				Response: {response}";
+			string logTemplate =
+				"Client IP: {clientIP}" + 
+				"Request path: {requestPath}" +
+				"Start time: {startTime}" +
+				"Duration: {duration} ms" +
+				"Request: {request}" +
+				"Response: {response}"; 
 
 			_logger.LogInformation(
 				logTemplate,
@@ -44,9 +45,11 @@ namespace Angular2CoreBase.Common.Middleware
 				startTime,
 				watch.ElapsedMilliseconds,
 				request,
-				response);
+				JObject.Parse(await response.Content.ReadAsStringAsync()));
 
 			return response;
 		}
+
+	
 	}
 }

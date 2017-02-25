@@ -1,24 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using Angular2CoreBase.Data.Models;
-
-namespace Angular2CoreBase.Data.Factories
+﻿namespace Angular2CoreBase.Data.Factories
 {
-public enum ErrorLevels
-	{
-		Message,
-		Warning,
-		Critical,
-		Default
-	};
+	using System;
+	using System.Collections.Generic;
+	using System.IO;
+	using System.Runtime.InteropServices;
+	using System.Text;
+	using System.Threading.Tasks;
+	using Models;
 
 	public static class ErrorFactory
 	{
+		public enum ErrorLevels
+		{
+			Message,
+			Warning,
+			Critical,
+			Default
+		};
+
 		public static Error GetErrorFromException(Exception e, ErrorLevels errorLevel, string strAdditionalInformation)
 		{
 			Error error = new Error
@@ -28,7 +27,7 @@ public enum ErrorLevels
 				ErrorLevel = Enum.GetName(typeof(ErrorLevels), errorLevel),
 				AdditionalInformation = strAdditionalInformation,
 				StackTrace = e.StackTrace + Environment.NewLine + (e.InnerException == null ? "             |No inner exception| " : "             |Inner Exception| " + GetErrorAsString(e.InnerException)),
-				Created = DateTime.UtcNow
+				CreatedDateTime = DateTime.UtcNow
 			};
 
 			return error;
@@ -36,8 +35,6 @@ public enum ErrorLevels
 
 		public static string GetErrorAsHtml(Exception e)
 		{
-			Debug.WriteLine("ErrorFactory.GetErrorAsHtml()");
-
 			StringBuilder stringBuilder= new StringBuilder();
 			bool first = true;
 
@@ -62,8 +59,6 @@ public enum ErrorLevels
 
 		public static string GetErrorAsString(Exception e)
 		{
-			Debug.WriteLine("ErrorFactory.GetErrorAsString()");
-
 			StringBuilder stringBuilder= new StringBuilder();
 			bool first = true;
 
@@ -93,8 +88,6 @@ public enum ErrorLevels
 
 		public static string GetAggregateErrorAsHtml(AggregateException ae)
 		{
-			Debug.WriteLine("ErrorFactory.GetAggregateErrorAsHtml()");
-
 			StringBuilder stringBuilder = new StringBuilder();
 			 stringBuilder.AppendLine("|AGGREGATE ERROR|");
 			 stringBuilder.AppendLine(GetErrorAsString(ae.GetBaseException()));
@@ -122,8 +115,6 @@ public enum ErrorLevels
 
 		public static string GetAggregateErrorAsString(AggregateException ae)
 		{
-			Debug.WriteLine("ErrorFactory.GetAggregateErrorAsString()");
-
 			StringBuilder stringBuilder = new StringBuilder();
 			 stringBuilder.AppendLine("|AGGREGATE ERROR|");
 			 stringBuilder.AppendLine(GetErrorAsString(ae.GetBaseException()));
@@ -141,16 +132,12 @@ public enum ErrorLevels
 		//helper method for throwing an aggregate exception
 		private static string[] GetAllFiles(string str)
 		{
-			Debug.WriteLine("ErrorFactory.GetAllFiles()");
-
 			// Should throw an UnauthorizedAccessException exception. 
 			return Directory.GetFiles(str, "*.txt", SearchOption.AllDirectories);
 		}
 
 		public static bool GetThrownException()
 		{
-			Debug.WriteLine("ErrorFactory.GetThrownException()");
-
 			int n = 0;
 			int divideByZero = 1 / n;
 
@@ -163,8 +150,6 @@ public enum ErrorLevels
 		/// <returns>An awaitable method that will cause an aggregate exception</returns>
 		public static Task<string[][]> GetThrownAggregateException()
 		{
-			Debug.WriteLine("ErrorFactory.GetThrownAggregateException()");
-
 			// Get a folder path whose directories should throw an UnauthorizedAccessException. 
 			string path = Directory.GetParent(
 				Environment.GetEnvironmentVariable(
@@ -182,8 +167,6 @@ public enum ErrorLevels
 
 		private static IEnumerable<string> GetStackStraceStrings(string strStackTrace)
 		{
-			Debug.WriteLine("ErrorFactory.GetStackStraceStrings()");
-
 			return strStackTrace == null ? new[] { "" } :
 				strStackTrace.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
 		}

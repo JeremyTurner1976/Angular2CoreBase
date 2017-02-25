@@ -5,7 +5,6 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Reflection;
-	using static Angular2CoreBase.Common.CustomAttributes.EnumAttributes;
 
 	public static class EnumExtensions
 	{

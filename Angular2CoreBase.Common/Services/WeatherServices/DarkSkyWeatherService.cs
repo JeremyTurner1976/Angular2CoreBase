@@ -5,11 +5,13 @@
 	using System.Linq;
 	using System.Net.Http;
 	using System.Threading.Tasks;
+	using CommonEnums.WeatherService;
 	using CommonModels.WeatherService;
 	using CommonModels.WeatherService.DarkSkyWeather;
 	using Extensions;
 	using Interfaces;
 	using Interfaces.WeatherService;
+	using Microsoft.Extensions.Logging;
 
 	//https://darksky.net/dev/docs/forecast
 	public class DarkSkyWeatherService : IWeatherService
@@ -25,10 +27,15 @@
 			Snow
 		}
 
-		public DarkSkyWeatherService(IWeatherServiceSettings weatherServiceSettings)
+		private readonly ILogger<DarkSkyWeatherService> _logger;
+
+		public DarkSkyWeatherService(
+			IWeatherServiceSettings weatherServiceSettings,
+			ILogger<DarkSkyWeatherService> logger)
 		{
 			WeatherServiceSettings = weatherServiceSettings;
-		}
+			_logger = logger;	
+;		}
 
 		public async Task<WeatherData> GetWeatherData(double latitude, double longitude)
 		{
@@ -54,7 +61,7 @@
 				WeatherServiceSettings.CurrentWeatherRelativeUri);
 
 
-			using (IWebService webService = new RestService())
+			using (IWebService webService = new RestService(_logger))
 			{
 				HttpRequestMessage httpRequest =
 					new HttpRequestMessage(HttpMethod.Get, clientUri);

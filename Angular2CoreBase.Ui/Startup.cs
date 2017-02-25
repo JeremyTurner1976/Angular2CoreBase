@@ -13,10 +13,8 @@ using Microsoft.Extensions.Logging;
 namespace Angular2CoreBase.Ui
 {
 	using Common.CommonModels.WeatherService.DarkSkyWeather;
-	using Common.CommonModels.WeatherService.OpenWeather;
 	using Common.Interfaces.WeatherService;
 	using Common.Middleware;
-	using Common.Services;
 	using Common.Services.WeatherServices;
 
 	public class Startup
@@ -72,13 +70,16 @@ namespace Angular2CoreBase.Ui
 			//services.AddSingleton<IOperationSingletonInstance>(new Operation(Guid.Empty));
 			//services.AddTransient<OperationService, OperationService>();
 
+
+
 			//Dark Sky Api
-			//services.AddSingleton<IWeatherServiceSettings, DarkSkyWeatherServiceSettings>();
-			//services.AddTransient<IWeatherService, DarkSkyWeatherService>();
+			services.AddSingleton<IWeatherServiceSettings, DarkSkyWeatherServiceSettings>();
+			services.AddTransient<IWeatherService, DarkSkyWeatherService>();
 
 			//Open Weather Api
-			services.AddSingleton<IWeatherServiceSettings, OpenWeatherServiceSettings>();
-			services.AddTransient<IWeatherService, OpenWeatherService>();
+			//services.AddSingleton<IWeatherServiceSettings, OpenWeatherServiceSettings>();
+			//services.AddTransient<IWeatherService, OpenWeatherService>();
+
 
 			services.AddSingleton<IRepository<ApplicationUser>, CoreBaseRepository<ApplicationUser>>();
 			services.AddSingleton<IRepository<Error>, CoreBaseRepository<Error>>();

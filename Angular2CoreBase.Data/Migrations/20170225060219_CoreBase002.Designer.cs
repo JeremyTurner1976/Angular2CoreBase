@@ -2,14 +2,16 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Angular2CoreBase.Data.Database;
 
 namespace Angular2CoreBase.Data.Migrations
 {
     [DbContext(typeof(CoreBaseContext))]
-    partial class CoreBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20170225060219_CoreBase002")]
+    partial class CoreBase002
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.0-rtm-22752")
