@@ -10,6 +10,7 @@
 	using Interfaces;
 	using Microsoft.Extensions.Logging;
 	using Middleware;
+	using System.Linq;
 
 	/// <summary>
 	///     An abstraction over <see cref="HttpClient" /> to address the following issues:

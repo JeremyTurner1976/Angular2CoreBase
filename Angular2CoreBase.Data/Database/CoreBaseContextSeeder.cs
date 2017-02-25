@@ -5,6 +5,7 @@
 	using Faker;
 	using Microsoft.Extensions.Logging;
 	using Models;
+	using System.Linq;
 
 	public static class CoreBaseContextSeeder
 	{

@@ -12,6 +12,7 @@
 	using Interfaces.WeatherService;
 	using Microsoft.Extensions.Logging;
 	using Enumerable = System.Linq.Enumerable;
+	using System.Linq;
 
 	//https://darksky.net/dev/docs/forecast
 	public class DarkSkyWeatherService : IWeatherService
