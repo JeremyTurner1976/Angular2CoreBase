@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 namespace Angular2CoreBase.Common.Abstract
 {
 	using CommonEnums.FileService;
+	using Extensions;
 	using Interfaces;
 	using Microsoft.Extensions.Logging;
 
@@ -60,7 +61,7 @@ namespace Angular2CoreBase.Common.Abstract
 
 			if (exception != null)
 			{
-				message += Environment.NewLine + Environment.NewLine + exception.ToString();
+				message += Environment.NewLine + Environment.NewLine + exception.ToEnhancedString();
 			}
 
 			return message;
@@ -93,7 +94,7 @@ namespace Angular2CoreBase.Common.Abstract
 
 			if (exception != null)
 			{
-				message += Environment.NewLine + Environment.NewLine + exception.ToString();
+				message += Environment.NewLine + Environment.NewLine + exception.ToEnhancedString();
 			}
 
 			return message;

@@ -9,7 +9,7 @@ namespace Angular2CoreBase.Common.Extensions
 
 	public static class ErrorExtensions
 	{
-		public static string GetErrorAsHtml(this Exception e)
+		public static string ToHtml(this Exception e)
 		{
 			StringBuilder stringBuilder = new StringBuilder();
 			bool first = true;
@@ -33,7 +33,7 @@ namespace Angular2CoreBase.Common.Extensions
 			return stringBuilder.ToString();
 		}
 
-		public static string GetErrorAsString(this Exception e)
+		public static string ToEnhancedString(this Exception e)
 		{
 			StringBuilder stringBuilder = new StringBuilder();
 			bool first = true;
@@ -62,11 +62,11 @@ namespace Angular2CoreBase.Common.Extensions
 			return stringBuilder.ToString();
 		}
 
-		public static string GetAggregateErrorAsHtml(this AggregateException ae)
+		public static string ToHtml(this AggregateException ae)
 		{
 			StringBuilder stringBuilder = new StringBuilder();
 			stringBuilder.AppendLine("|AGGREGATE ERROR|");
-			stringBuilder.AppendLine(GetErrorAsString(ae.GetBaseException()));
+			stringBuilder.AppendLine(ToEnhancedString(ae.GetBaseException()));
 			stringBuilder.AppendLine("");
 			bool first = true;
 
@@ -89,16 +89,16 @@ namespace Angular2CoreBase.Common.Extensions
 			return stringBuilder.ToString();
 		}
 
-		public static string GetAggregateErrorAsString(this AggregateException ae)
+		public static string ToEnhancedString(this AggregateException ae)
 		{
 			StringBuilder stringBuilder = new StringBuilder();
 			stringBuilder.AppendLine("|AGGREGATE ERROR|");
-			stringBuilder.AppendLine(GetErrorAsString(ae.GetBaseException()));
+			stringBuilder.AppendLine(ToEnhancedString(ae.GetBaseException()));
 			stringBuilder.AppendLine("");
 
 			foreach (Exception e in ae.InnerExceptions)
 			{
-				stringBuilder.AppendLine(GetErrorAsString(e));
+				stringBuilder.AppendLine(ToEnhancedString(e));
 				stringBuilder.AppendLine("");
 			}
 

@@ -28,7 +28,7 @@ namespace Angular2CoreBase.Ui.Controllers
 			//int errorsCount = errorRepository.Count();
 
 			//For testing error loggers
-			//var thrownException = ErrorFactory.GetThrownException();
+			//ErrorFactory.GetThrownException();
 
 			return View();
 		}

@@ -2,14 +2,12 @@
 {
 	using System;
 	using Abstract;
+	using Extensions;
 	using Interfaces;
 	using Microsoft.Extensions.Logging;
 
 	public class EmailLoggingService : BaseLogger
 	{
-		//TODO GET EMAIL SETS FROM CONFIG
-		//TODO EMAIL SERVICE UP AND WORKING
-		//TODO DATABASE SERVICE UP AND WORKING
 		private readonly IEmailService _mailService;
 
 		public EmailLoggingService(string categoryName, Func<string, LogLevel, bool> filter, IEmailService mailService)

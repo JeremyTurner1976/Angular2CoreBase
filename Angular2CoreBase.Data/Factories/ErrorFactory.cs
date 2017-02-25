@@ -29,19 +29,17 @@
 				AdditionalInformation = strAdditionalInformation,
 				StackTrace = e.StackTrace + Environment.NewLine + (e.InnerException == null 
 				? "             |No inner exception| " 
-				: "             |Inner Exception| " + e.InnerException.GetErrorAsString()),
+				: "             |Inner Exception| " + e.InnerException.ToEnhancedString()),
 				CreatedDateTime = DateTime.UtcNow
 			};
 
 			return error;
 		}
 
-		public static bool GetThrownException()
+		public static void GetThrownException()
 		{
 			int n = 0;
 			int divideByZero = 1 / n;
-
-			return false;
 		}
 
 		/// <summary>

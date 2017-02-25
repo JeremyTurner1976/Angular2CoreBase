@@ -31,17 +31,17 @@ namespace Angular2CoreBase.Ui.Controllers
 			}
 			catch (HttpRequestException httpRequestException)
 			{
-				return BadRequest(httpRequestException.GetErrorAsString());
+				return BadRequest(httpRequestException.ToEnhancedString());
 			}
 			catch (AggregateException aggregateException)
 			{
 				return StatusCode(StatusCodes.Status500InternalServerError,
-					aggregateException.GetAggregateErrorAsString());
+					aggregateException.ToEnhancedString());
 			}
 			catch (Exception exception)
 			{
 				return StatusCode(StatusCodes.Status500InternalServerError,
-					exception.GetErrorAsString());
+					exception.ToEnhancedString());
 			}
 		}
 	}
