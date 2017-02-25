@@ -13,6 +13,8 @@
 	{
 		//TODO EMAIL CLASS SETS FROM CONFIG (EmailClass gets populated and then shared out - many consumers (including context seeder)
 		//Application Name in Config Also
+
+		//Or just an Application settings class?
 		public async void SendMail(
 			string to,
 			string carbonCopy,

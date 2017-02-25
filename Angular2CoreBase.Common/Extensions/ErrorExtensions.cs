@@ -18,8 +18,8 @@ namespace Angular2CoreBase.Common.Extensions
 			{
 				stringBuilder.Append(first ? "<br/>" : "<br/><br/><br/>");
 				first = false;
-				stringBuilder.Append("|Message| " + e.GetBaseException().Message + "<br/>");
-				stringBuilder.Append("|Source| " + e.GetBaseException().Source + "<br/>");
+				stringBuilder.Append("|Message| " + e.Message + "<br/>");
+				stringBuilder.Append("|Source| " + e.Source + "<br/>");
 				stringBuilder.AppendLine("[Stack Trace|<br/>");
 				foreach (string item in GetStackStraceStrings(e.StackTrace))
 				{
@@ -46,9 +46,9 @@ namespace Angular2CoreBase.Common.Extensions
 					stringBuilder.AppendLine();
 				}
 				first = false;
-				stringBuilder.AppendLine("|Message| " + e.GetBaseException().Message);
+				stringBuilder.AppendLine("|Message| " + e.Message);
 				stringBuilder.AppendLine("|Time| " + DateTime.Now);
-				stringBuilder.AppendLine("|Source| " + e.GetBaseException().Source);
+				stringBuilder.AppendLine("|Source| " + e.Source);
 				stringBuilder.AppendLine("[Stack Trace|");
 				foreach (string item in GetStackStraceStrings(e.StackTrace))
 				{
@@ -74,8 +74,8 @@ namespace Angular2CoreBase.Common.Extensions
 			{
 				stringBuilder.Append(first ? "<br/>" : "<br/><br/><br/>");
 				first = false;
-				stringBuilder.Append("|Message| " + e.GetBaseException().Message + "<br/>");
-				stringBuilder.Append("|Source| " + e.GetBaseException().Source + "<br/>");
+				stringBuilder.Append("|Message| " + e.Message + "<br/>");
+				stringBuilder.Append("|Source| " + e.Source + "<br/>");
 				stringBuilder.AppendLine("[Stack Trace|<br/>");
 				foreach (string item in GetStackStraceStrings(e.StackTrace))
 				{
