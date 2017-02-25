@@ -62,7 +62,7 @@ namespace Angular2CoreBase.Common.CommonModels.WeatherService.OpenWeather
 		public long dateTime { get; set; }
 
 		public DateTime startDateTime
-			=> dateTime.GetDateTimeFromJavascriptTicks();
+			=> dateTime.GetDateTimeFromUnixTimestamp();
 
 		public Main main { get; set; }
 
@@ -97,9 +97,9 @@ namespace Angular2CoreBase.Common.CommonModels.WeatherService.OpenWeather
 		public long sunset { get; set; }
 
 		public DateTime sunriseTime
-			=> sunrise.GetDateTimeFromJavascriptTicks();
+			=> sunrise.GetDateTimeFromUnixTimestamp();
 
 		public DateTime sunsetTime
-			=> sunset.GetDateTimeFromJavascriptTicks();
+			=> sunset.GetDateTimeFromUnixTimestamp();
 	}
 }

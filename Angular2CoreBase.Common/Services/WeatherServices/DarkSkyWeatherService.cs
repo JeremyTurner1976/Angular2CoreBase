@@ -17,8 +17,8 @@
 	public class DarkSkyWeatherService : IWeatherService
 	{
 		public IWeatherServiceSettings WeatherServiceSettings { get; set; }
-		public int DayTimeStart { get; set; } = 7;
-		public int DayTimeEnd { get; set; } = 19;
+		public int DayTimeStart { get; set; } 
+		public int DayTimeEnd { get; set; } 
 
 		public const int Freezing = 31;
 
@@ -42,6 +42,9 @@
 			DarkSkyWeather darkSkyWeather = await GetWeather(latitude, longitude);
 			if (darkSkyWeather != null)
 			{
+				DayTimeStart = darkSkyWeather.daily.data.FirstOrDefault().sunrise.Hour;
+				DayTimeEnd = darkSkyWeather.daily.data.FirstOrDefault().sunset.Hour;
+
 				return new WeatherData()
 				{
 					Description = darkSkyWeather.currently.summary,

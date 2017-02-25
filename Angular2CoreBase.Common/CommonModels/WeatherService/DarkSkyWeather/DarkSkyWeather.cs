@@ -25,7 +25,7 @@ namespace Angular2CoreBase.Common.CommonModels.WeatherService.DarkSkyWeather
 			public long time { get; set; }
 
 			public DateTime dateTime
-				=> time.GetDateTimeFromJavascriptTicks();
+				=> time.GetDateTimeFromUnixTimestamp();
 
 			public string summary { get; set; }
 			public string icon { get; set; }
@@ -50,7 +50,7 @@ namespace Angular2CoreBase.Common.CommonModels.WeatherService.DarkSkyWeather
 			public long time { get; set; }
 
 			public DateTime dateTime
-				=> time.GetDateTimeFromJavascriptTicks();
+				=> time.GetDateTimeFromUnixTimestamp();
 			public double precipIntensity { get; set; }
 			public double precipProbability { get; set; }
 		}
@@ -67,7 +67,7 @@ namespace Angular2CoreBase.Common.CommonModels.WeatherService.DarkSkyWeather
 			public long time { get; set; }
 
 			public DateTime dateTime
-				=> time.GetDateTimeFromJavascriptTicks();
+				=> time.GetDateTimeFromUnixTimestamp();
 
 			public string summary { get; set; }
 			public string icon { get; set; }
@@ -96,17 +96,17 @@ namespace Angular2CoreBase.Common.CommonModels.WeatherService.DarkSkyWeather
 		{
 			public long time { get; set; }
 			public DateTime dateTime
-				=> time.GetDateTimeFromJavascriptTicks();
+				=> time.GetDateTimeFromUnixTimestamp();
 
 			public string summary { get; set; }
 			public string icon { get; set; }
 			public long sunriseTime { get; set; }
 			public long sunsetTime { get; set; }
 			public DateTime sunrise
-				=> sunriseTime.GetDateTimeFromJavascriptTicks();
+				=> sunriseTime.GetDateTimeFromUnixTimestamp();
 
 			public DateTime sunset
-				=> sunsetTime.GetDateTimeFromJavascriptTicks();
+				=> sunsetTime.GetDateTimeFromUnixTimestamp();
 
 			public double moonPhase { get; set; }
 			public double precipIntensity { get; set; }

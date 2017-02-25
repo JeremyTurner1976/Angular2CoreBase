@@ -9,7 +9,7 @@ namespace Angular2CoreBase.Common.Extensions
 
 	public static class ErrorExtensions
 	{
-		private const string customHtmlCss = "style='padding:40px; border: red 1px solid; border-radius: 15px; margin: 25px; padding-top:15px;'";
+		private const string customHtmlCss = "style='min-width:800px; padding:40px; border: red 1px solid; border-radius: 15px; margin: 25px; padding-top:15px;'";
 
 		public static string ToHtml(this Exception e)
 		{

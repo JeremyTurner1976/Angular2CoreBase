@@ -4,9 +4,9 @@ namespace Angular2CoreBase.Common.Extensions
 {
 	public static class LongExtensions
 	{
-		public static DateTime GetDateTimeFromJavascriptTicks(this long ticks)
+		public static DateTime GetDateTimeFromUnixTimestamp(this long seconds)
 		{
-			return new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddTicks(ticks);
+			return new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(seconds);
 		}
 	}
 }

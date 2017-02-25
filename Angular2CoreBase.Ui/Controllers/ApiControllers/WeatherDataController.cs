@@ -15,12 +15,9 @@
 	{
 		public IWeatherService WeatherService { get; }
 
-		private readonly ILogger<WeatherDataController> _logger;
-
-		public WeatherDataController(IWeatherService weatherService, ILogger<WeatherDataController> logger)
+		public WeatherDataController(IWeatherService weatherService)
 		{
 			WeatherService = weatherService;
-			_logger = logger;
 		}
 
 		[HttpGet("[action]")]
