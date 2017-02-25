@@ -25,7 +25,9 @@ namespace Angular2CoreBase.Ui
 	using Data.Services.LoggingServices;
 	using Newtonsoft.Json.Serialization;
 	using Data.Extensions;
+	using Microsoft.AspNetCore.Diagnostics;
 	using Microsoft.Extensions.Options;
+	using Microsoft.AspNetCore.Http;
 
 	public class Startup
 	{
@@ -41,7 +43,7 @@ namespace Angular2CoreBase.Ui
 		}
 
 		public IConfigurationRoot Configuration { get; }
-		private IHostingEnvironment Environment { get; set; }
+		private IHostingEnvironment Environment { get; }
 
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
@@ -153,6 +155,22 @@ namespace Angular2CoreBase.Ui
 				app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
 				{
 					HotModuleReplacement = true
+				});
+
+				app.UseExceptionHandler(errorApp =>
+				{
+					errorApp.Run(async context =>
+					{
+						context.Response.StatusCode = 500; // or another Status accordingly to Exception Type
+						context.Response.ContentType = "text/html";
+
+						IExceptionHandlerFeature error = 
+							context.Features.Get<IExceptionHandlerFeature>();
+						if (error != null)
+						{
+							await context.Response.WriteAsync(error.Error.ToHtml());
+						}
+					});
 				});
 			}
 			else

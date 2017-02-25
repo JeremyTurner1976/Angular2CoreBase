@@ -30,6 +30,14 @@ namespace Angular2CoreBase.Ui.Controllers
 			//For testing error loggers
 			//ErrorFactory.GetThrownException();
 
+
+			//Implement a file getter page for developers (add webservice file Directory), and database errors
+			//Implement weather service
+			//Implement Client Side Errors
+			//Implement toaster
+
+			//Implement Authentication
+
 			return View();
 		}
 

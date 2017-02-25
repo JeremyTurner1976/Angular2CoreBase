@@ -15,11 +15,6 @@
 
 	public class EmailService : IEmailService
 	{
-		//Set up config based Email, using Emails directory
-
-		//Implement a file getter page for developers (add webservice file Directory), and database errors
-		//Implement Authentication
-
 		private readonly ApplicationSettings _applicationSettings;
 		private readonly EmailSettings _emailSettings;
 		private readonly IFileService _fileService;
