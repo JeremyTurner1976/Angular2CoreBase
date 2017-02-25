@@ -47,14 +47,17 @@
 			_mailService.SendMail("363015fdfa2f4211b9d42ee5cf@gmail.com", null, null, subject, message);
 		}
 
-		public override void LogError(string error)
+		public override void LogError(
+			Exception exception,
+			string message,
+			LogLevel logLevel = LogLevel.None)
 		{
-			_mailService.SendMail("363015fdfa2f4211b9d42ee5cf@gmail.com", null, null, errorSubject, error);
+			_mailService.SendMail("363015fdfa2f4211b9d42ee5cf@gmail.com", null, null, errorSubject, message);
 		}
 
-		public override void LogMessage(string message)
+		public override void LogMessage(string subject, string message)
 		{
-			_mailService.SendMail("363015fdfa2f4211b9d42ee5cf@gmail.com", null, null, messageSubject, message);
+			_mailService.SendMail("363015fdfa2f4211b9d42ee5cf@gmail.com", null, null, subject, message);
 		}
 	}
 }

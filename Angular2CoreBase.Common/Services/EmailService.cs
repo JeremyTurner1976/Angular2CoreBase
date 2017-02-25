@@ -11,8 +11,8 @@
 
 	public class EmailService : IEmailService
 	{
-		//TODO GET EMAIL SETS FROM CONFIG
-		//TODO DATABASE ERROR AND LOGSERVICE UP AND WORKING
+		//TODO EMAIL CLASS SETS FROM CONFIG
+		//TODO DATABASE ERROR AND LOGSERVICE UP AND WORKING - IN DATA
 		//https://www.gnostice.com/XtremeDocumentStudio_dot_NET.asp
 
 		public async void SendMail(

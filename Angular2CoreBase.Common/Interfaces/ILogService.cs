@@ -1,9 +1,12 @@
 ﻿namespace Angular2CoreBase.Common.Interfaces
 {
+	using System;
+	using Microsoft.Extensions.Logging;
+
 	public interface ILogService
 	{
-		void LogMessage(string message);
+		void LogMessage(string subject, string message);
 
-		void LogError(string error);
+		void LogError(Exception exception, string message, LogLevel logLevel = LogLevel.None);
 	}
 }

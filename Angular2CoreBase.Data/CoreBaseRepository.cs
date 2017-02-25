@@ -61,9 +61,6 @@ namespace Angular2CoreBase.Data
 			coreBaseContext
 				.Set<T>()
 				.Add(model);
-
-
-			Save(model);
 		}
 
 		public void Update(T model)
@@ -71,9 +68,6 @@ namespace Angular2CoreBase.Data
 			coreBaseContext
 				.Entry(model)
 				.State = EntityState.Modified;
-
-
-			Save(model);
 		}
 
 		public void Delete(T model)
@@ -81,11 +75,9 @@ namespace Angular2CoreBase.Data
 			coreBaseContext
 				.Set<T>()
 				.Remove(model);
-
-			Save(model);
 		}
 
-		public void Save(T model)
+		public void SaveChanges()
 		{
 			coreBaseContext
 				.SaveChanges();

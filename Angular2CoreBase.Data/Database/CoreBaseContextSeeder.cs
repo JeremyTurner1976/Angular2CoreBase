@@ -5,6 +5,7 @@ using Angular2CoreBase.Data.Models;
 namespace Angular2CoreBase.Data.Database
 {
 	using Factories;
+	using Microsoft.Extensions.Logging;
 
 	public static class CoreBaseContextSeeder
 	{
@@ -14,7 +15,18 @@ namespace Angular2CoreBase.Data.Database
 		{
 			if (!context.ApplicationUsers.Any())
 			{
-				for (int i = 0; i < dataPopulationCount; i++)
+				//Add a base application level user
+				context.ApplicationUsers.Add(new ApplicationUser()
+				{
+					FirstName = "System",
+					LastName = "Generated Super User",
+					Email = "363015fdfa2f4211b9d42ee5cf@gmail.com",
+					Password = "admin",
+					DisplayName = "Administrator",
+					Active = true
+				});
+
+				for (int i =1; i < dataPopulationCount; i++)
 				{
 					context.ApplicationUsers.Add(new ApplicationUser()
 					{
@@ -40,11 +52,14 @@ namespace Angular2CoreBase.Data.Database
 					}
 					catch (Exception exception)
 					{
-						context.Errors.Add(
-							ErrorFactory.GetErrorFromException(
+						Error error = ErrorFactory.GetErrorFromException(
 								exception,
-								ErrorFactory.ErrorLevels.Message,
-								"Expected seeded error."));
+								LogLevel.Information,
+								"Expected seeded error.");
+						error.CreatedDateTime = DateTime.UtcNow;
+						error.CreatedByUserId = 1;
+
+						context.Errors.Add(error);
 					}
 				}
 				context.SaveChanges();

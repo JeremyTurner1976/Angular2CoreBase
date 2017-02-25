@@ -31,8 +31,8 @@ namespace Angular2CoreBase.Common.Abstract
 
 		public abstract void Log(LogLevel logLevel, int eventId, object state, Exception exception,Func<object, Exception, string> formatter);
 		public abstract void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter);
-		public abstract void LogMessage(string message);
-		public abstract void LogError(string error);
+		public abstract void LogMessage(string subject, string message);
+		public abstract void LogError(Exception exception, string message, LogLevel logLevel = LogLevel.None);
 
 		protected string VerifyAndGenerateMessage(
 			LogLevel logLevel,

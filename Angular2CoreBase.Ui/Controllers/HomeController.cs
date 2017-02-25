@@ -23,7 +23,7 @@ namespace Angular2CoreBase.Ui.Controllers
 
 		public IActionResult Index()
 		{
-			//Fore testing database is working
+			//For testing database is working
 			//int usersCount = userRepository.Count();
 			//int errorsCount = errorRepository.Count();
 

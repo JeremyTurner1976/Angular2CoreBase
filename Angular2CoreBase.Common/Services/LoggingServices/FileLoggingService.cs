@@ -54,14 +54,17 @@
 		private string GetFormattedFileOutput(string subject, string message)
 			=> Environment.NewLine + DateTime.Now + "  " + subject + Environment.NewLine + message + Environment.NewLine;
 
-		public override void LogError(string error)
+		public override void LogError(
+			Exception exception,
+			string message,
+			LogLevel logLevel = LogLevel.None)
 		{
-			_fileService.SaveTextToDirectoryFile(DirectoryFolders.Errors, GetFormattedFileOutput(errorSubject, error));
+			_fileService.SaveTextToDirectoryFile(DirectoryFolders.Errors, GetFormattedFileOutput(errorSubject, message));
 		}
 
-		public override void LogMessage(string message)
+		public override void LogMessage(string subject, string message)
 		{
-			_fileService.SaveTextToDirectoryFile(DirectoryFolders.Logs, GetFormattedFileOutput(messageSubject, message)); ;
+			_fileService.SaveTextToDirectoryFile(DirectoryFolders.Logs, GetFormattedFileOutput(messageSubject, message)); 
 		}
 
 		public DirectoryFolders GetFolder(LogLevel logLevel)

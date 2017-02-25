@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-
 namespace Angular2CoreBase.Common.Extensions
 {
 	using Interfaces;
@@ -11,15 +9,17 @@ namespace Angular2CoreBase.Common.Extensions
 
 	public static class LoggerFactoryExtensions
 	{
-		public static ILoggerFactory AddEmail(this ILoggerFactory factory,
-									  IEmailService mailService,
-									  Func<string, LogLevel, bool> filter = null)
+		public static ILoggerFactory AddEmail(
+			this ILoggerFactory factory,
+			IEmailService mailService,
+			Func<string, LogLevel, bool> filter = null)
 		{
 			factory.AddProvider(new EmailLoggerProvider(filter, mailService));
 			return factory;
 		}
 
-		public static ILoggerFactory AddEmail(this ILoggerFactory factory,
+		public static ILoggerFactory AddEmail(
+			this ILoggerFactory factory,
 			IEmailService mailService, 
 			LogLevel minLevel)
 		{
@@ -29,15 +29,17 @@ namespace Angular2CoreBase.Common.Extensions
 				(_, logLevel) => logLevel >= minLevel);
 		}
 
-		public static ILoggerFactory AddFile(this ILoggerFactory factory,
-							  IFileService fileservice,
-							  Func<string, LogLevel, bool> filter = null)
+		public static ILoggerFactory AddFile(
+			this ILoggerFactory factory,
+			IFileService fileservice,
+			Func<string, LogLevel, bool> filter = null)
 		{
 			factory.AddProvider(new FileLoggerProvider(filter, fileservice));
 			return factory;
 		}
 
-		public static ILoggerFactory AddFile(this ILoggerFactory factory,
+		public static ILoggerFactory AddFile(
+			this ILoggerFactory factory,
 			IFileService fileservice,
 			LogLevel minLevel)
 		{

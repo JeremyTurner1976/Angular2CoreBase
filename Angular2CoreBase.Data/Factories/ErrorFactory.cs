@@ -7,30 +7,22 @@
 	using System.Text;
 	using System.Threading.Tasks;
 	using Common.Extensions;
+	using Microsoft.Extensions.Logging;
 	using Models;
 
 	public static class ErrorFactory
 	{
-		public enum ErrorLevels
-		{
-			Message,
-			Warning,
-			Critical,
-			Default
-		};
-
-		public static Error GetErrorFromException(Exception e, ErrorLevels errorLevel, string strAdditionalInformation)
+		public static Error GetErrorFromException(Exception e, LogLevel errorLevel, string strAdditionalInformation)
 		{
 			Error error = new Error
 			{
 				Message = e.GetBaseException().Message,
 				Source = e.GetBaseException().Source,
-				ErrorLevel = Enum.GetName(typeof(ErrorLevels), errorLevel),
+				ErrorLevel = Enum.GetName(typeof(LogLevel), errorLevel),
 				AdditionalInformation = strAdditionalInformation,
 				StackTrace = e.StackTrace + Environment.NewLine + (e.InnerException == null 
 				? "             |No inner exception| " 
-				: "             |Inner Exception| " + e.InnerException.ToEnhancedString()),
-				CreatedDateTime = DateTime.UtcNow
+				: "             |Inner Exception| " + e.InnerException.ToEnhancedString())
 			};
 
 			return error;
@@ -68,6 +60,24 @@
 		{
 			// Should throw an UnauthorizedAccessException exception. 
 			return Directory.GetFiles(str, "*.txt", SearchOption.AllDirectories);
+		}
+
+		public static Error GetErrorFromDetails(
+			string message, 
+			string additionalInformation, 
+			string logLevel)
+		{
+			Error error = new Error
+			{
+				Message = message,
+				Source = "Generated Error Message",
+				ErrorLevel = logLevel,
+				AdditionalInformation = additionalInformation,
+				StackTrace = null,
+				CreatedDateTime = DateTime.UtcNow
+			};
+
+			return error;
 		}
 	}
 }
