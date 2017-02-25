@@ -12,16 +12,22 @@ using Microsoft.Extensions.Logging;
 
 namespace Angular2CoreBase.Ui
 {
+	using System;
 	using Common.CommonModels.WeatherService.DarkSkyWeather;
+	using Common.Extensions;
+	using Common.Interfaces;
 	using Common.Interfaces.WeatherService;
 	using Common.Middleware;
+	using Common.Services;
+	using Common.Services.LoggingServices;
 	using Common.Services.WeatherServices;
+	using Newtonsoft.Json.Serialization;
 
 	public class Startup
 	{
 		public Startup(IHostingEnvironment env)
 		{
-			var builder = new ConfigurationBuilder()
+			IConfigurationBuilder builder = new ConfigurationBuilder()
 				.SetBasePath(env.ContentRootPath)
 				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
 				.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
@@ -37,8 +43,13 @@ namespace Angular2CoreBase.Ui
 		public void ConfigureServices(IServiceCollection services)
 		{
 			// Add framework services.
-			services.AddMvc();
+			IMvcBuilder mvcBuilder = services.AddMvc();
+			mvcBuilder.AddJsonOptions
+				(opts => opts.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
+
 			services.AddLogging();
+
+			services.AddMemoryCache(opt => opt.ExpirationScanFrequency = TimeSpan.FromMinutes(5));
 
 			//DataBase Setups
 			//if (Environment.IsDevelopment())
@@ -48,7 +59,7 @@ namespace Angular2CoreBase.Ui
 			//}
 			//else
 			//{
-				services.AddDbContext<CoreBaseContext>(options =>
+			services.AddDbContext<CoreBaseContext>(options =>
 					options.UseSqlServer(Configuration.GetConnectionString("CoreBaseConnectionString")));
 			//}
 
@@ -70,7 +81,8 @@ namespace Angular2CoreBase.Ui
 			//services.AddSingleton<IOperationSingletonInstance>(new Operation(Guid.Empty));
 			//services.AddTransient<OperationService, OperationService>();
 
-
+			services.AddTransient<IEmailService, EmailService>();
+			services.AddSingleton<IFileService, FileService>();
 
 			//Dark Sky Api
 			services.AddSingleton<IWeatherServiceSettings, DarkSkyWeatherServiceSettings>();
@@ -86,17 +98,37 @@ namespace Angular2CoreBase.Ui
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+		public void Configure(
+			IApplicationBuilder app, 
+			IHostingEnvironment env, 
+			ILoggerFactory loggerFactory, 
+			IEmailService mailService, 
+			IFileService fileService)
 		{
+			/*
+			public enum LogLevel
+			{
+				Debug = 1,
+				Verbose = 2,
+				Information = 3,
+				Warning = 4,
+				Error = 5,
+				Critical = 6,
+				None = int.MaxValue
+			}
+			*/
+
 			loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-			loggerFactory.AddDebug();
+			loggerFactory.AddDebug(LogLevel.Information);
+			loggerFactory.AddEmail(mailService, LogLevel.Error);
+			loggerFactory.AddFile(fileService, LogLevel.Error);
 
 			if (Environment.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
 				app.UseDatabaseErrorPage();
 
-				using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+				using (IServiceScope serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
 				{
 					serviceScope.ServiceProvider.GetService<CoreBaseContext>().Database.Migrate();
 					serviceScope.ServiceProvider.GetService<CoreBaseContext>().SeedData();

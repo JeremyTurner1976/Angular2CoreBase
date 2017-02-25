@@ -27,7 +27,7 @@ namespace Angular2CoreBase.Common.Middleware
 			DateTime startTime = DateTime.UtcNow;
 
 			Stopwatch watch = Stopwatch.StartNew();
-			var response = await base.SendAsync(request, cancellationToken);
+			HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
 			watch.Stop();
 
 			string logTemplate =

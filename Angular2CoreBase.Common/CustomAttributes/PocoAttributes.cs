@@ -38,7 +38,7 @@ namespace Angular2CoreBase.Common.CustomAttributes
 
 				foreach (PropertyInfo property in properties)
 				{
-					var attr = property.GetCustomAttribute<DateTimeKindSetting>();
+					DateTimeKindSetting attr = property.GetCustomAttribute<DateTimeKindSetting>();
 					if (attr == null)
 						continue;
 
@@ -66,7 +66,7 @@ namespace Angular2CoreBase.Common.CustomAttributes
 
 				foreach (PropertyInfo property in properties)
 				{
-					var strItem = (string)property.GetValue(entity);
+					string strItem = (string)property.GetValue(entity);
 
 					string[] lines = strItem.Split(
 						new[] { Environment.NewLine }, 

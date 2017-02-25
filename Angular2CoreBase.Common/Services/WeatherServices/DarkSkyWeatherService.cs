@@ -75,7 +75,7 @@
 		{
 
 
-			var fiveDayOneHourForecasts =  (from item in darkSkyWeather.hourly.data
+			List<Forecast> fiveDayOneHourForecasts =  (from item in darkSkyWeather.hourly.data
 					select new Forecast()
 					{
 						StartDateTime = item.dateTime,
@@ -91,7 +91,7 @@
 						CloudCover = item.cloudCover,
 						PrecipitationVolume = item.precipIntensity
 					}).ToList();
-			var test = fiveDayOneHourForecasts.Count();
+			int test = fiveDayOneHourForecasts.Count();
 
 			return GetThreeHourSummedForecasts(fiveDayOneHourForecasts);
 		}

@@ -6,6 +6,7 @@ namespace Angular2CoreBase.Ui.Controllers
 {
 	using Common.Services;
 	using Common.Services.LoggingServices;
+	using Data.Factories;
 
 	public class HomeController : Controller
 	{
@@ -25,8 +26,7 @@ namespace Angular2CoreBase.Ui.Controllers
 			int usersCount = userRepository.Count();
 			int errorsCount = errorRepository.Count();
 
-			var fileService = new FileLoggingService(new FileService());
-			fileService.LogMessage("TEST");
+			var thrownException = ErrorFactory.GetThrownException();
 
 			return View();
 		}

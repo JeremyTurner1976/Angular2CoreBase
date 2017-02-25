@@ -2,6 +2,8 @@
 {
 	public interface ILogService
 	{
-		bool LogMessage(string strLogMessage);
+		void LogMessage(string message);
+
+		void LogError(string error);
 	}
 }

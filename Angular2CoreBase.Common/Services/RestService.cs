@@ -154,7 +154,7 @@
 				return;
 			}
 
-			foreach (var item in headers)
+			foreach (KeyValuePair<string, string> item in headers)
 			{
 				_client.DefaultRequestHeaders.Add(item.Key, item.Value);
 			}
