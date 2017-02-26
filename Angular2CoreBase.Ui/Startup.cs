@@ -80,13 +80,14 @@ namespace Angular2CoreBase.Ui
 			//Add swagger json file gen
 			services.AddSwaggerGen(options =>
 			{
-				options.SingleApiVersion(new Info
-				{
-					Version = "V0_0_0",
-					Title = "Angular2CoreBase Api",
-					Description = "Api and Schema Definitions",
-					TermsOfService = "None"
-				});
+				options.SingleApiVersion(
+					new Info
+					{
+						Version = "v1",
+						Title = "Angular2CoreBase Api",
+						Description = "Api and Schema Definitions",
+						TermsOfService = "None"
+					});
 			});
 
 			//Configuration Pocos

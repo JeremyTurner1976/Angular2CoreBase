@@ -5,7 +5,7 @@
 	using Common.Interfaces.WeatherService;
 	using Microsoft.AspNetCore.Mvc;
 
-	[Route("api/v0_0/[controller]")]
+	[Route("api/v1/[controller]")]
 	public class WeatherDataController : Controller
 	{
 		public WeatherDataController(IWeatherService weatherService)
