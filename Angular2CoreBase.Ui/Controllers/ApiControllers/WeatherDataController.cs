@@ -5,7 +5,7 @@
 	using Common.Interfaces.WeatherService;
 	using Microsoft.AspNetCore.Mvc;
 
-	[Route("api/[controller]")]
+	[Route("api/v0_0/[controller]")]
 	public class WeatherDataController : Controller
 	{
 		public WeatherDataController(IWeatherService weatherService)
@@ -15,7 +15,7 @@
 
 		public IWeatherService WeatherService { get; }
 
-		[HttpGet("[action]")]
+		[HttpGet("WeatherForecasts")]
 		[ProducesResponseType(typeof (WeatherData), 200)]
 		public async Task<IActionResult> WeatherForecasts()
 		{

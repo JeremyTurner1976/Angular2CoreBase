@@ -30,6 +30,7 @@ namespace Angular2CoreBase.Ui
 	using Microsoft.Extensions.Logging;
 	using Microsoft.Extensions.Options;
 	using Newtonsoft.Json.Serialization;
+	using Swashbuckle.Swagger.Model;
 
 	public class Startup
 	{
@@ -67,7 +68,26 @@ namespace Angular2CoreBase.Ui
 			//services.AddSingleton<IOperationSingletonInstance>(new Operation(Guid.Empty));
 			//services.AddTransient<OperationService, OperationService>();
 
+			// Add framework services.
+			IMvcBuilder mvcBuilder = services.AddMvc();
+			mvcBuilder.AddJsonOptions
+				(opts => opts.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
+
+			services.AddMemoryCache(opt => opt.ExpirationScanFrequency = TimeSpan.FromMinutes(5));
+
 			services.AddLogging();
+
+			//Add swagger json file gen
+			services.AddSwaggerGen(options =>
+			{
+				options.SingleApiVersion(new Info
+				{
+					Version = "V0_0_0",
+					Title = "Angular2CoreBase Api",
+					Description = "Api and Schema Definitions",
+					TermsOfService = "None"
+				});
+			});
 
 			//Configuration Pocos
 			services.AddOptions();
@@ -96,13 +116,6 @@ namespace Angular2CoreBase.Ui
 			services.AddTransient<IEmailService, EmailService>();
 			services.AddSingleton<IFileService, FileService>();
 			services.AddSingleton<IDatabaseLoggingService, DatabaseLoggingService>();
-
-			// Add framework services.
-			IMvcBuilder mvcBuilder = services.AddMvc();
-			mvcBuilder.AddJsonOptions
-				(opts => opts.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
-
-			services.AddMemoryCache(opt => opt.ExpirationScanFrequency = TimeSpan.FromMinutes(5));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -194,6 +207,10 @@ namespace Angular2CoreBase.Ui
 
 			app.UseStaticFiles();
 			app.UseMiddleware<HttpContextLogging>();
+
+			//Bring in Swagger definitions
+			app.UseSwagger();
+			app.UseSwaggerUi();
 
 			app.UseMvc(routes =>
 			{
