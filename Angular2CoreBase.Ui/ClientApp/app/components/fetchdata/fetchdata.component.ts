@@ -51,7 +51,7 @@ export interface WeatherForecast {
 	windspeed: number;
 	windDirection: number;
 	skyCon: string;
+	icon: string;
 	cloudCover: number;
-	rainVolume: number;
-	anowVolume: number;
+	precipitationVolume: number;
 }

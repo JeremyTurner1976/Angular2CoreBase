@@ -1,7 +1,10 @@
 namespace Angular2CoreBase.Ui
 {
 	using System;
+	using System.Linq;
+	using Common.CommonEnums.ConfigSettings;
 	using Common.CommonModels.ConfigSettings;
+	using Common.CommonModels.ConfigSettings.LogSettings;
 	using Common.CommonModels.WeatherService.DarkSkyWeather;
 	using Common.Extensions;
 	using Common.Interfaces;
@@ -70,6 +73,7 @@ namespace Angular2CoreBase.Ui
 			services.AddOptions();
 			services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationSettings"));
 			services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+			services.Configure<LogSettings>(Configuration.GetSection("LogSettings"));
 
 			//Dark Sky Api
 			services.AddSingleton<IWeatherServiceSettings, DarkSkyWeatherServiceSettings>();
@@ -79,17 +83,9 @@ namespace Angular2CoreBase.Ui
 			//services.AddSingleton<IWeatherServiceSettings, OpenWeatherServiceSettings>();
 			//services.AddTransient<IWeatherService, OpenWeatherService>();
 
-			//DataBase Setups
-			//if (Environment.IsDevelopment())
-			//{
-			//	services.AddDbContext<CoreBaseContext>(options =>
-			//		options.UseInMemoryDatabase(Configuration.GetConnectionString("CoreBaseConnectionString")));
-			//}
-			//else
-			//{
+			//DataBase Setups (Environment.IsDevelopment()) == UseInMemoryDatabase
 			services.AddDbContext<CoreBaseContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("CoreBaseConnectionString")));
-			//}
 
 			//Add data classes
 			services.AddSingleton<IRepository<ApplicationUser>, CoreBaseRepository<ApplicationUser>>();
@@ -118,7 +114,8 @@ namespace Angular2CoreBase.Ui
 			IOptions<EmailSettings> emailSettings,
 			IFileService fileService,
 			IRepository<Error> errorRepository,
-			ITrackedModelDecorator<Error> errorDecorator)
+			ITrackedModelDecorator<Error> errorDecorator,
+			IOptions<LogSettings> logSettings)
 		{
 			/*
 			public enum LogLevel
@@ -131,22 +128,39 @@ namespace Angular2CoreBase.Ui
 				Critical = 6,
 				None = int.MaxValue
 			}
-
 			*/
-			loggerFactory.AddDatabaseLogger(errorRepository, errorDecorator, LogLevel.Error);
 
+			//database Logs
+			LogSetting dataBaseLogSetting = logSettings.Value.Settings.FirstOrDefault(x => x.Type == LogType.Database);
+			if (dataBaseLogSetting.On)
+			{
+				loggerFactory.AddDatabaseLogger(errorRepository, errorDecorator, dataBaseLogSetting.Level);
+			}
+
+			//File Logs
+			LogSetting fileLogSetting = logSettings.Value.Settings.FirstOrDefault(x => x.Type == LogType.File);
+			if (fileLogSetting.On)
+			{
+				loggerFactory.AddFileLogger(fileService, fileLogSetting.Level);
+			}
+
+			//Email Logs
+			LogSetting emailLogSetting = logSettings.Value.Settings.FirstOrDefault(x => x.Type == LogType.Email);
+			if (emailLogSetting.On)
+			{
+				loggerFactory.AddEmailLogger(mailService, emailSettings, emailLogSetting.Level);
+			}
+
+			//Development settings
 			if (Environment.IsDevelopment())
 			{
-				//Detailed trace logs (Including Requests and Responses)
-				//loggerFactory.AddFileLogger(fileService, LogLevel.Information);
-
 				app.UseDeveloperExceptionPage();
 				app.UseDatabaseErrorPage();
+
 				loggerFactory.AddDebug(LogLevel.Information);
 				loggerFactory.AddConsole(Configuration.GetSection("Logging"));
 
-				using (IServiceScope serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope()
-					)
+				using (IServiceScope serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
 				{
 					serviceScope.ServiceProvider.GetService<CoreBaseContext>().Database.Migrate();
 					serviceScope.ServiceProvider.GetService<CoreBaseContext>().SeedData();
@@ -173,12 +187,8 @@ namespace Angular2CoreBase.Ui
 					});
 				});
 			}
-			else
+			else //production
 			{
-				//Detailed trace logs
-				//loggerFactory.AddFileLogger(fileService, LogLevel.Information);
-
-				loggerFactory.AddEmailLogger(mailService, emailSettings, LogLevel.Error);
 				app.UseExceptionHandler("/Home/Error");
 			}
 
