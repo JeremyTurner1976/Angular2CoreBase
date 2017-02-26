@@ -8,12 +8,12 @@
 	[Route("api/v1/[controller]")]
 	public class WeatherDataController : Controller
 	{
+		public IWeatherService WeatherService { get; }
+
 		public WeatherDataController(IWeatherService weatherService)
 		{
 			WeatherService = weatherService;
 		}
-
-		public IWeatherService WeatherService { get; }
 
 		[HttpGet("WeatherForecasts")]
 		[ProducesResponseType(typeof (WeatherData), 200)]
