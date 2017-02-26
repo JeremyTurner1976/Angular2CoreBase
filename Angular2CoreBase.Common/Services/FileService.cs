@@ -51,10 +51,13 @@
 				                     ".txt";
 			}
 
-			lock (_lock)
+
+			if (strFileAndPathName.Contains(".txt") && File.Exists(strFileAndPathName))
 			{
-				if (strFileAndPathName.Contains(".txt") && File.Exists(strFileAndPathName))
+				lock (_lock)
+				{
 					return File.ReadAllLines(strFileAndPathName);
+				}
 			}
 			throw new FileNotFoundException();
 		}
