@@ -30,7 +30,7 @@
 
 			string subject = GetSubject(logLevel);
 			DirectoryFolders folder = GetFolder(logLevel);
-			_fileService.SaveTextToDirectoryFile(folder, Environment.NewLine + subject + Environment.NewLine + message);
+			_fileService.SaveTextToDirectoryFile(folder, GetFormattedFileOutput(subject, message));
 		}
 
 		public override void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
@@ -49,7 +49,7 @@
 		}
 
 		private string GetFormattedFileOutput(string subject, string message)
-			=> Environment.NewLine + DateTime.Now + "  " + subject + Environment.NewLine + message + Environment.NewLine;
+			=> Environment.NewLine + DateTime.Now + "  " + subject + Environment.NewLine + message;
 
 		public override void LogError(
 			Exception exception,

@@ -2,7 +2,8 @@
 
 namespace Angular2CoreBase.Data.Abstract
 {
-	public abstract class ModelBase
+	using Common.Interfaces;
+	public abstract class ModelBase : ICommonModel
 	{
 		[Key]
 		public int Id { get; protected set; }

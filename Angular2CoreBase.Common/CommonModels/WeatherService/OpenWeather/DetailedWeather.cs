@@ -6,7 +6,7 @@
 	using Interfaces;
 	using Newtonsoft.Json;
 
-	public class DetailedWeather : IModel
+	public class DetailedWeather : ICommonModel
 	{
 		public List<Weather> weather { get; set; }
 

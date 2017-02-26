@@ -8,7 +8,7 @@
 	public static class HttpExtensions
 	{
 		public static async Task<T> ParseJsonResponse<T>(this HttpResponseMessage response)
-			where T : IModel
+			where T : ICommonModel
 		{
 			string stringResult = await response.Content.ReadAsStringAsync();
 			return JsonConvert.DeserializeObject<T>(stringResult);

@@ -6,7 +6,7 @@
 	using Interfaces;
 	using Newtonsoft.Json;
 
-	public class ThreeHourFiveDayForecast : IModel
+	public class ThreeHourFiveDayForecast : ICommonModel
 	{
 		public double message { get; set; }
 

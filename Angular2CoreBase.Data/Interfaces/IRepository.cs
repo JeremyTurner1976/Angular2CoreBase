@@ -4,8 +4,9 @@
 	using System.Collections.Generic;
 	using System.Linq.Expressions;
 	using Abstract;
+	using Common.Interfaces;
 
-	public interface IRepository<T> where T : ModelBase
+	public interface IRepository<T> where T : ICommonModel
 	{
 		T GetById(int id);
 		IEnumerable<T> List();

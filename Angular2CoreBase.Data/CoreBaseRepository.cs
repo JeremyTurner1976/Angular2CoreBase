@@ -8,8 +8,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Angular2CoreBase.Data
 {
+	using Common.Interfaces;
+
 	//http://deviq.com/repository-pattern/
-	public class CoreBaseRepository<T> : IRepository<T> where T : ModelBase
+	public class CoreBaseRepository<T> : IRepository<T> where T : class, ICommonModel
 	{
 		private readonly CoreBaseContext coreBaseContext;
 

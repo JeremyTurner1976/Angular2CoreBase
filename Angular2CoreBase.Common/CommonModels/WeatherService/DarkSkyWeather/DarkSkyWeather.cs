@@ -8,7 +8,7 @@
 	//http://json2csharp.com/
 	//https://darksky.net/dev/docs/forecast
 
-	public class DarkSkyWeather : IModel
+	public class DarkSkyWeather : ICommonModel
 	{
 		public double latitude { get; set; }
 		public double longitude { get; set; }
