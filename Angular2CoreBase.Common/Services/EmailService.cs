@@ -10,6 +10,7 @@
 	using MimeKit;
 	using CommonModels;
 
+	//https://components.xamarin.com/gettingstarted/mimekit
 	public class EmailService : IEmailService
 	{
 		private readonly ApplicationSettings _applicationSettings;

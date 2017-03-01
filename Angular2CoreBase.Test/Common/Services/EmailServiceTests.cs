@@ -14,10 +14,13 @@ namespace Angular2CoreBase.Test.Common.Services
 	using Data.Database;
 	using Data.Factories;
 	using Data.Models;
+	using Enums;
 	using Microsoft.Extensions.Logging;
 	using Microsoft.Extensions.Options;
+	using MimeKit;
 	using Moq;
 	using Xunit;
+	using Angular2CoreBase.Common.Extensions;
 
 	public class EmailServiceTests : BaseTest
 	{
@@ -41,6 +44,10 @@ namespace Angular2CoreBase.Test.Common.Services
 			fileService = GetFileService();
 		}
 
+		/// <summary>
+		/// This is more of an integration test, 
+		/// simply ensuring that emails are sent via smtp to the developer.
+		/// </summary>
 		[Fact]
 		public void TestSmtpEmailService()
 		{
@@ -57,19 +64,21 @@ namespace Angular2CoreBase.Test.Common.Services
 				BackupCarbonCopy,
 				Message,
 				Body);
-			//TODO Open Email  From SMTP and verify?
 
 			//Test Complex Email
 			service.SendMail(CreateEmail());
 			//Note: Although this only mails to the developer address, the email is successful. 
 			//The email itself will show the set of failed recipients in the email thread
-			//If smtp.gmail.com they show as "Too many failed recipients"
+			//If smtp.gmail.com they show as "Too many failed recipients" after fail three
 
-			//TODO Open Email From SMTP and verify?
 
 			mockRepository.VerifyAll();
 		}
 
+		/// <summary>
+		/// This test will create pickup directory emails,
+		/// and verify the contents of the message to be sent
+		/// </summary>
 		[Fact]
 		public void TestConfigDirectoryEmailService()
 		{
@@ -88,16 +97,66 @@ namespace Angular2CoreBase.Test.Common.Services
 				Body);
 
 			Assert.Equal(startingFileCount + 1, Directory.GetFiles(emailPickupDirectory).Count());
-			//TODO Verify Email Values Helper - Expect Three Addresses in Each Field, with 4 in the Two
-			//Although this does only send to one address, this is successf
+			AssertEmailCorrect(
+				new List<string>() {mockOptionsEmailSettings.Object.Value.DeveloperEmailAddress},
+				new List<string>(),
+				new List<string>(),
+				Message,
+				Body
+			);
 
 			//Test Complex Email
-			service.SendMail(CreateEmail());
+			Email testEmail = CreateEmail();
+			service.SendMail(testEmail);
 
 			Assert.Equal(startingFileCount + 2, Directory.GetFiles(emailPickupDirectory).Count());
-			//TODO Verify Email Values Helper
+			AssertEmailCorrect(
+				testEmail.ToAddresses,
+				testEmail.CarbonCopies,
+				testEmail.BackupCarbonCopies,
+				testEmail.Message,
+				testEmail.Body
+			);
 
 			mockRepository.VerifyAll();
+		}
+
+		private void AssertEmailCorrect(
+			List<string> toAddresses, 
+			List<string> carbonCopies, 
+			List<string> backupCarbonCopies,
+			string message, 
+			string body)
+		{
+			string latestEmailFile = fileService.GetDirectoryFileName(DirectoryFolders.Email);
+			using (FileStream stream = File.OpenRead(latestEmailFile))
+			{
+				MimeMessage mimeMessage = MimeMessage.Load(stream);
+
+				string concatenatedAddresses = 
+					mimeMessage.To.Mailboxes.Aggregate(string.Empty, (current, item) => current + item.Address);
+				foreach (string emailAddress in toAddresses)
+				{
+					Assert.True(concatenatedAddresses.Contains(emailAddress));
+				}
+
+				concatenatedAddresses =
+					mimeMessage.Cc.Mailboxes.Aggregate(string.Empty, (current, item) => current + item.Address);
+				foreach (string emailAddress in carbonCopies)
+				{
+					Assert.True(concatenatedAddresses.Contains(emailAddress));
+				}
+
+				concatenatedAddresses =
+					mimeMessage.Bcc.Mailboxes.Aggregate(string.Empty, (current, item) => current + item.Address);
+				foreach (string emailAddress in backupCarbonCopies)
+				{
+					Assert.True(concatenatedAddresses.Contains(emailAddress));
+				}
+
+				Assert.Equal(message, mimeMessage.Subject);
+				Assert.True(mimeMessage.BodyParts.First().ToString().Contains(body));
+			}
 		}
 
 		private EmailService CreateService()
@@ -115,27 +174,32 @@ namespace Angular2CoreBase.Test.Common.Services
 				ToAddresses = new List<string>()
 				{
 					mockOptionsEmailSettings.Object.Value.DeveloperEmailAddress,
-					"TestToAddressOne@test.com",
-					"TestToAddressTwo@test.com",
-					"TestToAddressThree@test.com"
+					GetTestEmailString(EmailAddressTypes.To, 1),
+					GetTestEmailString(EmailAddressTypes.To, 2),
+					GetTestEmailString(EmailAddressTypes.To, 3),
 				},
 				CarbonCopies = new List<string>()
 				{
-					"TestCCAddressOne@test.com",
-					"TestCCAddressTwo@test.com",
-					"TestCCAddressThree@test.com"
+					GetTestEmailString(EmailAddressTypes.Cc, 1),
+					GetTestEmailString(EmailAddressTypes.Cc, 2),
+					GetTestEmailString(EmailAddressTypes.Cc, 3),
 				},
 				BackupCarbonCopies = new List<string>()
 				{
-					"TestBCCAddressOne@test.com",
-					"TestBCCAddressTwo@test.com",
-					"TestBCCAddressThree@test.com"
+					GetTestEmailString(EmailAddressTypes.Bcc, 1),
+					GetTestEmailString(EmailAddressTypes.Bcc, 2),
+					GetTestEmailString(EmailAddressTypes.Bcc, 3),
 				},
 				Message = Message,
 				Body = Body
 			};
 
 
+		}
+
+		private string GetTestEmailString(EmailAddressTypes addressType, int testPosition)
+		{
+			return $"Test{addressType.ToNameString().ToUpper()}{testPosition}@test.com";
 		}
 	}
 }

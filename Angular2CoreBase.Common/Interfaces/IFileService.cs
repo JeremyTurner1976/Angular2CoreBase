@@ -17,5 +17,7 @@
 		bool DeleteFilesByDays(DirectoryFolders directory, int nDays);
 
 		string GetDirectoryFolderLocation(DirectoryFolders directory);
+
+		string GetDirectoryFileName(DirectoryFolders directory, string fileName = "", bool getMostRecent = true);
 	}
 }

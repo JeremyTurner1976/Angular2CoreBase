@@ -95,6 +95,19 @@
 			return executingDirectory + "\\App_Data\\" + strEnum;
 		}
 
+		public string GetDirectoryFileName(DirectoryFolders directory, string fileName = "", bool getMostRecent = true)
+		{
+			string strFolderLocation = GetDirectoryFolderLocation(directory);
+
+			if (getMostRecent)
+			{
+				FileInfo fileInfo = new DirectoryInfo(strFolderLocation).GetFiles()
+					.OrderByDescending(x => x.CreationTime).FirstOrDefault();
+				return fileInfo?.FullName;
+			}
+			return $"{strFolderLocation}\\{fileName}";
+		}
+
 		private bool Init()
 		{
 			Array enumValues = Enum.GetValues(typeof (DirectoryFolders));
@@ -120,5 +133,6 @@
 			return GetDirectoryFolderLocation(directory) + "\\" + strEnum + "_" + DateTime.Now.ToString("yyyy-M-dd") +
 			       ".txt";
 		}
+
 	}
 }
