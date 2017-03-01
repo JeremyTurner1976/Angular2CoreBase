@@ -10,6 +10,7 @@
 
 	public static class ErrorFactory
 	{
+
 		public static Error GetErrorFromException(Exception e, LogLevel errorLevel, string additionalInformation)
 		{
 			Error error = new Error
@@ -21,12 +22,12 @@
 				StackTrace = e.StackTrace + Environment.NewLine + (e.InnerException == null
 					? "             |No inner exception| "
 					: "             |Inner Exception| " + e.InnerException.ToEnhancedString())
-			};
+		};
 
 			return error;
 		}
 
-		public static void GetThrownException()
+		public static void ThrowException()
 		{
 			int n = 0;
 			int divideByZero = 1/n;
@@ -36,7 +37,7 @@
 		///     Throws an aggregate exception.
 		/// </summary>
 		/// <returns>An awaitable method that will cause an aggregate exception</returns>
-		public static Task<string[][]> GetThrownAggregateException()
+		public static Task<string[][]> ThrowAggregateException()
 		{
 			// Get a folder path whose directories should throw an UnauthorizedAccessException. 
 			string path = Directory.GetParent(
@@ -60,7 +61,14 @@
 			return Directory.GetFiles(str, "*.txt", SearchOption.AllDirectories);
 		}
 
-		public static Error GetErrorFromDetails(
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="message"></param>
+		/// <param name="additionalInformation"></param>
+		/// <param name="logLevel"></param>
+		/// <returns></returns>
+		public static Error GetInformationalError(
 			string message,
 			string additionalInformation,
 			string logLevel)

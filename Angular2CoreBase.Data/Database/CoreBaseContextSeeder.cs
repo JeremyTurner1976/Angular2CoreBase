@@ -48,7 +48,7 @@
 				{
 					try
 					{
-						ErrorFactory.GetThrownException();
+						ErrorFactory.ThrowException();
 					}
 					catch (Exception exception)
 					{

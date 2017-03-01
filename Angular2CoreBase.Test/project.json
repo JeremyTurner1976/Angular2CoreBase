@@ -1,6 +1,6 @@
 {
 	"version": "1.0.0-*",
-	"testRunner": "mstest",
+	"testRunner": "xunit",
 	"buildOptions": {
 		"emitEntryPoint": true
 	},
@@ -9,13 +9,15 @@
 		"Angular2CoreBase.Common": { "target": "project" },
 		"Angular2CoreBase.Data": { "target": "project" },
 		"Angular2CoreBase.Ui": { "target": "project" },
-		"dotnet-test-mstest": "1.1.2-preview",
-        "Faker.NETCore": "1.0.0",
+		"Faker.NETCore": "1.0.0",
 		"Microsoft.NETCore.App": {
 			"version": "1.1.0",
 			"type": "platform"
 		},
-		"MSTest.TestFramework": "1.0.8-rc2"
+		"Moq": "4.7.1",
+		"xunit": "2.2.0-*",
+		"dotnet-test-xunit": "2.2.0-preview2-build1029",
+		"Microsoft.DotNet.InternalAbstractions": "1.0.1-beta-003206"
 	},
 
 	"frameworks": {

@@ -34,7 +34,7 @@
 
 		public override void LogMessage(string subject, string message)
 		{
-			Error error = ErrorFactory.GetErrorFromDetails(subject, message, LogLevel.Information.ToNameString());
+			Error error = ErrorFactory.GetInformationalError(subject, message, LogLevel.Information.ToNameString());
 			_errorRepository.Add(error);
 			_errorRepository.SaveChanges();
 		}

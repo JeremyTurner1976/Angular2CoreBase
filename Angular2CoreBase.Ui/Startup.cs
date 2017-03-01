@@ -104,9 +104,10 @@ namespace Angular2CoreBase.Ui
 			//services.AddSingleton<IWeatherServiceSettings, OpenWeatherServiceSettings>();
 			//services.AddTransient<IWeatherService, OpenWeatherService>();
 
-			//DataBase Setups (Environment.IsDevelopment()) == UseInMemoryDatabase
+			//DataBase Setups UseInMemoryDatabase used in test project
 			services.AddDbContext<CoreBaseContext>(options =>
-				options.UseSqlServer(Configuration.GetConnectionString("CoreBaseConnectionString")));
+				options.UseSqlServer(Configuration.GetConnectionString("CoreBaseConnectionString"))
+				.UseInMemoryDatabase());
 
 			//Add data classes
 			services.AddSingleton<IRepository<ApplicationUser>, CoreBaseRepository<ApplicationUser>>();
