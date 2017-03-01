@@ -7,15 +7,9 @@ namespace Angular2CoreBase.Test.Common.Services
 	using Angular2CoreBase.Common.CommonEnums.FileService;
 	using Angular2CoreBase.Common.CommonModels;
 	using Angular2CoreBase.Common.CommonModels.ConfigSettings;
-	using Angular2CoreBase.Common.CommonModels.WeatherService.OpenWeather;
 	using Angular2CoreBase.Common.Interfaces;
 	using Angular2CoreBase.Common.Services;
-	using Data;
-	using Data.Database;
-	using Data.Factories;
-	using Data.Models;
 	using Enums;
-	using Microsoft.Extensions.Logging;
 	using Microsoft.Extensions.Options;
 	using MimeKit;
 	using Moq;
@@ -86,7 +80,7 @@ namespace Angular2CoreBase.Test.Common.Services
 			EmailService service = CreateService();
 
 			string emailPickupDirectory = fileService.GetDirectoryFolderLocation(DirectoryFolders.Email);
-			int startingFileCount = Directory.GetFiles(emailPickupDirectory).Count();
+			int startingFileCount = Directory.GetFiles(emailPickupDirectory).Length;
 
 			//Test Simple Email
 			service.SendMail(
@@ -96,7 +90,7 @@ namespace Angular2CoreBase.Test.Common.Services
 				Message,
 				Body);
 
-			Assert.Equal(startingFileCount + 1, Directory.GetFiles(emailPickupDirectory).Count());
+			Assert.Equal(startingFileCount + 1, Directory.GetFiles(emailPickupDirectory).Length);
 			AssertEmailCorrect(
 				new List<string>() {mockOptionsEmailSettings.Object.Value.DeveloperEmailAddress},
 				new List<string>(),
@@ -109,7 +103,7 @@ namespace Angular2CoreBase.Test.Common.Services
 			Email testEmail = CreateEmail();
 			service.SendMail(testEmail);
 
-			Assert.Equal(startingFileCount + 2, Directory.GetFiles(emailPickupDirectory).Count());
+			Assert.Equal(startingFileCount + 2, Directory.GetFiles(emailPickupDirectory).Length);
 			AssertEmailCorrect(
 				testEmail.ToAddresses,
 				testEmail.CarbonCopies,
@@ -122,12 +116,21 @@ namespace Angular2CoreBase.Test.Common.Services
 		}
 
 		private void AssertEmailCorrect(
-			List<string> toAddresses, 
-			List<string> carbonCopies, 
-			List<string> backupCarbonCopies,
+			IEnumerable<string> toAddresses, 
+			IEnumerable<string> carbonCopies, 
+			IEnumerable<string> backupCarbonCopies,
 			string message, 
 			string body)
 		{
+			if (string.IsNullOrWhiteSpace(message))
+			{
+				throw new ArgumentException("Argument is null or whitespace", nameof(message));
+			}
+			if (string.IsNullOrWhiteSpace(body))
+			{
+				throw new ArgumentException("Argument is null or whitespace", nameof(body));
+			}
+
 			string latestEmailFile = fileService.GetDirectoryFileName(DirectoryFolders.Email);
 			using (FileStream stream = File.OpenRead(latestEmailFile))
 			{

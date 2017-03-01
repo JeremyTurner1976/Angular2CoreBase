@@ -63,6 +63,12 @@ namespace Angular2CoreBase.Test
 		}
 
 		//Services
+
+		/// <summary>
+		/// Returns a fully functioning file service, pointing to 
+		/// the test bin\App_Data\Email directory
+		/// </summary>
+		/// <returns>A <see cref="FileService"/> object</returns>
 		public IFileService GetFileService()
 		{
 			return new FileService();
