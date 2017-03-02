@@ -34,7 +34,8 @@ namespace Angular2CoreBase.Ui.Controllers
 			//Implement Client Side Errors
 			//Implement toaster - Perhaps production error handler output there, but create much smaller html to display in the toaster (Message)
 
-			//Implement Authentication
+			//Implement Authentication - https://social.technet.microsoft.com/wiki/contents/articles/37169.secure-your-netcore-web-applications-using-identityserver-4.aspx
+			//Implement User Secrets Manager
 
 			return View();
 		}
