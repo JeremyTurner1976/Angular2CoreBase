@@ -90,6 +90,19 @@ namespace Angular2CoreBase.Ui
 					});
 			});
 
+			if (Environment.IsDevelopment())
+			{
+				//DataBase Setups UseInMemoryDatabase used in test project
+				services.AddDbContext<CoreBaseContext>(options =>
+					options.UseSqlServer(Configuration.GetConnectionString("CoreBaseConnectionString")));
+			}
+			else
+			{
+				//DataBase Setups UseInMemoryDatabase used in test project
+				services.AddDbContext<CoreBaseContext>(options =>
+					options.UseInMemoryDatabase());
+			}
+
 			//Configuration Pocos
 			services.AddOptions();
 			services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationSettings"));
@@ -103,11 +116,6 @@ namespace Angular2CoreBase.Ui
 			//Open Weather Api
 			//services.AddSingleton<IWeatherServiceSettings, OpenWeatherServiceSettings>();
 			//services.AddTransient<IWeatherService, OpenWeatherService>();
-
-			//DataBase Setups UseInMemoryDatabase used in test project
-			services.AddDbContext<CoreBaseContext>(options =>
-				options.UseSqlServer(Configuration.GetConnectionString("CoreBaseConnectionString"))
-				.UseInMemoryDatabase());
 
 			//Add data classes
 			services.AddSingleton<IRepository<ApplicationUser>, CoreBaseRepository<ApplicationUser>>();
@@ -190,7 +198,7 @@ namespace Angular2CoreBase.Ui
 				{
 					errorApp.Run(async context =>
 					{
-						context.Response.StatusCode = 500; // or another Status accordingly to Exception Type
+						context.Response.StatusCode = 500; // or another Status according to Exception Type
 						context.Response.ContentType = "text/html";
 
 						IExceptionHandlerFeature error =

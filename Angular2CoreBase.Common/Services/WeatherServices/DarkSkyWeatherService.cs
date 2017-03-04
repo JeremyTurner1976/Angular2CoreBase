@@ -79,7 +79,7 @@
 
 		private ICollection<Forecast> GetDarkSkyForecasts(DarkSkyWeather darkSkyWeather)
 		{
-			List<Forecast> fiveDayOneHourForecasts = Enumerable.ToList((from item in darkSkyWeather.hourly.data
+			List<Forecast> fiveDayOneHourForecasts = (from item in darkSkyWeather.hourly.data
 				select new Forecast
 				{
 					StartDateTime = item.dateTime,
@@ -94,7 +94,7 @@
 					Icon = GetIcon(item.icon, (int) item.cloudCover, item.dateTime.Hour),
 					CloudCover = item.cloudCover,
 					PrecipitationVolume = item.precipIntensity
-				}));
+				}).ToList();
 			int test = fiveDayOneHourForecasts.Count();
 
 			return GetThreeHourSummedForecasts(fiveDayOneHourForecasts);
