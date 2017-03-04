@@ -94,13 +94,12 @@ namespace Angular2CoreBase.Ui
 			{
 				//DataBase Setups UseInMemoryDatabase used in test project
 				services.AddDbContext<CoreBaseContext>(options =>
-					options.UseSqlServer(Configuration.GetConnectionString("CoreBaseConnectionString")));
+					options.UseInMemoryDatabase());
 			}
 			else
 			{
-				//DataBase Setups UseInMemoryDatabase used in test project
 				services.AddDbContext<CoreBaseContext>(options =>
-					options.UseInMemoryDatabase());
+					options.UseSqlServer(Configuration.GetConnectionString("CoreBaseConnectionString")));
 			}
 
 			//Configuration Pocos
